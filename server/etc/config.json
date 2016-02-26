@@ -1,0 +1,15 @@
+{
+	"db":{
+		"name":"123",
+		"url":"",
+		"maxIdleConns":10,
+		"maxOpenConns":10
+	},
+	"qiniu":{
+		"bucket":"",
+		"ak":"",
+		"sk":"",
+		"domain":""
+	},
+	"port":"9090"
+}
