@@ -1,4 +1,4 @@
 # server
 server/src/.idea/*
 server/src/just.iml
-server/src/pkg/*
+server/pkg/*
