@@ -1,7 +1,8 @@
 {
 	"db":{
-		"name":"123",
-		"url":"",
+		"name":"postgres",
+		"url":"host=127.0.0.1 port=5432
+			dbname=mlearning user=postgres password='123456' connect_timeout=60 sslmode=disable",
 		"maxIdleConns":10,
 		"maxOpenConns":10
 	},

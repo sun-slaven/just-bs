@@ -26,7 +26,7 @@ func (self *TokenService) Make(userId string) (string, error) {
 	tokenTable.UUID = uuid.New()
 	tokenTable.UserId = userId
 	tokenTable.CreateTime = time.Now()
-	tokenTable.FrozenTime = time.Now().Add(7 * 24 * 60 * time.Minute)
+	tokenTable.DeadTime = time.Now().Add(2 * 24 * time.Hour)
 	insertNum, insertErr := self.Session.InsertOne(&tokenTable)
 	if insertNum == 0 {
 		if insertErr != nil {
