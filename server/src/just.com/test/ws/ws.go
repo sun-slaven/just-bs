@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"github.com/garyburd/redigo/redis"
 )
 
 var upgreder = websocket.Upgrader{
@@ -23,7 +24,31 @@ func main() {
 			return
 		}
 		defer conn.Close()
-		conn.WriteMessage(websocket.TextMessage, []byte("Hello World"))
+		//		conn.WriteMessage(websocket.TextMessage, []byte("Hello World"))
+		redisConn, connErr := redis.DialURL("redis://127.0.0.1:6379")
+		if connErr != nil {
+			log.Println(connErr)
+		}
+		defer redisConn.Close()
+		pubConn := redis.PubSubConn{}
+		pubConn.Conn = redisConn
+		defer pubConn.Close()
+		subScribeErr := pubConn.Subscribe("NEWS")
+		if subScribeErr != nil {
+			log.Println(subScribeErr)
+		}
+		pubConn.Receive()
+		for {
+			reply := pubConn.Receive()
+			replyMess := reply.(redis.Message)
+			conn.WriteMessage(websocket.TextMessage, replyMess.Data)
+			//			replyStr, replyStrEr := redis.Values(redisConn.Receive())
+			//			if replyStrEr != nil{
+			//				log.Println(replyStrEr)
+			//			}
+			//			log.Println(replyStr)
+			//			conn.WriteMessage(websocket.TextMessage, []byte("123"))
+		}
 	})
 
 	test.Static("/cli", "D:/project/just/just_bs/server/src/just.com/test/ws")
