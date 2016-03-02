@@ -1,0 +1,27 @@
+{
+  "name": "just_bs",
+  "version": "1.0.0",
+  "description": "just study online",
+  "main": "index.js",
+  "dependencies": {
+    "bower": "^1.7.7",
+    "http-server": "^0.9.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^0.11.1"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:sun_slaven/just_bs.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
