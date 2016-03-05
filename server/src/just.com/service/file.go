@@ -2,10 +2,10 @@ package service
 import (
 	"github.com/go-xorm/xorm"
 	"log"
-	"just.com/model"
 	"code.google.com/p/go-uuid/uuid"
 	"time"
 	"errors"
+	"just.com/model/db/table"
 )
 
 type FileService struct {
@@ -15,7 +15,7 @@ type FileService struct {
 }
 
 func (self *FileService) Add(courseId, userId, fileName, fileUrl string) (id string, err error) {
-	fileTable := model.FileTable{}
+	fileTable := table.FileTable{}
 	fileTable.UUID = uuid.New()
 	fileTable.CourseID = courseId
 	fileTable.Name = fileName
@@ -35,7 +35,7 @@ func (self *FileService) Add(courseId, userId, fileName, fileUrl string) (id str
 }
 
 func (self *FileService) Update(userId, fileId, fileName, fileUrl string) (err error) {
-	fileTable := model.FileTable{}
+	fileTable := table.FileTable{}
 	fileTable.Name = fileName
 	fileTable.URL = fileUrl
 	fileTable.UpdateTime = time.Now()
@@ -50,7 +50,7 @@ func (self *FileService) Update(userId, fileId, fileName, fileUrl string) (err e
 
 
 func (self *FileService) Delete(fileId string) (err error) {
-	fileTable := model.FileTable{}
+	fileTable := table.FileTable{}
 	fileTable.FrozenStatus = "Y"
 	fileTable.FrozenTime = time.Now()
 	updateNum, updateErr := self.Session.Id(fileId).Update(&fileTable)

@@ -3,13 +3,15 @@ import (
 	"os"
 	"log"
 	"encoding/json"
-	"just.com/model"
+	"just.com/etc"
 	"io/ioutil"
 	"github.com/gin-gonic/gin"
 	"just.com/group/user"
 	"net/http"
 	"time"
 	"just.com/middleware"
+	"just.com/model/qiniu"
+	"just.com/model/db"
 )
 
 func main() {
@@ -19,12 +21,17 @@ func main() {
 	if configErr != nil {
 		log.Println(configErr)
 	}
-	config := model.Config{}
+	config := etc.Config{}
 	configUnmarshal := json.Unmarshal(configByte, &config)
 	if configUnmarshal != nil {
 		log.Println(configUnmarshal)
 	}
-
+	// 2.db
+	dataSource := db.New(config.DBConfig)
+	log.Println(dataSource)
+	// 2.qiniu fs
+	qiniuFileSystem := qiniu.New(config.QiniuConfig)
+	log.Println(qiniuFileSystem)
 	// interface
 	gin.SetMode("release")
 	router := gin.New()

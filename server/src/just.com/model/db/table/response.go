@@ -1,4 +1,4 @@
-package model
+package table
 
 type Response struct {
 	Ok   int64 `json:"ok"`

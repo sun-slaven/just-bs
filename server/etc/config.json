@@ -1,16 +1,15 @@
 {
 	"db":{
 		"name":"postgres",
-		"url":"host=127.0.0.1 port=5432
-			dbname=mlearning user=postgres password='123456' connect_timeout=60 sslmode=disable",
+		"url":"host=127.0.0.1 port=5432 dbname=mlearning user=postgres password='123456' connect_timeout=60 sslmode=disable",
 		"maxIdleConns":10,
 		"maxOpenConns":10
 	},
 	"qiniu":{
-		"bucket":"",
-		"ak":"",
-		"sk":"",
-		"domain":""
+		"bucket":"wanghao",
+		"ak":"YZebTjnnoLzr0fGR7wD31WqcGE2KM1EKhs006S7L",
+		"sk":"V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce",
+		"domain":"http://7xnz7k.com1.z0.glb.clouddn.com"
 	},
-	"port":"9090"
+	"port":":9090"
 }

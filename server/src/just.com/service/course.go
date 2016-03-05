@@ -2,23 +2,24 @@ package service
 import (
 	"github.com/go-xorm/xorm"
 	"log"
-	"just.com/model"
 	"just.com/dto"
 	"code.google.com/p/go-uuid/uuid"
 	"time"
 	"strings"
 	"errors"
+	"just.com/model/db/table"
+	"just.com/common"
 )
 
 type CourseService struct {
 	Id      string
 	Session *xorm.Session
 	Log     *log.Logger
-	Data    *model.CourseTable
+	Data    *table.CourseTable
 }
 
 func (self *CourseService) Add(dto dto.CourseDto, userId string) (id string, err error) {
-	courseTable := model.CourseTable{}
+	courseTable := table.CourseTable{}
 	courseTable.UUID = uuid.New()
 	courseTable.Name = dto.Name
 	courseTable.Introduction = dto.Introduction
@@ -45,11 +46,11 @@ func (self *CourseService) Add(dto dto.CourseDto, userId string) (id string, err
 }
 
 func (self *CourseService) Update(dto dto.CourseDto, courseId string, userId string) (err error) {
-	isEmpty := IsEmpty(dto.Name, dto.Introduction, dto.Syllabus, dto.Experiment, dto.Plan, dto.Plan, dto.Major, dto.College)
+	isEmpty := common.IsEmpty(dto.Name, dto.Introduction, dto.Syllabus, dto.Experiment, dto.Plan, dto.Plan, dto.Major, dto.College)
 	if isEmpty {
 		return errors.New(SERVICE_COURSE_UPDATE_ERR)
 	}
-	courseTable := model.CourseTable{}
+	courseTable := table.CourseTable{}
 	courseTable.Name = dto.Name
 	courseTable.Introduction = dto.Introduction
 	courseTable.Syllabus = dto.Syllabus
@@ -70,7 +71,7 @@ func (self *CourseService) Delete() (success bool) {
 	if strings.TrimSpace(self.Id) == "" {
 		return
 	}
-	courseTable := model.CourseTable{}
+	courseTable := table.CourseTable{}
 	courseTable.FrozenStatus = "Y"
 	courseTable.FrozenTime = time.Now()
 	updateNum, _ := self.Session.Id(self.Id).Update(&courseTable)
@@ -84,7 +85,7 @@ func (self *CourseService) Delete() (success bool) {
 
 /*mark the course*/
 func (self *CourseService) Mark(courseId string, userId string) (id string, err error) {
-	courseMarkTable := model.CourseMarkTable{}
+	courseMarkTable := table.CourseMarkTable{}
 	courseMarkTable.UUID = uuid.New()
 	courseMarkTable.CourseId = courseId
 	courseMarkTable.UserId = userId
@@ -101,7 +102,7 @@ func (self *CourseService) Mark(courseId string, userId string) (id string, err 
 }
 
 func (self *CourseService) MarkCancel(markId string, courseId string) (err error) {
-	courseMarkTable := model.CourseMarkTable{}
+	courseMarkTable := table.CourseMarkTable{}
 	courseMarkTable.FrozenStatus = "Y"
 	courseMarkTable.FrozenTime = time.Now()
 	updateNum, _ := self.Session.Id(markId).Update(&courseMarkTable)
@@ -115,11 +116,11 @@ func (self *CourseService) MarkCancel(markId string, courseId string) (err error
 func (self *CourseService) flushMarkSum(courseId string) {
 	countSql := `SELECT COUNT("UUID") FROM "COURSE_MARK" WHERE "COURSE_ID" = ?
 			AND "FROZEN_STATUS" = "N"`
-	count, countErr := self.Session.Sql(countSql).Count(&model.CourseMarkTable{})
+	count, countErr := self.Session.Sql(countSql).Count(&table.CourseMarkTable{})
 	if countErr != nil {
 		self.Log.Println(countErr)
 	}
-	courseTable := model.CourseTable{}
+	courseTable := table.CourseTable{}
 	courseTable.MarkSum = count
 	updateNum, _ := self.Session.Id(courseId).Update(&courseTable)
 	if updateNum == 0 {

@@ -1,4 +1,4 @@
-package model
+package etc
 
 type Config struct {
 	DBConfig `json:"db"`
@@ -9,13 +9,13 @@ type Config struct {
 type DBConfig struct {
 	Name         string `json:"name"`
 	Url          string `json:"url"`
-	MaxIdleConns int64 `json:"maxIdleConns"`
-	MaxOpenConns int64 `json:"maxOpenConns"`
+	MaxIdleConns int `json:"maxIdleConns"`
+	MaxOpenConns int `json:"maxOpenConns"`
 }
 
 type QiniuConfig struct {
-	Bucket string    `json:"bucket"`
 	AK     string `json:"ak"`
 	SK     string `json:"sk"`
+	Bucket string    `json:"bucket"`
 	Domin  string `json:"domain"`
 }

@@ -1,7 +1,7 @@
-package model
+package table
 import "time"
 
-type User struct {
+type UserTable struct {
 	UUID         string    `xorm:"pk 'UUID'"`
 	Role         string        `xorm:"'ROLE'"`
 	Name         string        `xorm:"'NAME'"`
@@ -19,6 +19,6 @@ type User struct {
 	FrozenStatus string    `xorm:"'FROZEN_STATUS'"`
 	FrozenTime   time.Time    `xorm:"deleted 'FROZEN_TIME'"`
 }
-func (self *User)TableName() string {
+func (self *UserTable)TableName() string {
 	return "USER"
 }

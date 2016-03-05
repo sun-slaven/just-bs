@@ -1,4 +1,4 @@
-package model
+package table
 import "time"
 
 type ImageTable struct {
@@ -6,8 +6,13 @@ type ImageTable struct {
 	Name       string    `xorm:"'NAME'"`
 	Url        string    `xorm:"'URL'"`
 	Width      int64    `xorm:"'WIDTH'"`
-	Height     int64    `xorm:"'HEGITH'"`
-	CreateTime time.Time    `xorm:"created 'CREATED_TIME'"`
+	Height     int64    `xorm:"'HEIGHT'"`
+	CreateTime time.Time    `xorm:"created 'CREATE_TIME'"`
+	CreateUser string `xorm:"'CREATE_USER'"`
+}
+
+func (self *ImageTable)TableName() string {
+	return "IMAGE"
 }
 
 type FileTable struct {

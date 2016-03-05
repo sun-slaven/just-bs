@@ -1,9 +1,9 @@
-package service
+package common
 import "strings"
 
 func IsEmpty(args...string) bool {
 	for _, arg := range args {
-		if strings.TrimSpace(arg) != "" {
+		if strings.TrimSpace(arg) == "" {
 			return true
 		}
 	}

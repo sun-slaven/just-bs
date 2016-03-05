@@ -4,7 +4,7 @@ import (
 	"strings"
 	"just.com/service"
 	"net/http"
-	"just.com/model"
+	"just.com/model/db/table"
 )
 
 type XToken struct {
@@ -33,7 +33,7 @@ func TokenMiddleWare(c *gin.Context) {
 		tokenService.Session = context.Session
 		tokenService.Log = context.Log
 		if tokenService.Check() == false {
-			response := model.Response{}
+			response := table.Response{}
 			response.Ok = 0
 			response.Err = ""
 			c.JSON(http.StatusOK, response)

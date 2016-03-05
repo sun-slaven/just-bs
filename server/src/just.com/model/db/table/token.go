@@ -1,4 +1,4 @@
-package model
+package table
 import "time"
 
 type TokenTable struct {

@@ -2,16 +2,16 @@ package service
 import (
 	"github.com/go-xorm/xorm"
 	"log"
-	"just.com/model"
 	"time"
 	"code.google.com/p/go-uuid/uuid"
 	"errors"
+	"just.com/model/db/table"
 )
 
 type TokenService  struct {
 	Session *xorm.Session
 	Log     *log.Logger
-	data    model.TokenTable
+	data    table.TokenTable
 }
 
 func (self *TokenService) Make(userId string) (string, error) {
@@ -22,7 +22,7 @@ func (self *TokenService) Make(userId string) (string, error) {
 		return "", errors.New(SERVICE_TOKEN_COUNT_ERR)
 	}
 	// 2.insert
-	tokenTable := model.TokenTable{}
+	tokenTable := table.TokenTable{}
 	tokenTable.UUID = uuid.New()
 	tokenTable.UserId = userId
 	tokenTable.CreateTime = time.Now()
@@ -43,7 +43,7 @@ func (self *TokenService) Check() bool {
 		WHERE "UUID" = ?
 		AND "USER_ID" = ?
 	 	AND "FROZEN_TIME" < ?`
-	tokenTable := model.TokenTable{}
+	tokenTable := table.TokenTable{}
 	getFlag, _ := self.Session.Sql(sql, self.data.UUID, self.data.UserId, time.Now()).Get(&tokenTable)
 	return getFlag
 }
