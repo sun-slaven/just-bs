@@ -1,6 +1,6 @@
-GlobalModules.add_service('account')
-angular.module('just.services.account', []).
-factory('AccountService', ['$rootScope', '$resource', '$http',
+GlobalModules.add_service('user')
+angular.module('just.services.user', []).
+factory('UserService', ['$rootScope', '$resource', '$http',
     function($rootScope, $resource, $http) {
 
         function get(success) {

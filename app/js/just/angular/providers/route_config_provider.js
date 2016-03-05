@@ -5,8 +5,8 @@ provider('RouteConfig', function() {
 
         var base_config = [{
             path: '/login',
-            templateUrl: '/app/partials/login/login.html',
-            controller: 'AccountController'
+            templateUrl: '/app/partials/user/login.html',
+            controller: 'UserController'
         }, ];
 
         var branch_config = [{
