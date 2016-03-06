@@ -19,7 +19,7 @@ angular.module('just', GlobalModules.get([
             })
         })
         $routeProvider.otherwise({
-            redirectTo: '/'
+            redirectTo: '/login'
         });
     }
 ]).run(['$rootScope', function($rootScope) {
