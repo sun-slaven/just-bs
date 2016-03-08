@@ -10,23 +10,36 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 asi: true //省略分号不检查
-                //trailing: true
+                    //trailing: false
             },
             files: ['Gruntfile.js', 'app/js/**/*.js']
+        },
+        //将less编译成css
+        less: {
+            development: {
+                options: {
+                    paths: ["app/stylesheets/"], //定义@import加载文件的路径
+                    compress: true, //压缩编译之后的css文件
+                    expand: true
+                },
+                files: {
+                    "dest/application.css": "app/stylesheets/application.less"
+                }
+            }
         },
 
         //监听js和css变动(除去第三方库的加入),自动执行合并压缩任务,command: grunt watch
         watch: {
             js: {
-                files: ['app/js/**/*.js'],
-                tasks: ['jshint','concat:two', 'uglify:two'],
+                files: ['app/js/**/*.js', 'Gruntfile.js'],
+                tasks: ['concat:two', 'uglify:two'],
                 options: {
                     //livereload: true,
                 }
             },
-            css: {
-                files: ['**/*.css'],
-                tasks: ['concat:three', 'cssmin']
+            less: {
+                files: ['app/stylesheets/*.less'],
+                tasks: ['less'] //less先合并然后编译成css然后压缩
             }
         },
         //命令: grunt bower:install ,将bower_component中的第三方库抽取js和css到app下
@@ -44,7 +57,7 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                separator: ';',
+                separator: '\n',
                 stripBanners: true
             },
             //合并第三方库js文件
@@ -69,13 +82,6 @@ module.exports = function(grunt) {
                 ],
                 //合并后的js目录
                 dest: 'dest/all.js',
-            },
-            //合并css
-            three: {
-                src: [
-                    'app/stylesheets/just/application.css'
-                ],
-                dest: 'dest/all.css',
             }
         },
         //压缩js
@@ -93,33 +99,14 @@ module.exports = function(grunt) {
                 dest: 'dest/all.min.js'
             }
         },
-        //压缩css
-        cssmin: {
-            options: {
-                //中文ascii化，非常有用！防止中文乱码的神配置
-                ascii_only: true,
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                    '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                    '* Copyright (c) <%= grunt.template.today("yyyy") %>  */\n'
-            },
-            compress: {
-                //另外一种定义写法
-                files: {
-                    'dest/all.min.css': [
-                        'dest/all.css',
-                    ]
-                }
-            }
-        }
     });
     //载入指定插件任务
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch')
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
     //注册自定义命名task
-    grunt.registerTask('default', ['jshint','concat', 'uglify', 'cssmin']);
-
+    grunt.registerTask('default', ['concat', 'uglify', 'less', 'watch']);
 };

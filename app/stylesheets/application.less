@@ -1,0 +1,16 @@
+/*需要设置使body铺满高度*/
+
+html,
+body {
+    height: 100%;
+}
+
+.divider(@color: #FFFFFF, @height: 1px) {
+    .divider {
+        background-color: @color;
+        height: @height;
+    }
+}
+
+@images_path: "../app/images"; //相对于dest/application.css而言
+@import url('login.less');
