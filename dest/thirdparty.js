@@ -30420,7 +30420,8 @@ $provide.value("$locale", {
 
 })(window, document);
 
-!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');;(function(window, angular, undefined) {'use strict';
+!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+(function(window, angular, undefined) {'use strict';
 
 /**
  * @ngdoc module
@@ -30737,7 +30738,8 @@ angular.module('ngCookies').provider('$$cookieWriter', function $$CookieWriterPr
 
 
 })(window, window.angular);
-;(function(window, angular, undefined) {'use strict';
+
+(function(window, angular, undefined) {'use strict';
 
 var $resourceMinErr = angular.$$minErr('$resource');
 
@@ -31500,7 +31502,8 @@ angular.module('ngResource', ['ng']).
 
 
 })(window, window.angular);
-;(function(window, angular, undefined) {'use strict';
+
+(function(window, angular, undefined) {'use strict';
 
 /**
  * @ngdoc module
@@ -32511,7 +32514,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 })(window, window.angular);
-;/*!
+
+/*!
  * jQuery JavaScript Library v2.2.1
  * http://jquery.com/
  *
@@ -42342,7 +42346,8 @@ if ( !noGlobal ) {
 
 return jQuery;
 }));
-;/*!
+
+/*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under the MIT license

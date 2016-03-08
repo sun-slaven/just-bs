@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="just">
 
 <head>
     <title>江苏科技大学网上学习系统</title>
@@ -9,15 +9,15 @@
     <meta name="description" content="The just online study">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <link href="app/lib/grunt_bower/bootstrap/bootstrap.css" rel="stylesheet">
-    <link href="dest/all.min.css" rel="stylesheet">
+    <link href="dest/application.css" rel="stylesheet">
 </head>
 
-<body ng-app="just">
+<body>
     <ng-view></ng-view>
     <!-- Js installed by bower -->
     <script src="dest/thirdparty.min.js"></script>
     <!-- Custom js by grunt -->
-    <script type="text/javascript" src="dest/all.min.js"></script>
+    <script type="text/javascript" src="dest/all.js"></script>
 </body>
 
 </html>

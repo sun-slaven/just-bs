@@ -32,21 +32,53 @@ var GlobalModules = (function() {
 
 
 // local storage
-;var justConst = (function() {
+
+var justConst = (function() {
     function get_meta(name) {
         return $('meta[name=' + name + ']').attr('content');
     }
 })();
 
 angular.module('just.constants', []).constant('JustConst', justConst);
-;GlobalModules.add_controller('user')
+
+GlobalModules.add_controller('user')
 angular.module('just.controllers.user', ['ngCookies'])
     .controller('UserController', ['$rootScope', '$scope', '$cookies', 'UserService',
         function($rootScope, $scope, $cookies, UserService) {
-            return
+            if ($rootScope.user) {
+                $rootScope.go('/')
+            }
+            $scope.form_type = 'login';
+
+            $scope.change_active = function(attr) {
+                $scope.form_type = attr;
+            }
+
+            $scope.user = {
+                name: '',
+                password: '',
+                remember_me: true
+            }
+            $scope.can_submit = function() {
+                if ($scope.user.name == '') {
+                    return false };
+                if ($scope.user.password == '') {
+                    return false };
+                return true
+            }
+            $scope.submit = function() {
+                if ($scope.can_submit()) {
+                    if ($scope.form_type == 'login') {
+                        // UserService.login($scope.user, function(resp) {
+                        //     //$rootScope.go("")
+                        // })
+                    }
+                }
+            }
         }
     ])
-;angular.module('just.filters', [])
+
+angular.module('just.filters', [])
     .filter('cut', function() {
         return function(value, wordwise, max, tail) {
             if (!value) return '';
@@ -76,7 +108,8 @@ angular.module('just.controllers.user', ['ngCookies'])
             return result
         }
     }]);
-;angular.module('just.route_config', []).
+
+angular.module('just.route_config', []).
 provider('RouteConfig', function() {
     this.$get = function() {
         var all_configs = [];
@@ -109,7 +142,8 @@ provider('RouteConfig', function() {
         }
     }
 });
-;GlobalModules.add_service('user')
+
+GlobalModules.add_service('user')
 angular.module('just.services.user', []).
 factory('UserService', ['$rootScope', '$resource', '$http',
     function($rootScope, $resource, $http) {
@@ -141,7 +175,8 @@ factory('UserService', ['$rootScope', '$resource', '$http',
         }
     }
 ])
-;var version_timestamp = "?v" + Date.parse(new Date());
+
+var version_timestamp = "?v" + Date.parse(new Date());
 /**
  *  Module
  *
