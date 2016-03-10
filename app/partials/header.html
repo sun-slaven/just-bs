@@ -1,1 +1,34 @@
-header.html
+<nav class="navbar navbar" role="navigation" id="nav-header">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-content">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand">在线教学系统</a>
+    </div>
+    <div class="collapse navbar-collapse" id="nav-content">
+        <ul class="nav navbar-nav">
+            <li><a ng-click="go('lessons/')">课程</a></li>
+        </ul>
+    </div>
+    <div id="my-search">
+        <input class="search-input" placeholder="请输入搜索内容..." type="text" autocomplete="off" ng-if="header_search.input_show" ng-model="header_search.search_info">
+        <i class="fa fa-search" ng-click="header_search.open()"></i>
+    </div>
+    <div id="login-area">
+        <ul class="list-inline">
+            <li class="my-message">
+                <a>
+                    <i class="fa fa-commenting-o"></i>
+                </a>
+            </li>
+            <li class="header-avator">
+                <a>
+                    <img src="http://img.mukewang.com/user/533e4c640001354402000200-40-40.jpg" width="40" height="40">
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
