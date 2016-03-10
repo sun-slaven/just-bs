@@ -41,6 +41,13 @@ var justConst = (function() {
 
 angular.module('just.constants', []).constant('JustConst', justConst);
 
+GlobalModules.add_controller('me')
+angular.module('just.controllers.me', ['ngCookies'])
+    .controller('MeController', ['$rootScope', '$scope', '$cookies',
+        function($rootScope, $scope, $cookies) {
+        }
+    ])
+
 GlobalModules.add_controller('user')
 angular.module('just.controllers.user', ['ngCookies'])
     .controller('UserController', ['$rootScope', '$scope', '$cookies', 'UserService',
@@ -69,9 +76,7 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.submit = function() {
                 if ($scope.can_submit()) {
                     if ($scope.form_type == 'login') {
-                        // UserService.login($scope.user, function(resp) {
-                        //     //$rootScope.go("")
-                        // })
+                            $rootScope.go("/users/1/list")
                     }
                 }
             }
@@ -113,30 +118,32 @@ angular.module('just.route_config', []).
 provider('RouteConfig', function() {
     this.$get = function() {
         var all_configs = [];
-
+        var partial_url = function(url) {
+            return '/app/partials/' + url + '.html';
+        }
         var base_config = [{
             path: '/login',
-            templateUrl: '/app/partials/user/login.html',
+            templateUrl: partial_url('user/login'),
             controller: 'UserController'
         }, ];
 
-        var branch_config = [{
-            path: '/branches/:branch_id/eat_in_hall',
-            templateUrl: '/webpos/partials/branches/eat_in_hall.html',
-            controller: 'branchEatInHallController'
+        var me_config = [{
+            path: '/users/:user_id/list',
+            templateUrl: partial_url('me/index'),
+            controller: 'MeController'
         }]
 
         add_config(base_config);
-        //     add_config(branch_config);
+        add_config(me_config);
 
+        function add_config(config) {
+            all_configs = all_configs.concat(config);
+        }
 
         function get() {
             return all_configs;
         }
 
-        function add_config(config) {
-            all_configs = all_configs.concat(config);
-        }
         return {
             get: get
         }
@@ -183,7 +190,7 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies',
+    'ngRoute', 'ngResource', 'ngCookies','ngAnimate',
     'just.route_config',
     'just.constants',
     'just.filters'
@@ -200,8 +207,54 @@ angular.module('just', GlobalModules.get([
             redirectTo: '/login'
         });
     }
-]).run(['$rootScope', function($rootScope) {
+]).run(['$rootScope', '$location', function($rootScope, $location) {
     $rootScope.partial = function(partial_name) {
-        return "/just/partials/" + partial_name + ".html" + version_timestamp;
+        return "app/partials/" + partial_name + ".html" + version_timestamp;
+    }
+    $rootScope.go = function(url) {
+        $location.url(url)
+    }
+    $rootScope.reload = function(bool) {
+        if (bool) { location.reload() } else { $route.reload() }
+    }
+    $rootScope.get_cache = function(key) {
+        return $cacheFactory.get(key);
+    }
+    $rootScope.set_cache = function(key, value) {
+        $cacheFactoryput(key, value);
+    }
+    $rootScope.clear_cache = function() {
+        $cacheFactory.get('$http').removeAll();
+        $cacheFactory.removeAll();
+    }
+
+    $rootScope.header_search = {
+        input_show: false,
+        search_info: '',
+        open: function() {
+            if (this.input_show == false && this.search_info == '') {
+                this.input_show = true;
+            } else {
+                if (this.can_submit()) {
+                    this.submit()
+                } else {
+                    this.close();
+                }
+            }
+        },
+        close: function() {
+            this.input_show = false
+            this.search_info = ''
+        },
+        can_submit: function() {
+            if (this.search_info) {
+                return true
+            }
+        },
+        submit: function() {
+            console.log("submit")
+            this.close()
+        }
+
     }
 }])

@@ -26,9 +26,7 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.submit = function() {
                 if ($scope.can_submit()) {
                     if ($scope.form_type == 'login') {
-                        // UserService.login($scope.user, function(resp) {
-                        //     //$rootScope.go("")
-                        // })
+                            $rootScope.go("/users/1/list")
                     }
                 }
             }
