@@ -5,7 +5,7 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies','ngAnimate',
+    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap',
     'just.route_config',
     'just.constants',
     'just.filters'
@@ -32,6 +32,8 @@ angular.module('just', GlobalModules.get([
     $rootScope.reload = function(bool) {
         if (bool) { location.reload() } else { $route.reload() }
     }
+
+    //cache
     $rootScope.get_cache = function(key) {
         return $cacheFactory.get(key);
     }
@@ -72,4 +74,5 @@ angular.module('just', GlobalModules.get([
         }
 
     }
+
 }])
