@@ -69,6 +69,7 @@ module.exports = function(grunt) {
                     'app/lib/grunt_bower/angular-route/angular-route.js',
                     'app/lib/grunt_bower/angular-animate/angular-animate.js',
                     'app/lib/grunt_bower/angular-bootstrap/ui-bootstrap.js',
+                    'app/lib/grunt_bower/ng-file-upload/ng-file-upload.js',
                     'app/lib/grunt_bower/jquery/jquery.js',
                     'app/lib/grunt_bower/bootstrap/bootstrap.js'
                 ],
