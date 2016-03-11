@@ -1,0 +1,76 @@
+#me-page {
+    width: 90%;
+    margin: auto;
+    min-height: 100%;
+    .setting-left {
+        width: 25%;
+        float: left;
+        ul {
+            list-style-type: none;
+            li {
+                border-bottom: 1px solid #e6e8e9;
+                height: 60px;
+                padding-top: 20px;
+                padding-left: 20px;
+                font-size: 15px;
+                &:hover {
+                    color: red;
+                    cursor: pointer;
+                    border-left-color: red;
+                    border-left-width: 3px;
+                    border-left-style: solid;
+                }
+                &.active {
+                    border-left-width: 3px;
+                    border-left-style: solid;
+                    border-left-color: red;
+                }
+            }
+        }
+    }
+    .setting-right {
+        float: right;
+        width: 75%;
+        height: 100%;
+        padding-left: 10%;
+        padding-top: 5%;
+        #setting_avatar {
+            input[type='button'] {
+                width: 20%;
+                margin-top: 160px;
+                margin-left: 80px;
+            }
+        }
+        #setting_password {
+            input[type='password'] {
+                width: 70%;
+            }
+            input[type="button"] {
+                margin-top: 5%;
+                width: 40%;
+                height: 40px;
+                margin-left: 18%;
+            }
+        }
+        #chosen_lessons {
+            .lessons-list {
+                .one-lesson {
+                    height: 240px;
+                    text-align: center;
+                    padding-top: 20px;
+                    transition-property: box-shadow;
+                    transition-duration: 0.3s;
+                    .lesson-img {
+                    }
+                    p {
+                        color: #b4bbbf
+                    }
+                    &:hover {
+                        cursor: pointer;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5)
+                    }
+                }
+            }
+        }
+    }
+}
