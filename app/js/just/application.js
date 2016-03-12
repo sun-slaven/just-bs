@@ -22,7 +22,8 @@ angular.module('just', GlobalModules.get([
             redirectTo: '/login'
         });
     }
-]).run(['$rootScope', '$location', function($rootScope, $location) {
+]).run(['$rootScope', '$location', 'AnchorSmoothScrollService', function($rootScope, $location, AnchorSmoothScrollService) {
+    //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
     }
@@ -31,6 +32,9 @@ angular.module('just', GlobalModules.get([
     }
     $rootScope.reload = function(bool) {
         if (bool) { location.reload() } else { $route.reload() }
+    }
+    $rootScope.location_path = function() {
+        return $location.path();
     }
 
     //cache
@@ -41,38 +45,42 @@ angular.module('just', GlobalModules.get([
         $cacheFactoryput(key, value);
     }
     $rootScope.clear_cache = function() {
-        $cacheFactory.get('$http').removeAll();
-        $cacheFactory.removeAll();
-    }
-
-    $rootScope.header_search = {
-        input_show: false,
-        search_info: '',
-        open: function() {
-            if (this.input_show == false && this.search_info == '') {
-                this.input_show = true;
-            } else {
-                if (this.can_submit()) {
-                    this.submit()
-                } else {
-                    this.close();
-                }
-            }
-        },
-        close: function() {
-            this.input_show = false
-            this.search_info = ''
-        },
-        can_submit: function() {
-            if (this.search_info) {
-                return true
-            }
-        },
-        submit: function() {
-            console.log("submit")
-            this.close()
+            $cacheFactory.get('$http').removeAll();
+            $cacheFactory.removeAll();
         }
+        //nav-head 搜索
+    $rootScope.header_search = {
+            input_show: false,
+            search_info: '',
+            open: function() {
+                if (this.input_show == false && this.search_info == '') {
+                    this.input_show = true;
+                } else {
+                    if (this.can_submit()) {
+                        this.submit()
+                    } else {
+                        this.close();
+                    }
+                }
+            },
+            close: function() {
+                this.input_show = false
+                this.search_info = ''
+            },
+            can_submit: function() {
+                if (this.search_info) {
+                    return true
+                }
+            },
+            submit: function() {
+                console.log("submit")
+                this.close()
+            }
 
+        }
+        //滚动到顶部
+    $rootScope.scrollTo = function(eID) {
+        AnchorSmoothScrollService.scrollTo(eID);
     }
 
 }])
