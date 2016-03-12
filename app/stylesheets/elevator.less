@@ -1,0 +1,56 @@
+//利用background-position属性对图片位置定位
+.elevator {
+    position: fixed;
+    z-index: 1000;
+    bottom: 50px;
+    right: 40px;
+    display: block;
+    cursor: pointer;
+    a {
+        display: block;
+        margin: 3px 0;
+        height: 52px;
+        width: 52px;
+        background: url('@{images_path}/elevator.png') no-repeat;
+        transition: background-position 0.15s;
+        &.elevator-app {
+            background-position: 0 -550px;
+            &:hover {
+                background-position: 0 -612px;
+                .elevator-app-box {
+                    transform: scale(1);
+                    opacity: 1;
+                    display: block;
+                }
+            }
+            .elevator-app-box {
+                position: absolute;
+                width: 172px;
+                height: 194px;
+                bottom: -10px;
+                right: 46px;
+                opacity: 0; //透明渐变
+
+                -webkit-transition: opacity 0.25s, transform .3s;
+                -moz-transition: opacity 0.25s, transform .3s;
+                transition: opacity 0.25s, transform .3s;
+
+                -webkit-transform: scale(0.01);
+                -ms-transform: scale(0.01);
+                transform: scale(0.01);//(2D)缩放渐变
+
+                -webkit-transform-origin: 100% 95%;
+                -ms-transform-origin: 100% 95%;
+                transform-origin: 100% 95%; //设置2D转换元素的基点位置
+
+                background: url('@{images_path}/elevator.png') no-repeat 0 -222px;
+            }
+        }
+        &.elevator-top {
+            background-position: 0 -674px;
+            &:hover {
+                background-position: 0 -736px;
+            }
+        }
+    }
+}
