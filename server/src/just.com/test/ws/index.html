@@ -5,7 +5,14 @@
     <title>Title</title>
 </head>
 <body>
+    <input type="text" id="message"/>
+    <button onclick="send()">Send</button>
 <script>
+    function send () {
+       var m = document.getElementById("message")
+        ws.send(m.value);
+    }
+
     var ws = new WebSocket("ws://127.0.0.1:8080/test/ws");
     ws.onopen = function (event) {
         console.log("open", event);

@@ -13,18 +13,18 @@ import (
 
 
 /*return new userId*/
-func (self *UserService) Add(mobile, name, iconId, role string) (userId string, err error) {
+func (self *UserService) Add(mobile, name, iconId, roleName string) (userId string, err error) {
 	// 1.check
 	err = errors.New(service.SERVICE_USER_ADD_ERR)
-	if common.IsEmpty(mobile, name, iconId, role) == true {
+	if common.IsEmpty(mobile, name, iconId, roleName) == true {
 		return
 	}
-	if role == "ADMIN" || role == "STUDENT" || role == "TEACHER" {
-		return
-	}
+	// check the role
 	// 2.get the icon
 	imageService := image_service.ImageService{}
-	icon, iconErr := imageService.GetById(iconId)
+	imageService.Session = self.Session
+	imageService.Log = self.Log
+	icon, iconErr := imageService.FindById(iconId)
 	if iconErr != nil {
 		self.Log.Println(iconErr)
 		return
@@ -32,11 +32,11 @@ func (self *UserService) Add(mobile, name, iconId, role string) (userId string, 
 	// 3.insert
 	user := new(table.UserTable)
 	user.UUID = uuid.New()
-	user.Role = role
+	user.RoleName = roleName
 	user.Name = name
 	user.Number = ""
 	user.Age = 0
-	user.Sex = "F"
+	user.Sex = 0
 	user.Mobile = mobile
 	user.Email = ""
 	user.IconId = icon.UUID

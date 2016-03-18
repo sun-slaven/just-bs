@@ -3,10 +3,10 @@ import "time"
 
 type UserTable struct {
 	UUID         string    `xorm:"pk 'UUID'"`
-	Role         string        `xorm:"'ROLE'"`
+	RoleName         string        `xorm:"'ROLE_NAME'"`
 	Name         string        `xorm:"'NAME'"`
 	Number       string    `xorm:"'NUMBER'"`
-	Age          int64    `xrom:"'AGE'"`
+	Age          int64    `xorm:"'AGE'"`
 	Sex          int64    `xorm:"'SEX'"`
 	Mobile       string    `xorm:"'MOBILE'"`
 	Email        string    `xorm:"'EMAIL'"`

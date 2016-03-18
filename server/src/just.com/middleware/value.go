@@ -1,5 +1,11 @@
 package middleware
+import "errors"
 
 const (
-	JUST_CONTEXT = "JUST_CONTEXT"
+	MLEARNING_CONTENT = "MLEARNING_CONTENT"
+	RESPONSE = "RESPONSE"
+)
+var (
+	NO_TOKEN_ERR = errors.New("NO_TOKEN_ERR")
+	NO_AUTHORITATION = errors.New("NO_AUTHORITATION")
 )

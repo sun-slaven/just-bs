@@ -9,6 +9,7 @@ import (
 )
 
 var DataSource *db.DataSource
+var Log *log.Logger
 
 func init() {
 	path := os.Getenv("JUST_PATH")
@@ -22,5 +23,6 @@ func init() {
 		log.Println(configUnmarshal)
 	}
 	// 2.db
-	DataSource = db.New(config.DBConfig)
+	DataSource = db.NewDatSource(config.DBConfig)
+	Log = log.New(os.Stdout, "[mlearing]", log.Ltime | log.Lshortfile)
 }

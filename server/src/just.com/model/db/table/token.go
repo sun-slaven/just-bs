@@ -8,6 +8,6 @@ type TokenTable struct {
 	DeadTime   time.Time    `xorm:"'DEAD_TIME'"`
 }
 
-func (self *TokenTable )TableName() string {
+func (self *TokenTable)TableName() string {
 	return "TOKEN"
 }

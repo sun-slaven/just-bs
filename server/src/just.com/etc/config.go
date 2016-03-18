@@ -4,6 +4,8 @@ type Config struct {
 	DBConfig `json:"db"`
 	QiniuConfig `json:"qiniu"`
 	Port string `json:"port"`
+	RedisConfig `json:"redis"`
+	SendCloudConfig `json:"send_cloud"`
 }
 
 type DBConfig struct {
@@ -18,4 +20,17 @@ type QiniuConfig struct {
 	SK     string `json:"sk"`
 	Bucket string    `json:"bucket"`
 	Domin  string `json:"domain"`
+}
+
+type RedisConfig  struct {
+	Url string `json:"url"`
+}
+
+type SendCloudConfig struct {
+	ApiUser    string `json:"api_user"`
+	ApiKey     string `json:"api_key"`
+	From       string `json:"from"`
+	FromName   string `json:"from_name"`
+	Subject    string `json:"subject"`
+	RequestUrl string `json:"request_url"`
 }

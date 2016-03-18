@@ -25,7 +25,7 @@ func TestGetPrivateUrl(t *testing.T) {
 	}
 
 	// 上传一个文件用用于测试
-	err := upFile("token.go", key)
+	err := upFile("make.go", key)
 	if err != nil {
 		t.Fatal(err)
 	}

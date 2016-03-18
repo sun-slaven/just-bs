@@ -11,5 +11,16 @@
 		"sk":"V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce",
 		"domain":"http://7xnz7k.com1.z0.glb.clouddn.com"
 	},
-	"port":":9090"
+	"redis":{
+		"url":"redis://127.0.0.1:6379"
+	},
+	"port":":9090",
+	"send_cloud":{
+		"api_user":"will19940412_test_TQpPHj",
+		"api_key":"A0wbotFTuAZNz8dH",
+		"from":"will@qq.com",
+		"from_name":"mlearning",
+		"subject":"验证码",
+		"request_url":"http://sendcloud.sohu.com/webapi/mail.send.json"
+	}
 }
