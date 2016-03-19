@@ -20,21 +20,24 @@ func (self *CourseService)AddComment(content, courseId, userId string) (string, 
 		}
 		return "", COURSE_COMMENT_ADD_ERR
 	}
-//	go self.flushCommentSum(courseId)
+	//	go self.flushCommentSum(courseId)
 	return commentTable.UUID, nil
 }
 
-func (self *CourseService) DeleteComment(commentId string) error {
-	comment := new(table.CourseCommentTable)
-	comment.FrozenStatus = "Y"
-	comment.FrozenTime = time.Now()
-	updateNum, updateErr := self.Session.Id(commentId).Update(comment)
+func (self *CourseService) DeleteComment(courseId string, commentId string) error {
+	condiComment := new(table.CourseCommentTable)
+	condiComment.UUID = commentId
+	condiComment.CourseId = courseId
+	newComment := new(table.CourseCommentTable)
+	newComment.FrozenStatus = "Y"
+	newComment.FrozenTime = time.Now()
+	updateNum, updateErr := self.Session.Update(newComment, condiComment)
 	if updateNum == 0 {
 		if updateErr != nil {
 			self.Log.Println(updateErr)
 		}
 		return COURSE_COMMENT_DELETE_ERR
 	}
-//	go self.flushCommentSum(comment.CourseId)
+	//	go self.flushCommentSum(comment.CourseId)
 	return nil
 }

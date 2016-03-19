@@ -48,7 +48,8 @@ func main() {
 	mLearingGroup := router.Group("/api/v1")
 	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	//	justGroup.Use(middleware.LogMiddleware)
-	//	justGroup.Use(middleware.TokenMiddleWare)
+	mLearingGroup.Use(middleware.TokenTest)
+//	mLearingGroup.Use(middleware.TokenMiddleWare)
 	course.BuildRouter(mLearingGroup.Group("/course"))
 	user.BuildRouter(mLearingGroup.Group("/user"))
 	s := &http.Server{

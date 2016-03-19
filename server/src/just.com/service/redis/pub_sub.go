@@ -1,20 +1,33 @@
 package redis
-import "github.com/garyburd/redigo/redis"
+import "encoding/json"
 
-
-func (self *RedisService) Pub() {
+func (self *RedisService) Publish(topic string, talkMessage *TalkMessage) {
+	message, err := json.Marshal(talkMessage)
+	if err != nil {
+		return
+	}
+	publishErr := self.client.Publish(topic, string(message)).Err()
+	if publishErr != nil {
+		self.log.Println(publishErr)
+		return
+	}
 }
 
-func (self *RedisService) Sub(msg string) error {
-	psConn := redis.PubSubConn{
-		Conn:self.conn,
+func (self *RedisService) Subscribe(topic string) *TalkMessage {
+	pubSub, err := self.client.Subscribe(topic)
+	if err != nil {
+		self.log.Println(err)
 	}
-	return psConn.Subscribe()
-}
-
-func (self *RedisService) UnSub(msg string) error {
-	psConn := redis.PubSubConn{
-		Conn:self.conn,
+	// igonore subscribe/pong message
+	message, messageErr := pubSub.ReceiveMessage()
+	if messageErr != nil {
+		self.log.Println(messageErr)
 	}
-	return psConn.Unsubscribe()
+	talkMessage := new(TalkMessage)
+	unmarshalErr := json.Unmarshal([]byte(message.Payload), talkMessage)
+	if unmarshalErr != nil {
+		self.log.Println(unmarshalErr)
+		return
+	}
+	return talkMessage
 }

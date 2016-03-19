@@ -9,7 +9,7 @@ import (
 /*flush course mark sum
 	when mark or mark cancel trigger
 */
-func flushMarkSum(courseId string, ds *db.DataSource, log *log.Logger) error {
+func FlushMarkSum(courseId string, ds *db.DataSource, log *log.Logger) error {
 	session := ds.NewSession()
 	defer session.Close()
 	countSql := `SELECT COUNT("UUID") FROM "COURSE_MARK" WHERE "COURSE_ID" = ?`
@@ -32,7 +32,7 @@ func flushMarkSum(courseId string, ds *db.DataSource, log *log.Logger) error {
 /*flush course's comment sum
 	when comment or frozen comment trigger
 */
-func flushCommentSum(courseId string, ds *db.DataSource, log *log.Logger) error {
+func FlushCommentSum(courseId string, ds *db.DataSource, log *log.Logger) error {
 	session := ds.NewSession()
 	defer session.Close()
 	comment := new(table.CourseCommentTable)
@@ -55,26 +55,26 @@ func flushCommentSum(courseId string, ds *db.DataSource, log *log.Logger) error 
 }
 
 /*flush point*/
-func flushPoint(courseId string, ds *db.DataSource, log *log.Logger) error {
+func FlushPoint(courseId string, ds *db.DataSource, log *log.Logger) error {
 	session := ds.NewSession()
 	defer session.Close()
 	pointList := make([]table.CoursePointTable, 0)
 	oldPoint := new(table.CoursePointTable)
 	oldPoint.CourseId = courseId
-	findErr := session.Find(pointList, oldPoint)
+	findErr := session.Find(&pointList, oldPoint)
 	if findErr != nil {
 		log.Println(findErr)
 		return COURSE_FLUSH_POINT_ERR
 	}
 	// 重新计算评分
 	pointPerson := len(pointList)
-	pointSum := 0
+	var pointSum int64
 	for i := 0; i < pointPerson; i++ {
 		pointSum += pointList[i].Point
 	}
 	newCourse := new(table.CourseTable)
 	newCourse.UpdateTime = time.Now()
-	newCourse.PointPerson = pointPerson
+	newCourse.PointPerson = int64(pointPerson)
 	newCourse.Points = pointSum
 	updateNum, updateErr := session.Id(courseId).Update(newCourse)
 	if updateNum == 0 {

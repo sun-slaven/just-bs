@@ -1,8 +1,11 @@
 package course
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"just.com/action"
+	"just.com/service/course"
+	"just.com/dto"
+	"just.com/middleware"
+	"net/http"
 )
 
 func CourseAddHandle(c *gin.Context) {
@@ -10,11 +13,18 @@ func CourseAddHandle(c *gin.Context) {
 	if contextFlag == false {
 		return
 	}
-	session := context.Ds.NewSession()
-	defer session.Close()
-
-	beginErr := session.Begin()
-	if beginErr != nil {
-
+	token,tokenFlag := action.GetToken(c)
+	if tokenFlag == false{
+		return
 	}
+	session := context.Session
+	log := context.Log
+	courseService:= service.NewCourseService(session,log)
+	courseDto := dto.NewCouseDto("数据库","简单db","syllbus","plan","experiment","major","college")
+	courseId,addErr:= courseService.Add(*courseDto,token.UserId)
+	if addErr != nil{
+		return
+	}
+	response := middleware.NewResponse(http.StatusOK,courseId,nil)
+	c.Set(middleware.RESPONSE,response)
 }

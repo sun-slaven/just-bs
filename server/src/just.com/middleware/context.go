@@ -40,12 +40,12 @@ func ContextMiddleWare(ds *db.DataSource, log *log.Logger) gin.HandlerFunc {
 		}
 		c.Set(MLEARNING_CONTENT, context)
 		c.Next()    //next
-		response, err := c.MustGet(RESPONSE).(*Response)
-		if err != nil {
+		response, flag := c.MustGet(RESPONSE).(*Response)
+		if flag == false {
 			return
 		}
 		// session rollback or commit
-		if response.status != http.StatusOK {
+		if response.status == http.StatusOK {
 			// commit
 			commitErr := context.Session.Commit()
 			if commitErr != nil {

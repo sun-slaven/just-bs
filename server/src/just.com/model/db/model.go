@@ -28,7 +28,7 @@ func NewDatSource(config etc.DBConfig) *DataSource {
 	//	engine.SetTableMapper(core.SameMapper{})
 	//	engine.SetColumnMapper(core.SameMapper{})
 	//	engine.SetLogger()
-	engine.ShowSQL(true)
+//	engine.ShowSQL(true)
 	engine.Charset("UTF-8")
 	ds.Engine = engine
 	return ds

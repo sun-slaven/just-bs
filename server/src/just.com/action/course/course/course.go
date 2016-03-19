@@ -2,25 +2,44 @@ package course
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
-	"net/http"
 	"just.com/service/course"
-	"just.com/dto"
 	"just.com/middleware"
+	"net/http"
+	"just.com/query/vo/course"
+	"just.com/model/db/table"
 )
 
 func CourseHandle(c *gin.Context) {
-	context, contextErr := action.GetContext(c)
-	if contextErr != nil {
+	context, contextFlag := action.GetContext(c)
+	if contextFlag == false{
 		return
 	}
-	courseId := c.Params("course_id")
+	session := context.Session
+	log := context.Log
+	token,tokenFlag :=action.GetToken(c)
+	if tokenFlag == false{
+		return
+	}
+	courseId := c.Param("course_id")
 	cs := service.NewCourseService(context.Session, context.Log)
+	// response data
+	var data interface{}
 	switch c.Request.Method {
 	case action.METHOD_GET:
+		courseTable := new(table.CourseTable)
+		getFlag,getErr:= session.Id(courseId).Get(courseTable)
+		if getFlag == false{
+			if getErr !=nil{
+				log.Println(getErr)
+			}
+		}
+		courseVo := course.NewCourseVo(courseTable)
+		courseVo.LoadPointStatus(token.Id,session,log)
+		data = courseVo
 	case action.METHOD_PUT:
 	case action.METHOD_DELETE:
 		cs.Delete(courseId)
 	}
-	response := middleware.NewResponse(1, nil, nil)
+	response := middleware.NewResponse(http.StatusOK,data , nil)
 	c.Set(middleware.RESPONSE, response)
 }

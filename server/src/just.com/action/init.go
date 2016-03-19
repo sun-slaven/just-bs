@@ -2,7 +2,7 @@ package action
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/middleware"
-	"errors"
+	"just.com/service/token"
 )
 
 const (
@@ -12,14 +12,26 @@ const (
 	METHOD_DELETE = "DELETE"
 )
 
-func GetContext(c *gin.Context) (*middleware.Context, error) {
+func GetContext(c *gin.Context) (*middleware.Context, bool) {
 	contextTemp, contextTempFlag := c.Get(middleware.MLEARNING_CONTENT)
 	if contextTempFlag == false {
-		return
+		return nil,contextTempFlag
 	}
 	context, contextFlag := contextTemp.(*middleware.Context)
 	if contextFlag == false {
-		return nil, errors.New("err")
+		return nil, contextFlag
 	}
-	return context, nil
+	return context, true
+}
+
+func GetToken(c *gin.Context) (*service.XToken, bool) {
+	tokenTemp, tokenTempFlag := c.Get(middleware.MIDDLEWARE_TOKEN)
+	if tokenTempFlag == false {
+		return nil,tokenTempFlag
+	}
+	token, tokenFlag := tokenTemp.(*service.XToken)
+	if tokenFlag == false {
+		return nil, tokenFlag
+	}
+	return token, true
 }

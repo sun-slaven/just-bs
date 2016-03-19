@@ -9,3 +9,15 @@ type CourseDto struct {
 	Major        string
 	College      string
 }
+
+func NewCouseDto(name ,intro,syllabus,plan,experiment,major,college string) *CourseDto {
+	courseDto := new(CourseDto)
+	courseDto.Name = name
+	courseDto.Introduction = intro
+	courseDto.Syllabus = syllabus
+	courseDto.Plan = plan
+	courseDto.Experiment = experiment
+	courseDto.Major = major
+	courseDto.College = college
+	return courseDto
+}

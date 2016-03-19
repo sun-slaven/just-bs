@@ -17,3 +17,10 @@ type FileService struct {
 	Log     *log.Logger
 }
 
+func NewFileService(session *xorm.Session, log *log.Logger) *FileService {
+	fs := new(FileService)
+	fs.Session = session
+	fs.Log = log
+	return fs
+}
+

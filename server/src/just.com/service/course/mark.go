@@ -5,8 +5,7 @@ import (
 	"time"
 )
 
-/*mark the course
- return markId*/
+/*mark the course*/
 func (self *CourseService) Mark(courseId string, userId string) error {
 
 	courseMarkTable := new(table.CourseMarkTable)

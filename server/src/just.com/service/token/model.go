@@ -20,3 +20,10 @@ type XToken  struct {
 	Id     string
 	UserId string
 }
+
+func NewXToken(id, userId string) *XToken {
+	token := new(XToken)
+	token.Id = id
+	token.UserId = userId
+	return token
+}

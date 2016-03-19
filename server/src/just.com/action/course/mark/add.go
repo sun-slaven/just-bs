@@ -1,13 +1,13 @@
-package file
+package mark
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
-	"just.com/service/file"
+	"just.com/service/course"
 	"just.com/middleware"
 	"net/http"
 )
 
-func FileAdd(c *gin.Context) {
+func MarkAdd(c *gin.Context) {
 	context, contextFlag := action.GetContext(c)
 	if contextFlag == false {
 		return
@@ -21,12 +21,13 @@ func FileAdd(c *gin.Context) {
 	// request
 	courseId := c.Param("course_id")
 	//core
-	fileService := service.NewFileService(session, log)
-	fileId, addErr := fileService.Add(courseId, "file name", "httpbaidu", token.UserId)
-	if addErr != nil {
-		log.Println(addErr)
+	courseService := service.NewCourseService(session, log)
+	markErr := courseService.Mark(courseId, token.UserId)
+	if markErr != nil {
+		log.Println(markErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, fileId, nil)
+	response := middleware.NewResponse(http.StatusOK, nil, nil)
 	c.Set(middleware.RESPONSE, response)
+	go service.FlushMarkSum(courseId, context.Ds, log)
 }
