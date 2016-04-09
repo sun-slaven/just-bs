@@ -5,15 +5,11 @@ import (
 	"log"
 	_ "github.com/lib/pq"
 //	"github.com/go-xorm/core"
-	"github.com/garyburd/redigo/redis"
+	//"github.com/garyburd/redigo/redis"
 )
 
 type DataSource struct {
 	*xorm.Engine
-}
-
-type RedisDataSource struct {
-	redis.Conn
 }
 
 func NewDatSource(config etc.DBConfig) *DataSource {
@@ -34,6 +30,7 @@ func NewDatSource(config etc.DBConfig) *DataSource {
 	return ds
 }
 
+/*
 func NewRedisDataSource(config etc.RedisConfig) *RedisDataSource {
 	redisCon, redisErr := redis.DialURL(config.Url)
 	if redisErr != nil {
@@ -42,4 +39,4 @@ func NewRedisDataSource(config etc.RedisConfig) *RedisDataSource {
 	rds := new(RedisDataSource)
 	rds.Conn = redisCon
 	return rds
-}
+}*/
