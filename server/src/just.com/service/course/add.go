@@ -8,7 +8,7 @@ import (
 )
 
 /*return courseId*/
-func (self *CourseService) Add(dto dto.CourseDto, userId string) (string, error) {
+func (self *CourseService) Add(dto *dto.CourseDto, userId string) (string, error) {
 	// 1. check icon
 	is := image.ImageService{}
 	is.Log = self.Log

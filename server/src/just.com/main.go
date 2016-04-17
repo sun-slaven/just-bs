@@ -14,6 +14,7 @@ import (
 	"just.com/action/course"
 	"just.com/action/user"
 	"just.com/middleware"
+	"just.com/action/college"
 )
 
 func main() {
@@ -49,9 +50,10 @@ func main() {
 	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	//	justGroup.Use(middleware.LogMiddleware)
 	mLearingGroup.Use(middleware.TokenTest)
-//	mLearingGroup.Use(middleware.TokenMiddleWare)
-	course.BuildRouter(mLearingGroup.Group("/course"))
-	user.BuildRouter(mLearingGroup.Group("/user"))
+	//	mLearingGroup.Use(middleware.TokenMiddleWare)
+	college.BuildRouter(mLearingGroup.Group("/colleges"))
+	course.BuildRouter(mLearingGroup.Group("/courses"))
+	user.BuildRouter(mLearingGroup.Group("/users"))
 	s := &http.Server{
 		Addr: config.Port,
 		Handler:router,

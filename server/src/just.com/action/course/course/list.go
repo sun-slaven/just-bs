@@ -8,29 +8,34 @@ import (
 	"just.com/query/vo/course"
 )
 
-func CourseListHandle(c *gin.Context)  {
+/*需要过滤条件 major_id */
+func CourseListHandle(c *gin.Context) {
 	var response *middleware.Response
-	context,contextFlag:=	action.GetContext(c)
-	if contextFlag== false{
-		response = middleware.NewResponse(http.StatusOK,nil,nil)
+	context, contextFlag := action.GetContext(c)
+	if contextFlag == false {
+		response = middleware.NewResponse(http.StatusOK, nil, nil)
 		return
 	}
 	session := context.Session
 	log := context.Log
-	courseVoList := make([]course.CourseVo,0)
-	courseTableList := make([]table.CourseTable,0)
-	sql := `SELECT * FROM "COURSE" WHERE "FROZEN_STATUS" = ?`
-	findErr:= session.Sql(sql,"N").Find(&courseTableList)
-	if findErr != nil{
-		log.Println(findErr)
-		response = middleware.NewResponse(http.StatusOK,nil,nil)
+	majorId := c.Query("major_id")
+	if majorId == "" {
 		return
 	}
-	for _,courseTable :=range courseTableList  {
-		courseVo := course.NewCourseVo(&courseTable)
-		courseVoList = append(courseVoList,*courseVo)
+	courseVoList := make([]course.CourseVo, 0)
+	courseTableList := make([]table.CourseTable, 0)
+	sql := `SELECT * FROM "COURSE" WHERE "FROZEN_STATUS" = ?`
+	findErr := session.Sql(sql, "N").Find(&courseTableList)
+	if findErr != nil {
+		log.Println(findErr)
+		response = middleware.NewResponse(http.StatusOK, nil, nil)
+		return
 	}
-	response = middleware.NewResponse(http.StatusOK,courseVoList,nil)
-	log.Println(response)
-	c.Set(middleware.RESPONSE,response)
+	for _, courseTable := range courseTableList {
+		courseVo := course.NewCourseVo(&courseTable)
+		courseVoList = append(courseVoList, *courseVo)
+	}
+	response = middleware.NewResponse(http.StatusOK, courseVoList, nil)
+	c.Set(middleware.RESPONSE, response)
+	return
 }

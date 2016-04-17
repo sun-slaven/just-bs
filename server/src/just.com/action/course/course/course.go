@@ -25,6 +25,7 @@ func CourseHandle(c *gin.Context) {
 	// response data
 	var data interface{}
 	switch c.Request.Method {
+	// 根据id获取course
 	case action.METHOD_GET:
 		courseTable := new(table.CourseTable)
 		getFlag,getErr:= session.Id(courseId).Get(courseTable)
@@ -37,6 +38,7 @@ func CourseHandle(c *gin.Context) {
 		courseVo.LoadPointStatus(token.Id,session,log)
 		data = courseVo
 	case action.METHOD_PUT:
+	// 根据id删除课程
 	case action.METHOD_DELETE:
 		cs.Delete(courseId)
 	}
