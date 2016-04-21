@@ -1,0 +1,223 @@
+[MLearing]22:18:05 /home/wanghao/project/just_bs/server/src/just.com/main.go:34: &{0xc20804c240}
+[MLearing]22:18:05 /home/wanghao/project/just_bs/server/src/just.com/main.go:39: &{YZebTjnnoLzr0fGR7wD31WqcGE2KM1EKhs006S7L V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce wanghao http://7xnz7k.com1.z0.glb.clouddn.com}
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /res/*filepath            --> github.com/gin-gonic/gin.func·011 (3 handlers)
+[GIN-debug] HEAD   /res/*filepath            --> github.com/gin-gonic/gin.func·011 (3 handlers)
+[GIN-debug] GET    /favicon.ico              --> github.com/gin-gonic/gin.func·010 (3 handlers)
+[GIN-debug] HEAD   /favicon.ico              --> github.com/gin-gonic/gin.func·010 (3 handlers)
+[GIN-debug] GET    /api/v1/course            --> just.com/action/course/course.CourseListHandle (5 handlers)
+[GIN-debug] POST   /api/v1/course            --> just.com/action/course/course.CourseAddHandle (5 handlers)
+[GIN-debug] GET    /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] PUT    /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] PATCH  /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] HEAD   /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] OPTIONS /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] DELETE /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] CONNECT /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] TRACE  /api/v1/course/:course_id --> just.com/action/course/course.CourseHandle (5 handlers)
+[GIN-debug] GET    /api/v1/course/:course_id/comment --> just.com/action/course/comment.CommentList (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/comment --> just.com/action/course/comment.CommentAdd (5 handlers)
+[GIN-debug] GET    /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] PUT    /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] PATCH  /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] HEAD   /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] OPTIONS /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] DELETE /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] CONNECT /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] TRACE  /api/v1/course/:course_id/comment/:comment_id --> just.com/action/course/comment.Comment (5 handlers)
+[GIN-debug] GET    /api/v1/course/:course_id/file --> just.com/action/course/file.FileList (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/file --> just.com/action/course/file.FileAdd (5 handlers)
+[GIN-debug] GET    /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] PUT    /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] PATCH  /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] HEAD   /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] OPTIONS /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] DELETE /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] CONNECT /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] TRACE  /api/v1/course/:course_id/file/:file_id --> just.com/action/course/file.File (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/mark --> just.com/action/course/mark.MarkAdd (5 handlers)
+[GIN-debug] POST   /api/v1/course/:course_id/point --> just.com/action/course/point.PointAdd (5 handlers)
+[GIN-debug] POST   /api/v1/user              --> just.com/middleware.TokenTest (4 handlers)
+[GIN-debug] GET    /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] POST   /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] PATCH  /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] HEAD   /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] OPTIONS /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] CONNECT /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+[GIN-debug] TRACE  /api/v1/user/:user_id     --> just.com/action/user.User (5 handlers)
+liesten at:9090
+[GIN] 2016/04/04 - 22:18:27 |[97;42m 200 [0m|     298.064µs | 183.192.77.18 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/04 - 22:18:37 |[97;42m 200 [0m|  131.491921ms | 183.192.77.18 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/04 - 22:19:00 |[97;42m 200 [0m|    8.858082ms | 183.192.77.18 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/04 - 22:19:05 |[97;42m 200 [0m|    6.931303ms | 183.192.77.18 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/04 - 22:19:12 |[97;42m 200 [0m|     187.638µs | 183.192.77.18 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/04 - 22:19:13 |[97;42m 200 [0m|  793.180778ms | 183.192.77.18 |[97;44m  [0m GET     /favicon.ico
+[GIN] 2016/04/04 - 22:19:15 |[97;42m 200 [0m|    6.025286ms | 183.192.77.18 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/04 - 23:04:20 |[97;42m 200 [0m|   27.488579ms | 183.192.77.18 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/mark
+[MLearing]23:58:55 /home/wanghao/project/just_bs/server/src/just.com/action/course/course/list.go:34: &{200 [{35bfcb48-9f2a-4938-bb54-cab72e951970 NAME INTRODUCTION SYLLABUS PLAN EXPERIMENT { 0 0} 5 6 MAJOR COLLEGE 0 0 } {337c0a43-bdd8-480b-875b-a27668be23fd 数据库 简单db syllbus plan experiment { 0 0} 1 6 major college 100 1 }] <nil>}
+[GIN] 2016/04/04 - 23:58:55 |[97;42m 200 [0m|    1.819386ms | 183.192.77.18 |[97;44m  [0m GET     /api/v1/course
+[GIN] 2016/04/04 - 23:58:56 |[97;42m 200 [0m|    38.19775ms | 183.192.77.18 |[97;44m  [0m GET     /favicon.ico
+[GIN] 2016/04/05 - 00:06:45 |[97;42m 200 [0m|  364.784919ms | 183.192.77.18 |[97;44m  [0m GET     /favicon.ico
+[GIN] 2016/04/05 - 00:06:50 |[97;42m 200 [0m|   1.77353805s | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html
+[GIN] 2016/04/05 - 00:06:55 |[97;43m 404 [0m|      54.721µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/main.css
+[GIN] 2016/04/05 - 00:06:55 |[97;43m 404 [0m|      58.396µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.css
+[GIN] 2016/04/05 - 00:06:55 |[97;43m 404 [0m|      75.707µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/ext-searchbox.js
+[GIN] 2016/04/05 - 00:06:55 |[97;43m 404 [0m|      91.913µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/yaml.js
+[GIN] 2016/04/05 - 00:06:58 |[97;43m 404 [0m|      99.619µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/analytics.js
+[GIN] 2016/04/05 - 00:06:58 |[97;43m 404 [0m|       54.56µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/vendor.js
+[GIN] 2016/04/05 - 00:06:58 |[97;43m 404 [0m|      54.607µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.js
+[GIN] 2016/04/05 - 00:06:58 |[97;43m 404 [0m|      53.516µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/scripts.js
+[GIN] 2016/04/05 - 00:07:28 |[90;47m 304 [0m|     127.499µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html
+[GIN] 2016/04/05 - 00:07:29 |[97;42m 200 [0m|     502.304µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/ext-searchbox.js
+[GIN] 2016/04/05 - 00:07:29 |[97;42m 200 [0m|     206.587µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/yaml.js
+[GIN] 2016/04/05 - 00:07:29 |[97;42m 200 [0m|     156.978µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.css
+[GIN] 2016/04/05 - 00:07:30 |[97;42m 200 [0m|  1.345415365s | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/main.css
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     194.157µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/swagger-logo.png
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     174.673µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.woff
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     127.677µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     131.511µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff2
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     120.998µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF2/TTF/SourceCodePro-Regular.ttf.woff2
+[GIN] 2016/04/05 - 00:07:31 |[97;43m 404 [0m|     171.899µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.woff
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     108.947µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.woff
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     134.189µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.woff
+[GIN] 2016/04/05 - 00:07:32 |[97;42m 200 [0m|     283.264µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.js
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     184.395µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.ttf
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     183.611µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     168.112µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.ttf
+[GIN] 2016/04/05 - 00:07:32 |[97;42m 200 [0m|  339.511377ms | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/scripts.js
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|      148.76µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF/OTF/SourceCodePro-Regular.otf.woff
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     118.008µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.ttf
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|      88.885µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.ttf
+[GIN] 2016/04/05 - 00:07:32 |[97;43m 404 [0m|     148.803µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.ttf
+[GIN] 2016/04/05 - 00:07:33 |[97;43m 404 [0m|     147.775µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.ttf
+[GIN] 2016/04/05 - 00:07:33 |[97;43m 404 [0m|       57.01µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff2
+[GIN] 2016/04/05 - 00:07:33 |[97;43m 404 [0m|     102.315µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/OTF/SourceCodePro-Regular.otf
+[GIN] 2016/04/05 - 00:07:33 |[97;43m 404 [0m|     128.428µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 00:07:33 |[97;42m 200 [0m|  271.947024ms | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/analytics.js
+[GIN] 2016/04/05 - 00:07:33 |[97;43m 404 [0m|     203.386µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/TTF/SourceCodePro-Regular.ttf
+[GIN] 2016/04/05 - 00:07:39 |[97;42m 200 [0m|  7.857380827s | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/vendor.js
+[GIN] 2016/04/05 - 00:07:42 |[97;43m 404 [0m|      80.493µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html/config/defaults.json
+[MLearing]00:07:55 /home/wanghao/project/just_bs/server/src/just.com/action/course/course/list.go:34: &{200 [{35bfcb48-9f2a-4938-bb54-cab72e951970 NAME INTRODUCTION SYLLABUS PLAN EXPERIMENT { 0 0} 5 6 MAJOR COLLEGE 0 0 } {337c0a43-bdd8-480b-875b-a27668be23fd 数据库 简单db syllbus plan experiment { 0 0} 1 6 major college 100 1 }] <nil>}
+[GIN] 2016/04/05 - 00:07:55 |[97;42m 200 [0m|    1.969174ms | 183.192.77.18 |[97;44m  [0m GET     /api/v1/course
+[GIN] 2016/04/05 - 00:08:43 |[97;43m 404 [0m|      91.473µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 00:12:05 |[90;47m 304 [0m|     160.314µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html
+[GIN] 2016/04/05 - 00:12:06 |[90;47m 304 [0m|      71.123µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/main.css
+[GIN] 2016/04/05 - 00:12:06 |[90;47m 304 [0m|     125.512µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.css
+[GIN] 2016/04/05 - 00:12:06 |[90;47m 304 [0m|     171.602µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/ext-searchbox.js
+[GIN] 2016/04/05 - 00:12:06 |[90;47m 304 [0m|      141.03µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/yaml.js
+[GIN] 2016/04/05 - 00:12:07 |[90;47m 304 [0m|      85.021µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/analytics.js
+[GIN] 2016/04/05 - 00:12:07 |[90;47m 304 [0m|      220.39µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.js
+[GIN] 2016/04/05 - 00:12:07 |[90;47m 304 [0m|      97.443µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/vendor.js
+[GIN] 2016/04/05 - 00:12:07 |[90;47m 304 [0m|      74.321µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/scripts.js
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|      77.963µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.woff
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|      90.022µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/swagger-logo.png
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|      88.923µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff2
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|     100.791µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF2/TTF/SourceCodePro-Regular.ttf.woff2
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|     107.853µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.woff
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|      135.97µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.woff
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|     130.292µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|     191.593µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 00:12:07 |[97;43m 404 [0m|     107.567µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.woff
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     174.645µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.ttf
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     113.304µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|      89.781µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.ttf
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     169.008µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.ttf
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     142.846µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF/OTF/SourceCodePro-Regular.otf.woff
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     149.349µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.ttf
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     119.229µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.ttf
+[GIN] 2016/04/05 - 00:12:08 |[97;43m 404 [0m|     115.842µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html/config/defaults.json
+[GIN] 2016/04/05 - 00:12:09 |[97;43m 404 [0m|      98.595µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.ttf
+[GIN] 2016/04/05 - 00:12:09 |[97;43m 404 [0m|      60.426µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/OTF/SourceCodePro-Regular.otf
+[GIN] 2016/04/05 - 00:12:09 |[97;43m 404 [0m|      47.686µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff2
+[GIN] 2016/04/05 - 00:12:09 |[97;43m 404 [0m|      63.064µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/TTF/SourceCodePro-Regular.ttf
+[GIN] 2016/04/05 - 00:12:10 |[97;43m 404 [0m|     110.298µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 00:14:31 |[90;47m 304 [0m|     187.916µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/main.css
+[GIN] 2016/04/05 - 00:14:31 |[90;47m 304 [0m|     121.485µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.css
+[GIN] 2016/04/05 - 00:14:31 |[90;47m 304 [0m|     179.625µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/yaml.js
+[GIN] 2016/04/05 - 00:14:31 |[90;47m 304 [0m|     158.482µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/ext-searchbox.js
+[GIN] 2016/04/05 - 00:14:31 |[97;43m 404 [0m|     122.101µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/swagger-logo.png
+[GIN] 2016/04/05 - 00:14:31 |[97;43m 404 [0m|     240.346µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     168.103µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF2/TTF/SourceCodePro-Regular.ttf.woff2
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|      66.534µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff2
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     122.593µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     100.443µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|      93.277µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     106.354µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;42m 200 [0m|  2.385528057s | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     140.672µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.ttf
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     131.924µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/WOFF/OTF/SourceCodePro-Regular.otf.woff
+[GIN] 2016/04/05 - 00:14:32 |[97;43m 404 [0m|     206.878µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.woff
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|     124.016µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_300.ttf
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|       84.89µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_700.ttf
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|      37.446µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_400.ttf
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|      174.54µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/Open_Sans_600.ttf
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|     160.419µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|     185.103µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/glyphicons-halflings-regular.woff2
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|     137.709µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/OTF/SourceCodePro-Regular.otf
+[GIN] 2016/04/05 - 00:14:33 |[97;43m 404 [0m|     136.631µs | 183.192.77.18 |[97;44m  [0m GET     /res/fonts/fontawesome-webfont.ttf
+[GIN] 2016/04/05 - 00:14:33 |[90;47m 304 [0m|     171.791µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/vendor.js
+[GIN] 2016/04/05 - 00:14:33 |[90;47m 304 [0m|     199.977µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/analytics.js
+[GIN] 2016/04/05 - 00:14:34 |[90;47m 304 [0m|     182.059µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/scripts.js
+[GIN] 2016/04/05 - 00:14:34 |[90;47m 304 [0m|     186.869µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/branding.js
+[GIN] 2016/04/05 - 00:14:34 |[97;43m 404 [0m|     179.822µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor_files/TTF/SourceCodePro-Regular.ttf
+[GIN] 2016/04/05 - 00:14:34 |[97;43m 404 [0m|     116.281µs | 183.192.77.18 |[97;44m  [0m GET     /res/Swagger Editor.html/config/defaults.json
+[GIN] 2016/04/05 - 00:14:51 |[97;43m 404 [0m|      45.384µs | 183.192.77.18 |[97;44m  [0m GET     /res/images/jump-icon.svg
+[GIN] 2016/04/05 - 05:06:15 |[97;43m 404 [0m|       1.786µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/05 - 15:38:54 |[97;43m 404 [0m|        1.75µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/05 - 19:41:55 |[97;43m 404 [0m|       2.103µs | 121.42.0.37 |[97;44m  [0m GET     /
+[GIN] 2016/04/06 - 03:55:57 |[97;43m 404 [0m|       1.956µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/06 - 09:12:13 |[97;42m 200 [0m|     127.619µs | 180.118.14.224 |[97;45m  [0m HEAD    /res/course_test.html
+[GIN] 2016/04/06 - 09:12:19 |[97;42m 200 [0m|     179.379µs | 180.118.14.224 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/06 - 09:12:30 |[97;42m 200 [0m|     149.135µs | 180.118.14.224 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/06 - 09:12:49 |[97;42m 200 [0m|   65.507164ms | 180.118.14.224 |[97;46m  [0m POST    /api/v1/course
+[MLearing]09:12:49 /home/wanghao/project/just_bs/server/src/just.com/action/course/course/list.go:34: &{200 [{35bfcb48-9f2a-4938-bb54-cab72e951970 NAME INTRODUCTION SYLLABUS PLAN EXPERIMENT { 0 0} 5 6 MAJOR COLLEGE 0 0 } {337c0a43-bdd8-480b-875b-a27668be23fd 数据库 简单db syllbus plan experiment { 0 0} 1 6 major college 100 1 } {017fa5fb-e1a1-4715-9b30-18d95e3150fc 数据库 简单db syllbus plan experiment { 0 0} 0 0 major college 0 0 }] <nil>}
+[GIN] 2016/04/06 - 09:12:49 |[97;42m 200 [0m|    1.928822ms | 180.118.14.224 |[97;44m  [0m GET     /api/v1/course
+[GIN] 2016/04/06 - 09:12:56 |[97;42m 200 [0m|    3.150287ms | 180.118.14.224 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/06 - 09:12:56 |[97;42m 200 [0m|    2.962992ms | 180.118.14.224 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/06 - 09:14:13 |[97;42m 200 [0m|    2.737276ms | 220.181.132.220 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/06 - 09:14:37 |[97;42m 200 [0m|    3.383948ms | 101.199.108.57 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/06 - 09:14:40 |[97;42m 200 [0m|     204.186µs | 220.181.132.220 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/06 - 09:14:53 |[97;42m 200 [0m|     152.445µs | 220.181.132.198 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/06 - 09:15:47 |[97;42m 200 [0m|    2.107277ms | 220.181.132.220 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/06 - 09:16:05 |[97;42m 200 [0m|    2.441864ms | 220.181.132.195 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[MLearing]10:50:19 /home/wanghao/project/just_bs/server/src/just.com/action/course/course/list.go:34: &{200 [{35bfcb48-9f2a-4938-bb54-cab72e951970 NAME INTRODUCTION SYLLABUS PLAN EXPERIMENT { 0 0} 5 6 MAJOR COLLEGE 0 0 } {337c0a43-bdd8-480b-875b-a27668be23fd 数据库 简单db syllbus plan experiment { 0 0} 1 6 major college 100 1 } {017fa5fb-e1a1-4715-9b30-18d95e3150fc 数据库 简单db syllbus plan experiment { 0 0} 0 0 major college 0 0 }] <nil>}
+[GIN] 2016/04/06 - 10:50:19 |[97;42m 200 [0m|    2.047635ms | 220.181.132.220 |[97;44m  [0m GET     /api/v1/course
+[MLearing]10:50:33 /home/wanghao/project/just_bs/server/src/just.com/action/course/course/list.go:34: &{200 [{35bfcb48-9f2a-4938-bb54-cab72e951970 NAME INTRODUCTION SYLLABUS PLAN EXPERIMENT { 0 0} 5 6 MAJOR COLLEGE 0 0 } {337c0a43-bdd8-480b-875b-a27668be23fd 数据库 简单db syllbus plan experiment { 0 0} 1 6 major college 100 1 } {017fa5fb-e1a1-4715-9b30-18d95e3150fc 数据库 简单db syllbus plan experiment { 0 0} 0 0 major college 0 0 }] <nil>}
+[GIN] 2016/04/06 - 10:50:33 |[97;42m 200 [0m|    2.145407ms | 220.181.132.199 |[97;44m  [0m GET     /api/v1/course
+[GIN] 2016/04/06 - 11:21:37 |[97;43m 404 [0m|       2.124µs | 121.42.0.16 |[97;44m  [0m GET     /
+[GIN] 2016/04/06 - 16:02:32 |[97;43m 404 [0m|       2.092µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/06 - 16:53:41 |[97;43m 404 [0m|       2.505µs | 80.82.78.38 |[97;44m  [0m GET     /cache/global/img/gs.gif
+[GIN] 2016/04/07 - 03:49:48 |[97;43m 404 [0m|       1.996µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/07 - 15:49:51 |[97;43m 404 [0m|       2.122µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/08 - 07:22:47 |[97;42m 200 [0m|     237.315µs | 180.98.9.164 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/08 - 08:49:24 |[97;43m 404 [0m|       1.644µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/08 - 09:59:41 |[97;42m 200 [0m|     144.061µs | 121.232.240.176 |[97;45m  [0m HEAD    /res/course_test.html
+[GIN] 2016/04/08 - 09:59:51 |[97;42m 200 [0m|      95.197µs | 121.232.240.176 |[97;45m  [0m HEAD    /res/course_test.html
+[GIN] 2016/04/08 - 09:59:53 |[97;42m 200 [0m|     105.044µs | 121.232.240.176 |[97;45m  [0m HEAD    /res/course_test.html
+[GIN] 2016/04/08 - 09:59:54 |[97;42m 200 [0m|     117.533µs | 121.232.240.176 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/08 - 09:59:54 |[97;42m 200 [0m|      209.12µs | 121.232.240.176 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/08 - 09:59:54 |[97;42m 200 [0m|   29.721638ms | 121.232.240.176 |[97;44m  [0m GET     /favicon.ico
+[GIN] 2016/04/08 - 09:59:56 |[97;42m 200 [0m|    63.21248ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course
+[GIN] 2016/04/08 - 09:59:59 |[97;42m 200 [0m|    2.645557ms | 121.232.240.176 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/08 - 10:00:26 |[97;42m 200 [0m|    6.732709ms | 121.232.240.176 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/08 - 10:01:43 |[97;42m 200 [0m|    5.277143ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/mark
+[MLearing]10:01:47 /home/wanghao/project/just_bs/server/src/just.com/action/course/point/add.go:32: &{200 <nil> <nil>}
+[GIN] 2016/04/08 - 10:01:47 |[97;42m 200 [0m|    5.814901ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/point
+[GIN] 2016/04/08 - 10:01:50 |[97;42m 200 [0m|    6.806145ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/file
+[GIN] 2016/04/08 - 10:01:54 |[97;42m 200 [0m|    5.059724ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/08 - 10:01:56 |[97;42m 200 [0m|    9.878648ms | 121.232.240.176 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/08 - 10:02:00 |[97;42m 200 [0m|    2.201563ms | 121.232.240.176 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd
+[GIN] 2016/04/08 - 10:02:06 |[97;42m 200 [0m|    3.428078ms | 121.232.240.176 |[97;46m  [0m POST    /api/v1/course
+[GIN] 2016/04/08 - 20:02:37 |[97;42m 200 [0m|     156.392µs | 106.111.243.99 |[97;45m  [0m HEAD    /res/course_test.html
+[GIN] 2016/04/08 - 20:02:37 |[97;42m 200 [0m|     154.621µs | 106.111.243.99 |[97;44m  [0m GET     /res/course_test.html
+[GIN] 2016/04/08 - 20:02:41 |[97;42m 200 [0m|     9.83089ms | 106.111.243.99 |[97;44m  [0m GET     /api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment
+[GIN] 2016/04/08 - 20:49:17 |[97;43m 404 [0m|       2.033µs | 123.151.42.61 |[97;44m  [0m GET     /
+[GIN] 2016/04/09 - 04:25:46 |[97;43m 404 [0m|       1.657µs | 123.151.42.61 |[97;44m  [0m GET     /

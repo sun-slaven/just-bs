@@ -1,7 +1,8 @@
 # server
-server/src/.idea/*
+server/src/.idea/
 server/src/just.iml
-server/pkg/*
+server/pkg/
+server/.idea/
 
 #front
 npm-debug.log
