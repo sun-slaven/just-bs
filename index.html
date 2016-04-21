@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="just">
+
+<head>
+    <title>江苏科技大学网上学习系统</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="just">
+    <meta name="description" content="The just online study">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <link href="app/lib/grunt_bower/bootstrap/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="app/lib/grunt_bower/font-awesome/font-awesome.min.css">
+    <link href="dest/application.css" rel="stylesheet">
+</head>
+
+<body>
+    <div ng-include="partial('header')"></div>
+    <ng-view>
+        <h1>正在载入中...</h1>
+    </ng-view>
+    <div ng-include="partial('elevator')" include-replace></div>
+    <!-- Js installed by bower -->
+    <script src="dest/thirdparty.min.js"></script>
+    <!-- Custom js by grunt -->
+    <script type="text/javascript" src="dest/all.js"></script>
+</body>
+
+</html>

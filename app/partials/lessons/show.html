@@ -1,0 +1,70 @@
+<div id="lesson-page">
+    <div class="lesson-info" ng-show="!show_resource">
+        <div class="pre">
+            <div class="lesson-title">
+                <h1>{{lesson.title}}</h1>
+            </div>
+            <div class="lesson-infos clearfix">
+                <div class="infos-item" ng-repeat="item in items_array">
+                    <span class="meta">{{item.name}}:</span>
+                    <span class="meta-value">
+                            <strong>{{item.value}}</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="resource" ng-if="show_resource">
+        <just-video video-url="video_url"></just-video>
+    </div>
+    <div class="lesson-info-main">
+        <div class="content-wrap col-xs-12">
+            <div class="content col-xs-8">
+                <div ng-hide="need_learn  || show_resource">
+                    <span class="progress-info">
+                        <span class="progress-info-percent">
+                            <strong>{{progress_info_percent}}</strong>
+                            %
+                        </span>
+                    <span>已学习:</span>
+                    <span class="progress-info-time">{{progress_info_hour}}小时{{progress_info_minute}}分钟</span>
+                    </span>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: progress_info_percent + '%'}">
+                        </div>
+                    </div>
+                </div>
+                <div class="lesson-brief">
+                    <h3 class="ctit">课程介绍</h3>
+                    <p class="brief-content">{{lesson.description}}</p>
+                </div>
+                <div class="lesson-outline">
+                    <div class="bar">
+                        <h3 class="ctit">课程提纲</h3>
+                    </div>
+                    <div class="outline-list">
+                        <ul>
+                            <li class="chapter clearfix" ng-repeat="chapter in chapters">
+                                <i class="chapter-icon"></i>
+                                <div class="chapter-body">
+                                    <h5 class="chapter-name">{{chapter.name}}</h5>
+                                    <p class="chapter-desc">{{chapter.desc}}</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="content-aside col-xs-4">
+                <div class="lesson-order col-xs-12" ng-click="start_or_continue()" ng-show="!show_resource">{{btn_content}}</div>
+                <div class="resource-info col-xs-12" ng-if="!need_learn">
+                    <h3>相关资源列表:</h3>
+                    <div class="resource-list">
+                        <div><a ng-href="{{pdf_url}}">angularjs权威教程</a></div>
+                        <div><a ng-href="{{zip_url}}">压缩包</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

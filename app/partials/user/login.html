@@ -1,0 +1,43 @@
+<div id="login-page">
+    <div class="login-page-title">
+        在线学习系统Beta
+    </div>
+    <div class="login-form col-xs-offset-4 col-xs-4">
+        <div class="login-form-header">
+            <span ng-click="change_active('login')" ng-class="{active: form_type == 'login'}" class="col-xs-6">登陆</span>
+            <span ng-click="change_active('register')" ng-class="{active: form_type == 'register'}" class="col-xs-6">注册</span>
+        </div>
+        <div class="divider"></div>
+        <!-- 显示服务器端数据验证结果-->
+        <div class="form-error-info" ng-if="error_infos">
+            <ul>
+                <li ng-repeat="info in error_infos">{{info}}</li>
+            </ul>
+        </div>
+
+        <div class="form" ng-if="form_type == 'login'">
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="user.name" placeholder="请输入用户名" autocomplete="true">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" ng-model="user.password" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <input type="checkbox" class="input remember-me" ng-model="user.remember_me">记住密码</input>
+            </div>
+            <div class="login-form-btn btn btn-default" ng-click="submit()" ng-disabled="!can_submit()">登录</div>
+        </div>
+        <div class="form" ng-if="form_type == 'register'">
+            <div class="form-group">
+                <input type="email" class="form-control" ng-model="register.email" placeholder="请输入注册邮箱">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" ng-model="register.password" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" ng-model="register.password_again" placeholder="请再一次输入密码">
+            </div>
+            <div class="login-form-btn btn btn-default" ng-click="register()" ng-disabled="!can_register()">注册</div>
+        </div>
+    </div>
+</div>

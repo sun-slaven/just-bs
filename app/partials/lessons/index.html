@@ -1,0 +1,28 @@
+<div id="lessons-page" class="container">
+    <div class="choose-filter">
+        <div class="filter-nav">
+            <span>全部课程</span>
+        </div>
+        <div class="filter-row clearfix">
+            <span>学院:</span>
+            <div class="filter-body col-xs-2">
+                <select ng-model="chosen_institute" ng-options="institute.name for institute in institutes" class="form-control">
+                    <option value="">-- 所有 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="filter-row clearfix">
+            <span>教师:</span>
+            <div class="filter-body col-xs-2">
+                <select ng-model="chosen_teacher" ng-options="teacher.name for teacher in teachers" class="form-control">
+                    <option value="">-- 所有 --</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="lessons-index">
+    	<div class="just-card" ng-repeat="lesson in lessons">
+    		<just-card lesson='lesson'></just-card>
+    	</div>
+    </div>
+</div>

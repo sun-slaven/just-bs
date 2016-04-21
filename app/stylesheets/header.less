@@ -1,0 +1,79 @@
+#nav-header {
+    background-color: black;
+    border: 0px;
+    border-radius: 0px;
+    width: auto;
+    padding-right: 20px;
+    margin-bottom: 0 !important;
+    .active() {
+        cursor: pointer;
+        background-color: grey;
+    }
+    a {
+        color: #FFFFFF;
+        transition: background-color 0.5s;
+        &:hover {
+            .active()
+        }
+    }
+    #nav-content {
+        width: 50%;
+        float: left;
+    }
+    #my-search {
+        width: 25%;
+        height: 50px;
+        text-align: right;
+        float: left;
+        padding-top: 10px;
+        color: #FFFFFF;
+        font-size: 20px;
+        &:hover {
+            cursor: pointer;
+        }
+        .search-input {
+            color: white;
+            background-color: black;
+            border: 1px solid #000;
+            font-size: 15px;
+            border-bottom-color: rgba(120, 125, 130, 0.8);
+            //ng-animate提供的两种状态,开始样子
+            &.ng-enter {
+                transition: width 1s; //css3的transition必须放在开始当中
+                width: 0px;
+            }
+            //结束时的样子
+            &.ng-enter-active {
+                width: 192px;
+            }
+        }
+    }
+    #login-area {
+        width: 10%;
+        float: right;
+        height: 50px;
+        ul {
+            height: 100%;
+            line-height: 50px;
+            li {
+                transition: background-color 0.5s;
+                width: 50px;
+                text-align: center;
+                &:hover {
+                    .active()
+                }
+                a {
+                    text-align: center;
+                    i {
+                        font-size: 25px;
+                    }
+                    img {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 15px;
+                    }
+                }
+            }
+        }
+    }
+}

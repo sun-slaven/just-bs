@@ -2,3 +2,9 @@
 server/src/.idea/*
 server/src/just.iml
 server/pkg/*
+
+#front
+npm-debug.log
+bower_component/
+node_modules/
+dest/

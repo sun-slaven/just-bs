@@ -1,0 +1,33 @@
+{
+  "name": "just_bs",
+  "authors": [
+    "slaven <slaven893196569@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/lib/bower_component",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-resource": "^1.5.0",
+    "angular-route": "^1.5.0",
+    "bootstrap": "^3.3.6",
+    "angular": "angularjs#^1.5.0",
+    "angular-cookies": "^1.5.0",
+    "font-awesome": "^4.5.0",
+    "angular-animate": "^1.5.0",
+    "angular-bootstrap": "^1.2.4",
+    "ng-file-upload": "^12.0.1",
+    "angular-smart-table": "^2.1.8",
+    "angular-qiniu-upload": "^0.0.4"
+  }
+}
