@@ -4,13 +4,13 @@
             <li ng-click="change_active('chosen_lessons')" ng-class="{active: active_type == 'chosen_lessons'}">已选课程</li>
             <li ng-click="change_active('setting_avatar')" ng-class="{active: active_type == 'setting_avatar'}">头像设置</li>
             <li ng-click="change_active('setting_password')" ng-class="{active: active_type == 'setting_password'}">修改密码</li>
-            <li ng-click="change_active('upload_files')" ng-class="{active: active_type == 'upload_files'}">上传文件</li>
+            <li ng-click="change_active('setting_lessons')" ng-class="{active: active_type == 'setting_lessons'}">课程管理(教师)</li>
         </ul>
     </div>
     <div class="setting-right">
         <div ng-include="partial('/me/chosen_lessons')" include-replace></div>
         <div ng-include="partial('/me/setting_avatar')" include-replace></div>
         <div ng-include="partial('/me/setting_password')" include-replace></div>
-        <div ng-include="partial('/me/upload_files')" include-replace></div>
+        <div ng-include="partial('/me/setting_lessons')" include-replace></div>
     </div>
 </div>

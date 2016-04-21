@@ -1,22 +1,32 @@
-GlobalModules.add_controller('resource')
-angular.module('just.controllers.resource', ['angularQFileUpload', 'LocalStorageModule'])
-    .controller('resourceCtrl', ['$rootScope', '$scope', '$qupload', function($rootScope, $scope, $qupload) {
-        $scope.upload_files = [{
-            name: 'AngularJS权威教程(www.Linuxidc.com整理).pdf',
-            upload_time: new Date('2016-04-19 20:56:06')
+GlobalModules.add_controller('setting_lessons')
+angular.module('just.controllers.setting_lessons', [])
+    .controller('settingLessonsCtrl', ['$rootScope', '$scope', '$qupload', '$log',function($rootScope, $scope, $qupload,$log) {
+        $scope.useful_lessons = [{
+            name: 'AngularJS',
+            created_time: new Date('2016-04-19 20:56:06'),
+            updated_time: new Date('2016-04-20 20:56:06')
         }, {
-            name: 'pack.zip',
-            upload_time: new Date('2016-04-19 20:55:11')
+            name: 'Go',
+            created_time: new Date('2016-04-19 20:55:11'),
+            updated_time: new Date('2016-04-20 20:55:11')
         }, {
-            name: ' 半糖主义.mp4',
-            upload_time: new Date('2016-04-18 19:47:33')
+            name: 'Bootstrap',
+            created_time: new Date('2016-04-19 19:47:33'),
+            updated_time: new Date('2016-04-20 19:47:33')
         }]
         $scope.itemsByPage = 2;
 
-        // $http.get(你七牛的获取uptoken地址).success(function (data) {
-        //     $scope.uptoken = data.uptoken;   //获取你的七牛uptoken
-        //     $scope.prefix = data.prefix;    //获取你的七牛文件存储地址
-        // });
+        $scope.show_edit_lesson_modal = false;
+
+        $scope.edit = function(lesson){
+            $scope.show_edit_lesson_modal = true;
+        }
+
+        $scope.delete = function(lesson){
+            console.log("delete")
+        }
+
+        //upload to qiniu
         $scope.selectFiles = [];
 
         var start = function(index) {
