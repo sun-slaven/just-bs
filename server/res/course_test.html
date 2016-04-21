@@ -2,50 +2,48 @@
 <html lang="zh">
 <head></head>
 <body>
-<form action="/api/v1/course" method="post">
-    <input type="submit" value="add course">
+<form action="/api/v1/courses" method="post">
+    增加课程<input type="submit" value="add course">
 </form>
 
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd" method="get">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd" method="get">
+    根据ID查看课程信息
     <input type="submit" value="course id">
 </form>
 <br>
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment" method="post">
-    <input type="text" name="content">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd/comments" method="post">
+    增加评论<input type="text" name="content">
     <input type="submit" value="add comment">
 </form>
 
 <br>
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/comment" method="get">
-    <input type="submit" value="comment list">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd/comments" method="get">
+  评论列表  <input type="submit" value="comment list">
 </form>
 
 <br>
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/file" method="post">
-    <input type="submit" value="file add">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd/files" method="post">
+    增加文件<input type="submit" value="file add">
 </form>
 
 <br>
 
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/mark" method="post">
-    <input type="submit" value="mark course">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd/mark" method="post">
+   关注课程 <input type="submit" value="mark course">
 </form>
 
 <br>
 
-<form action="/api/v1/course/337c0a43-bdd8-480b-875b-a27668be23fd/point" method="post">
-    <input type="submit" value="add course point">
+<form action="/api/v1/courses/337c0a43-bdd8-480b-875b-a27668be23fd/point" method="post">
+    给课程打分 <input type="submit" value="add course point">
 </form>
 
 <script>
-    window.onload = function () {
-        document.querySelector("#")
-    };
 </script>
 </body>
 </html>
