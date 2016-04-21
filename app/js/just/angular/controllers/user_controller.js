@@ -29,7 +29,8 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.submit = function() {
                     if ($scope.can_submit()) {
                         if ($scope.form_type == 'login') {
-                            $rootScope.go("/users/1/list")
+                            $rootScope.current_user = $scope.user
+                            $rootScope.go("/users/1/show")
                         }
                     }
                 }
@@ -49,7 +50,8 @@ angular.module('just.controllers.user', ['ngCookies'])
             }
             $scope.register = function() {
                 if ($scope.can_register()) {
-                    $rootScope.go("/users/1/list")
+                    $rootScope.current_user = $scope.register
+                    $rootScope.go("/users/1/show")
                 };
             }
 

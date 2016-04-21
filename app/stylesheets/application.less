@@ -12,9 +12,27 @@ body {
     }
 }
 
+.one-lesson {
+    height: 240px;
+    text-align: center;
+    padding-top: 20px;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    .lesson-img {}
+    p {
+        color: #b4bbbf
+    }
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5)
+    }
+}
+
 @images_path: "../app/images"; //相对于dest/application.css而言
 @import url('login.less');
 @import url('header.less');
 @import url('me.less');
 @import url('elevator.less');
-
+@import url('lesson.less');
+@import url('lessons.less');
+@import url('resource.less');

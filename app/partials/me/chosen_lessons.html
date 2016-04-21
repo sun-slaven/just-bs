@@ -1,15 +1,7 @@
 <div id="chosen_lessons" ng-show="active_type == 'chosen_lessons'">
     <div class="lessons-list">
-        <div class="col-xs-12">
-            <div ng-repeat="lesson in chosen_lessons" class="col-xs-4 one-lesson">
-                <div ng-click="choose_lesson(lesson)">
-                    <div class="lesson-img">
-                        <img src="{{lesson.img_url}}" width="200px" height="135px">
-                    </div>
-                    <h4><span>{{lesson.name}}</span></h4>
-                    <p><span>{{lesson.duration}}</span></p>
-                </div>
-            </div>
+        <div ng-repeat="lesson in chosen_lessons" class="just-card">
+            <just-card lesson='lesson'></just-card>
         </div>
     </div>
 </div>

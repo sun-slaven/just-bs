@@ -5,12 +5,16 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap',
+    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap','smart-table','angularQFileUpload',
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$routeProvider', 'RouteConfigProvider',
-    function($routeProvider, RouteConfigProvider) {
+])).config(['$routeProvider', '$sceDelegateProvider', 'RouteConfigProvider',
+    function($routeProvider, $sceDelegateProvider, RouteConfigProvider) {
+        //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
+        ]);
         var all_configs = RouteConfigProvider.$get().get()
         angular.forEach(all_configs, function(conf) {
             $routeProvider.when(conf.path, {
@@ -48,37 +52,41 @@ angular.module('just', GlobalModules.get([
             $cacheFactory.get('$http').removeAll();
             $cacheFactory.removeAll();
         }
-        //nav-head 搜索
+        //nav-head controller
     $rootScope.header_search = {
-            input_show: false,
-            search_info: '',
-            open: function() {
-                if (this.input_show == false && this.search_info == '') {
-                    this.input_show = true;
+        input_show: false,
+        search_info: '',
+        open: function() {
+            if (this.input_show == false && this.search_info == '') {
+                this.input_show = true;
+            } else {
+                if (this.can_submit()) {
+                    this.submit()
                 } else {
-                    if (this.can_submit()) {
-                        this.submit()
-                    } else {
-                        this.close();
-                    }
+                    this.close();
                 }
-            },
-            close: function() {
-                this.input_show = false
-                this.search_info = ''
-            },
-            can_submit: function() {
-                if (this.search_info) {
-                    return true
-                }
-            },
-            submit: function() {
-                console.log("submit")
-                this.close()
             }
-
+        },
+        close: function() {
+            this.input_show = false
+            this.search_info = ''
+        },
+        can_submit: function() {
+            if (this.search_info) {
+                return true
+            }
+        },
+        submit: function() {
+            console.log("submit")
+            this.close()
         }
-        //滚动到顶部
+
+    }
+    $rootScope.go_me = function() {
+        $rootScope.go('/users/1/show')
+    }
+
+    //滚动到顶部
     $rootScope.scrollTo = function(eID) {
         AnchorSmoothScrollService.scrollTo(eID);
     }

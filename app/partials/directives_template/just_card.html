@@ -1,0 +1,10 @@
+<div class="col-xs-4 one-lesson">
+    <div ng-click="choose_lesson(lesson)">
+        <div class="lesson-img">
+            <!-- 此处使用ng-src 代替原本的src 不然加载angularjs之前会出现错误 -->
+            <img ng-src="{{lesson.img_url}}" width="200px" height="135px">
+        </div>
+        <h4><span>{{lesson.name}}</span></h4>
+        <p><span>{{lesson.duration}}</span></p>
+    </div>
+</div>

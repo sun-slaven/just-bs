@@ -1,0 +1,40 @@
+<div id="upload_files" ng-show="active_type == 'upload_files'" ng-controller="resourceCtrl">
+    <div>
+	<div ng-file-select="onFileSelect($files)" data-multiple="true" title="select file" onclick="this.value = null" class="btn btn-upload">Click here to select file</div>
+        <ol>
+            <li ng-repeat="(k,v) in selectFiles">
+                {{v.file.name}} - {{v.progress.p}}% <button ng-click="abort(k)">x</button>
+            </li>
+        </ol>
+    </div>
+    <!-- Smart-Table plugin-->
+    <table st-table="upload_files" class="table table-striped">
+        <thead>
+            <tr>
+                <th>资源名称</th>
+                <th st-sort="upload_time">上传时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th>
+                <input st-search="name" placeholder="搜索资源名" class="input-sm form-control" type="search" />
+            </th>
+            <!-- some problems with st-select-row to select one row-->
+            <tr st-select-row="row" ng-repeat="file in upload_files">
+                <td>{{file.name}}</td>
+                <td>{{file.upload_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>
+                    <input type="button" class="btn btn-sm btn-info" value="删除"></input>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="2"></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

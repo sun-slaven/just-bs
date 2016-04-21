@@ -10,7 +10,7 @@
     </div>
     <div class="collapse navbar-collapse" id="nav-content">
         <ul class="nav navbar-nav">
-            <li><a ng-click="go('lessons/')">课程</a></li>
+            <li><a ng-click="go('lessons/index')">课程</a></li>
         </ul>
     </div>
     <div id="my-search">
@@ -25,8 +25,8 @@
                 </a>
             </li>
             <li class="header-avator">
-                <a>
-                    <img src="http://img.mukewang.com/user/533e4c640001354402000200-40-40.jpg" width="40" height="40">
+                <a ng-click="go_me()">
+                    <img ng-src="../app/images/default_user_avatar.jpg" width="220" height="220">
                 </a>
             </li>
         </ul>
