@@ -1,6 +1,9 @@
-package id
+package token
 import "github.com/gin-gonic/gin"
 
-func BuildRouter(g *gin.RouterGroup) {
-	g.Any("/token")
+func BuildRouter(group *gin.RouterGroup) {
+	// login
+	group.POST("/token",)
+	// logout
+	group.DELETE("")
 }

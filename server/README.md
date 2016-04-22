@@ -24,3 +24,11 @@
 cd src/just.com
 go run main.go
 ```
+
+## nginx配置文件
+安装`nginx`后用`res`目录下的`nginx.conf`替换原来的即可
+此时,后端的端口最好别改(default 9090,如果改的话修改`nginx.conf`下http->server->location)
+nginx的端口可以随便改(我默认8086)
+1. / 根目录为前端目录,映射`JUST_PATH`的上一层路径
+2. /api 后端api路径,如`/api/v1/courses`
+3. /res 后端测试demo,映射`JUST_PATH/res`目录

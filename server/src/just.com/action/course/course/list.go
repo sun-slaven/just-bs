@@ -18,10 +18,10 @@ func CourseListHandle(c *gin.Context) {
 	}
 	session := context.Session
 	log := context.Log
-	majorId := c.Query("major_id")
-	if majorId == "" {
-		return
-	}
+//	majorId := c.Query("major_id")
+//	if majorId == "" {
+//		return
+//	}
 	courseVoList := make([]course.CourseVo, 0)
 	courseTableList := make([]table.CourseTable, 0)
 	sql := `SELECT * FROM "COURSE" WHERE "FROZEN_STATUS" = ?`

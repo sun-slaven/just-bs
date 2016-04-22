@@ -45,6 +45,7 @@ func main() {
 	//	gin.SetMode("release")
 	router := gin.Default()
 	router.Static("/res", path + "/res")
+	router.Static("/web", path + "/..")
 	router.StaticFile("/favicon.ico", path + "/res/favicon.ico")
 	mLearingGroup := router.Group("/api/v1")
 	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
