@@ -31,10 +31,16 @@ provider('RouteConfig', function() {
             controller: 'LessonController'
         }]
 
+        var manager_lesson_config = [{
+            path: '/users/:user_id/manage_lesson',
+            templateUrl: partial_url('manage_lesson/show'),
+            controller: 'ManageLessonController'
+        }]
 
         add_config(base_config);
         add_config(me_config);
         add_config(lessons_config);
+        add_config(manager_lesson_config)
 
         function add_config(config) {
             all_configs = all_configs.concat(config);

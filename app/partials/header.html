@@ -1,4 +1,4 @@
-<nav class="navbar navbar" role="navigation" id="nav-header">
+<nav class="navbar navbar" role="navigation" id="nav-header" ng-show="show_header" ng-controller="HeaderController">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-content">
             <span class="sr-only">切换导航</span>
@@ -13,15 +13,31 @@
             <li><a ng-click="go('lessons/index')">课程</a></li>
         </ul>
     </div>
-    <div id="my-search">
-        <input class="search-input" placeholder="请输入搜索内容..." type="text" autocomplete="off" ng-if="header_search.input_show" ng-model="header_search.search_info">
-        <i class="fa fa-search" ng-click="header_search.open()"></i>
+    <div id="log-out">
+        <ul>
+            <li>
+                <a ng-click="log_out()">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
     </div>
     <div id="login-area">
         <ul class="list-inline">
+            <li class="search_info">
+                <input class="search-input" placeholder="请输入搜索内容..." type="text" autocomplete="off" ng-if="header_search.input_show" ng-model="header_search.search_info">
+            </li>
+            <li class="search_btn">
+                <i class="fa fa-search" ng-click="header_search.open()"></i>
+            </li>
             <li class="my-message">
                 <a>
                     <i class="fa fa-commenting-o"></i>
+                </a>
+            </li>
+            <li class="manage-lessons">
+                <a ng-click="go_manager_lessons()">
+                    <i class="fa fa-book"></i>
                 </a>
             </li>
             <li class="header-avator">

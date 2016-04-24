@@ -1,0 +1,24 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind="title" ng-if="title"></h4>
+                <h4 class="modal-title" ng-if="!title">{{modal_title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-bind="content"></div>
+                <!-- ng-include will create a new scpoe,so the form.$valid cannot access. Details: https://github.com/angular/angular.js/issues/8403#issuecomment-50565265-->
+                <div ng-show="!content" ng-init="forms = {}; model = {}">
+                    <div ng-if="modal_content_url">
+                        <div ng-include="partial(modal_content_url)" include-replace></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" ng-disabled="forms.createChapterForm.$invalid" ng-click="modal_ok();$hide()">确定</button>
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
