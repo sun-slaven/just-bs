@@ -1,6 +1,6 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', function($rootScope, $scope, $qupload, $log, $filter) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', function($rootScope, $scope, $qupload, $log, $filter, LessonsService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -53,14 +53,22 @@ angular.module('just.controllers.manage_lesson', [])
             });
         }
 
+        $scope.create_lesson = function(resp){
+            LessonsService.create_lesson($scope.new_lesson,function(){
+
+            })
+        }
 
         //新建lesson
         $scope.new_lesson = {
             name: "",
+            college: null,
+            major: null,
             introduction: '',
+            description: '',
             outline_list: [],
             temp_outline_list: [],
-            wishes: '',
+            wish: '',
             temp_outline: {
                 chapter: '',
                 name: '',

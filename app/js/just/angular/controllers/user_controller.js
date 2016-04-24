@@ -1,7 +1,7 @@
 GlobalModules.add_controller('user')
 angular.module('just.controllers.user', ['ngCookies'])
-    .controller('UserController', ['$rootScope', '$scope', '$cookies', 'UserService',
-        function($rootScope, $scope, $cookies, UserService) {
+    .controller('UserController', ['$rootScope', '$scope', 'UserService',
+        function($rootScope, $scope, UserService) {
             if ($rootScope.user) {
                 $rootScope.go('/')
             }
@@ -13,8 +13,8 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.error_infos = []
                 //login
             $scope.user = {
-                name: '',
-                password: '',
+                email: $rootScope.get_cookie('email') || '',
+                password: $rootScope.get_cookie('password') || '',
                 remember_me: true
             }
             $scope.can_submit = function() {
@@ -29,9 +29,14 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.submit = function() {
                     if ($scope.can_submit()) {
                         if ($scope.form_type == 'login') {
+                            if ($scope.user.remember_me) {
+                                $rootScope.set_cookie('email', $scope.user.email)
+                                $rootScope.set_cookie('password', $scope.user.password)
+                            };
                             UserService.sign_in($scope.user, function(resp) {
+                                $rootScope.icon = resp.user.icon;
                                 $rootScope.show_header = true;
-                                $rootScope.go("/users/1/show")
+                                $rootScope.go("/users/" + $rootScope.user.id + "/me");
                             })
 
                         }

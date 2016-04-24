@@ -23,7 +23,7 @@ angular.module('just', GlobalModules.get([
             })
         })
         $routeProvider.otherwise({
-            redirectTo: '/'
+            redirectTo: '/login'
         });
         //修改modal的全局配置
         angular.extend($modalProvider.defaults, {
@@ -33,7 +33,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', function($rootScope, $location, $modal, $cacheFactory, AnchorSmoothScrollService) {
+]).run(['$rootScope', '$location', '$modal', '$cacheFactory', '$cookies', '$cookieStore', 'AnchorSmoothScrollService', function($rootScope, $location, $modal, $cacheFactory, $cookies, $cookieStore, AnchorSmoothScrollService) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -57,11 +57,23 @@ angular.module('just', GlobalModules.get([
         cache.put(key, value);
     }
     $rootScope.clear_cache = function() {
-        if (cache.get('$http')) {
-            cache.get('$http').removeAll();
-        };
-        cache.removeAll();
+            if (cache.get('$http')) {
+                cache.get('$http').removeAll();
+            };
+            cache.removeAll();
+        }
+        //cookie
+    $rootScope.get_cookie = function(key) {
+        return $cookieStore.get(key);
     }
+    $rootScope.set_cookie = function(key, value) {
+        $cookieStore.put(key, value);
+    }
+    $rootScope.remove_cookie = function(key) {
+        $cookieStore.remove(key);
+    }
+    $cookieStore.put("test","test")
+    console.log($rootScope.get_cookie("test"))
 
     //滚动到顶部
     $rootScope.scrollTo = function(eID) {
@@ -72,11 +84,11 @@ angular.module('just', GlobalModules.get([
     $rootScope.strap_modal = function(modal_obj) {
         return $modal(modal_obj)
     }
-    $rootScope.confirm_modal = function(content,scope,success){
+    $rootScope.confirm_modal = function(content, scope, success) {
         scope.modal_ok = success;
         $rootScope.strap_modal({
             content: content,
-            title :"提示".concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
+            title: "提示".concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
             scope: scope
         });
     }

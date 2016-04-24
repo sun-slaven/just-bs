@@ -5,11 +5,11 @@ angular.module('just.controllers.header', [])
 
             $rootScope.show_header = true;
             //log out
-            $scope.log_out = function() {
+            $scope.sign_out = function() {
                     $rootScope.confirm_modal("确认退出吗?", $scope, function() {
                         UserService.sign_out(function() {
                             $rootScope.show_header = false;
-                            $rootScope.go('/');
+                            $rootScope.go('/login');
                         })
                     })
                 }
@@ -44,7 +44,7 @@ angular.module('just.controllers.header', [])
 
             }
             $scope.go_me = function() {
-                $rootScope.go('/users/1/show')
+                $rootScope.go('/users/'+ $rootScope.user.id + '/me')
             }
 
             $scope.go_manager_lessons = function() {
