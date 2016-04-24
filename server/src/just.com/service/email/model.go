@@ -7,10 +7,10 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"qiniupkg.com/x/log.v7"
 	"strings"
 	"text/template"
-	"os"
+	"just.com/service/token"
+	"qiniupkg.com/x/log.v7"
 )
 
 type EmailService struct {
@@ -23,17 +23,17 @@ func NewEamilService(config etc.SendCloudConfig) *EmailService {
 	return es
 }
 
-func (self *EmailService) SendMail(email string) {
+func (self *EmailService) SendMail(email, username string, userToken *service.UserToken) {
 	RequestURI := self.Config.RequestUrl
 	//不同于登录SendCloud站点的帐号，您需要登录后台创建发信子帐号，使用子帐号和密码才可以进行邮件的发送。
+	activeUrl := getUrl(userToken)
 	PostParams := url.Values{
 		"api_user": {self.Config.ApiUser},
 		"api_key":  {self.Config.ApiKey},
 		"from":     {self.Config.From},
 		"fromname": {self.Config.FromName},
-		"to":       {email},
-		"subject":  {self.Config.Subject},
-		"html":     {"你太棒了！你已成功的从SendCloud发送了一封测试邮件，接下来快登录前台去完善账户信息吧！"},
+		"substitution_vars":{getContent(email, username, activeUrl)},
+		"template_invoke_name":     {"test_template_active"},
 	}
 	PostBody := bytes.NewBufferString(PostParams.Encode())
 	ResponseHandler, err := http.Post(RequestURI, "application/x-www-form-urlencoded", PostBody)
@@ -45,15 +45,23 @@ func (self *EmailService) SendMail(email string) {
 	if err != nil {
 		panic(err)
 	}
-	log.Println(BodyByte)
+	log.Println(string(BodyByte))
 }
 
-func Template(value string) {
+func getContent(email string, username string, url string) string {
 	t := template.New("text")
-	t,_= t.Parse(`点击以下连接，即可完成验证 <a href="{{.link}}">{{.link}}<a>`)
-	linkMap := make(map[string]string)
-	linkMap["link"] = value
-	t.Execute(os.Stdout,linkMap)
+	t, _ = t.Parse(`{"to": ["{{.to}}"],"sub":{"%name%": ["{{.name}}"],"%url%":["{{.url}}"]}}`)
+	emailContent := make(map[string]string)
+	emailContent["to"] = email
+	emailContent["name"] = username
+	emailContent["url"] = url
+	buffer := new(bytes.Buffer)
+	t.Execute(buffer, emailContent)
+	return buffer.String()
+}
+
+func getUrl(userToken *service.UserToken) string {
+	return "http://the-world-wang.top/user/active?id=" + userToken.Id + "&user_id=" + userToken.UserId
 }
 
 func Code(n int) {

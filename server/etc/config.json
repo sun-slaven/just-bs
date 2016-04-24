@@ -1,26 +1,26 @@
 {
-	"db":{
-		"name":"postgres",
-		"url":"host=115.28.18.162 port=5432 dbname=mlearning user=postgres password='123456' connect_timeout=60 sslmode=disable",
-		"maxIdleConns":10,
-		"maxOpenConns":10
-	},
-	"qiniu":{
-		"bucket":"wanghao",
-		"ak":"YZebTjnnoLzr0fGR7wD31WqcGE2KM1EKhs006S7L",
-		"sk":"V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce",
-		"domain":"http://7xnz7k.com1.z0.glb.clouddn.com"
-	},
-	"redis":{
-		"url":"redis://127.0.0.1:6379"
-	},
-	"port":":9090",
-	"send_cloud":{
-		"api_user":"will19940412_test_TQpPHj",
-		"api_key":"A0wbotFTuAZNz8dH",
-		"from":"will@qq.com",
-		"from_name":"mlearning",
-		"subject":"验证码",
-		"request_url":"http://sendcloud.sohu.com/webapi/mail.send.json"
-	}
+  "db": {
+    "name": "postgres",
+    "url": "host=115.28.18.162 port=5432 dbname=mlearning user=postgres password='123456' connect_timeout=60 sslmode=disable",
+    "maxIdleConns": 10,
+    "maxOpenConns": 10
+  },
+  "qiniu": {
+    "bucket": "wanghao",
+    "ak": "YZebTjnnoLzr0fGR7wD31WqcGE2KM1EKhs006S7L",
+    "sk": "V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce",
+    "domain": "http://7xnz7k.com1.z0.glb.clouddn.com"
+  },
+  "redis": {
+    "url": "redis://127.0.0.1:6379"
+  },
+  "port": ":9090",
+  "send_cloud": {
+    "api_user": "will19940412_test_TQpPHj",
+    "api_key": "A0wbotFTuAZNz8dH",
+    "from": "992444037@qq.com",
+    "from_name": "移动学习系统",
+    "subject": "激活账户",
+    "request_url": "http://sendcloud.sohu.com/webapi/mail.send_template.json"
+  }
 }

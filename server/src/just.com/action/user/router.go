@@ -9,6 +9,7 @@ import (
 )
 
 func BuildRouter(group *gin.RouterGroup) {
+	group.POST("/", RegisterHandle)
 	group.Any("/:user_id", User)
 }
 

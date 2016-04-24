@@ -4,14 +4,12 @@ import (
 	"log"
 )
 
+
 type UserService struct {
 	Session *xorm.Session
 	Log     *log.Logger
 }
 
 func NewUserService(session *xorm.Session, log *log.Logger) *UserService {
-	us := new(UserService)
-	us.Session = session
-	us.Log = log
-	return us
+	return &UserService{Session:session, Log:log}
 }
