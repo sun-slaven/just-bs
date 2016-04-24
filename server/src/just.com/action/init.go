@@ -15,7 +15,7 @@ const (
 func GetContext(c *gin.Context) (*middleware.Context, bool) {
 	contextTemp, contextTempFlag := c.Get(middleware.MLEARNING_CONTENT)
 	if contextTempFlag == false {
-		return nil,contextTempFlag
+		return nil, contextTempFlag
 	}
 	context, contextFlag := contextTemp.(*middleware.Context)
 	if contextFlag == false {
@@ -27,7 +27,7 @@ func GetContext(c *gin.Context) (*middleware.Context, bool) {
 func GetToken(c *gin.Context) (*service.UserToken, bool) {
 	tokenTemp, tokenTempFlag := c.Get(middleware.MIDDLEWARE_TOKEN)
 	if tokenTempFlag == false {
-		return nil,tokenTempFlag
+		return nil, tokenTempFlag
 	}
 	token, tokenFlag := tokenTemp.(*service.UserToken)
 	if tokenFlag == false {

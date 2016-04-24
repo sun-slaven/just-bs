@@ -22,7 +22,25 @@ tags:
     description: 用户
   - name: tokens
     description: 登录登出
+  - name: colleges
+    description: 学院专业
 paths:
+  /colleges:
+    get:
+      description: 获取学院及专业信息
+      summary: 获取学院信息
+      operationId: college list
+      produces:
+        - application/json
+      tags:
+        - colleges
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/college'
+
   /courses:
     get:
       description: 获取课程列表
@@ -589,6 +607,30 @@ definitions:
         user_id:
           type: string
           default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+
+  college:
+    type: object
+    properties:
+      id:
+        type: string
+        default: 'b6a0808f-b87a-44ca-b850-9545a3f3f089'
+      name:
+        type: string
+        default: '计算机学院'
+      major_list:
+        type: string
+        $ref: '#/definitions/major'
+
+  major:
+    type: object
+    properties:
+      id:
+        type: string
+        default: '0260bb7c-2e93-4a7d-895d-59fac58fdbc6'
+      name:
+        type: string
+        default: '物联网工程'
+
 
   errorModel:
     type: object
