@@ -21,7 +21,7 @@ tags:
   - name: users
     description: 用户
   - name: tokens
-    desciption: 登录登出
+    description: 登录登出
 paths:
   /courses:
     get:
@@ -451,11 +451,6 @@ paths:
           schema:
             description: file
             type: string
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/errorModel'
-
   
 definitions:
   image:
@@ -559,9 +554,6 @@ definitions:
       user_name:
         type: string
         default: '小泡子仔'
-      code:
-        type: string
-        default: '1234'
       password:
         type: string
         default: '123456'

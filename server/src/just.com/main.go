@@ -39,8 +39,7 @@ func main() {
 	qiniuFileSystem := qiniu.New(config.QiniuConfig)
 	logger.Println(qiniuFileSystem)
 	// email
-	//	sendConfig := config.SendCloudConfig
-	//	log.Println(sendConfig)
+	sendConfig := config.SendCloudConfig
 	// interface
 	//	gin.SetMode("release")
 	router := gin.Default()
@@ -51,6 +50,7 @@ func main() {
 	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	//	justGroup.Use(middleware.LogMiddleware)
 	mLearingGroup.Use(middleware.TokenTest)
+	mLearingGroup.Use(middleware.EmailMiddleware(sendConfig))
 	//	mLearingGroup.Use(middleware.TokenMiddleWare)
 	college.BuildRouter(mLearingGroup.Group("/colleges"))
 	course.BuildRouter(mLearingGroup.Group("/courses"))

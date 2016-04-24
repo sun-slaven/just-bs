@@ -19,6 +19,8 @@ type UserTable struct {
 	UpdateTime   time.Time    `xorm:"updated 'UPDATE_TIME'"`
 	FrozenStatus string    `xorm:"'FROZEN_STATUS'"`
 	FrozenTime   time.Time    `xorm:"deleted 'FROZEN_TIME'"`
+	ActiveStatus string    `xorm:"'ACTIVE_STATUS'"`
+	ActiveTime   time.Time    `xorm:"deleted 'ACTIVE_TIME'"`
 }
 
 func (self *UserTable)TableName() string {

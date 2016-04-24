@@ -8,6 +8,8 @@ import (
 	"just.com/model/db/table"
 	"code.google.com/p/go-uuid/uuid"
 	"time"
+	token_service "just.com/service/token"
+	user_vo "just.com/query/vo/user"
 )
 
 
@@ -46,6 +48,7 @@ func (self *UserService) Add(mobile, name, iconId, roleName string) (userId stri
 	user.CreateTime = time.Now()
 	user.UpdateTime = time.Now()
 	user.FrozenStatus = "N"
+	user.ActiveStatus = "N"
 	insertNum, insertErr := self.Session.InsertOne(user)
 	if insertNum == 0 {
 		if insertErr != nil {
@@ -54,6 +57,44 @@ func (self *UserService) Add(mobile, name, iconId, roleName string) (userId stri
 		return
 	}
 	userId = user.UUID
+	err = nil
+	return
+}
+
+
+
+func (self *UserService) Register(email, name, password, roleName string) (userLoginVo *user_vo.UserLoginVo, err error) {
+	// 1.check
+	err = service.SERVICE_USER_REGISTER_ERR
+	if common.IsEmpty(email, name, roleName) == true {
+		return
+	}
+	// 2.insert
+	user := new(table.UserTable)
+	user.UUID = uuid.New()
+	user.RoleName = roleName
+	user.Name = name
+	user.Password = password
+	user.Number = ""
+	user.Age = 0
+	user.Sex = 0
+	user.Mobile = ""
+	user.Email = email
+	user.CreateTime = time.Now()
+	user.UpdateTime = time.Now()
+	user.FrozenStatus = "N"
+	user.ActiveStatus = "N"
+	insertNum, insertErr := self.Session.InsertOne(user)
+	if insertNum == 0 {
+		err = service.SERVICE_USER_REGISTER_ERR
+		if insertErr != nil {
+			self.Log.Println(insertErr)
+		}
+		return
+	}
+	tokenService := token_service.NewTokenService(self.Session, self.Log)
+	token, _ := tokenService.Make(user.UUID)
+	userLoginVo = &user_vo.UserLoginVo{UserVo:user_vo.LoadUserVoByTable(user), Token:token}
 	err = nil
 	return
 }
