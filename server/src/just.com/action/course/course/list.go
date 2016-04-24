@@ -36,6 +36,6 @@ func CourseListHandle(c *gin.Context) {
 		courseVoList = append(courseVoList, *courseVo)
 	}
 	response = middleware.NewResponse(http.StatusOK, courseVoList, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = response
 	return
 }

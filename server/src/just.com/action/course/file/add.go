@@ -27,6 +27,5 @@ func FileAdd(c *gin.Context) {
 		log.Println(addErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, fileId, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, fileId, nil)
 }

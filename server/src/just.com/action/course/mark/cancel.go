@@ -27,8 +27,6 @@ func MarkCancel(c *gin.Context) {
 		log.Println(addPointErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, nil, nil)
-	c.Set(middleware.RESPONSE, response)
-	log.Println(response)
+	context.Response = middleware.NewResponse(http.StatusOK, nil, nil)
 	go service.FlushPoint(courseId, context.Ds, log)
 }

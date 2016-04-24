@@ -1,9 +1,10 @@
 package token
-import "github.com/gin-gonic/gin"
 
-func BuildRouter(group *gin.RouterGroup) {
-	// login
-	group.POST("/token",)
-	// logout
-	group.DELETE("")
+import (
+	"github.com/gin-gonic/gin"
+)
+
+func BuildRouter(group *gin.RouterGroup)  {
+	group.POST("/", LoginHandle)    //sign in
+	group.DELETE("/")    //sign out
 }

@@ -10,9 +10,9 @@ import (
 	"time"
 	"just.com/model/qiniu"
 	"just.com/model/db"
-//	"just.com/action/course"
 	"just.com/action/course"
 	"just.com/action/user"
+	"just.com/action/token"
 	"just.com/middleware"
 	"just.com/action/college"
 )
@@ -55,6 +55,7 @@ func main() {
 	college.BuildRouter(mLearingGroup.Group("/colleges"))
 	course.BuildRouter(mLearingGroup.Group("/courses"))
 	user.BuildRouter(mLearingGroup.Group("/users"))
+	token.BuildRouter(mLearingGroup.Group("/tokens"))
 	s := &http.Server{
 		Addr: config.Port,
 		Handler:router,

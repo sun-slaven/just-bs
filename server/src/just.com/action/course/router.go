@@ -22,8 +22,8 @@ func BuildRouter(group *gin.RouterGroup) {
 	group.POST("/:course_id/files", file.FileAdd)        // file add
 	group.Any("/:course_id/files/:file_id", file.File)    // file get update delete
 	// mark
-	group.POST("/:course_id/mark", mark.MarkAdd)
-	group.DELETE("/:course_id/mark", mark.MarkCancel)
+	group.POST("/:course_id/marks", mark.MarkAdd)
+	group.DELETE("/:course_id/marks", mark.MarkCancel)
 	// point
-	group.POST("/:course_id/point", point.PointAdd)
+	group.POST("/:course_id/points", point.PointAdd)
 }

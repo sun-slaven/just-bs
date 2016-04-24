@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+type PointRequest struct {
+	point int64 `json:"point"`
+}
+
 func PointAdd(c *gin.Context) {
 	context, contextFlag := action.GetContext(c)
 	if contextFlag == false {
@@ -20,15 +24,19 @@ func PointAdd(c *gin.Context) {
 	log := context.Log
 	// request
 	courseId := c.Param("course_id")
+	request := new(PointRequest)
+	bindErr := c.BindJSON(request)
+	if bindErr != nil {
+		log.Println(bindErr)
+		return
+	}
 	//core
 	courseService := service.NewCourseService(session, log)
-	addPointErr := courseService.AddPoint(100, courseId, token.UserId)
+	addPointErr := courseService.AddPoint(request.point, courseId, token.UserId)
 	if addPointErr != nil {
 		log.Println(addPointErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, nil, nil)
-	c.Set(middleware.RESPONSE, response)
-	log.Println(response)
+	context.Response = middleware.NewResponse(http.StatusOK, nil, nil)
 	go service.FlushPoint(courseId, context.Ds, log)
 }

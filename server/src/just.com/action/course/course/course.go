@@ -42,6 +42,5 @@ func CourseHandle(c *gin.Context) {
 	case action.METHOD_DELETE:
 		cs.Delete(courseId)
 	}
-	response := middleware.NewResponse(http.StatusOK,data , nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK,data , nil)
 }

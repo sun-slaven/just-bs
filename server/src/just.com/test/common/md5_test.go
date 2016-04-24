@@ -9,7 +9,7 @@ import (
 
 func TestMd5(t *testing.T) {
 	log.Println(common.Md5("123456"))
-	Template()
+//	Template()
 }
 
 func Template() {
