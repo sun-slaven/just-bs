@@ -12,7 +12,7 @@ provider('RouteConfig', function() {
         }];
 
         var me_config = [{
-            path: '/users/:user_id/show',
+            path: '/users/:user_id/me',
             templateUrl: partial_url('me/show'),
             controller: 'MeController'
         }, {

@@ -1,21 +1,50 @@
 <div id="creat_lesson" ng-show="active_type == 'creat_lesson'">
     <div class="form-horizontal">
         <div class="form-group">
+            <label class="col-sm-2 control-label">课程图片:</label>
+            <div class="col-sm-10">
+                <div ng-file-select="onFileSelect($files)" data-multiple="false" title="select file" onclick="this.value = null" class="btn btn-upload">上传图片</div>
+                <ol>
+                    <li ng-repeat="(k,v) in selectFiles">
+                        {{v.file.name}} - {{v.progress.p}}%
+                        <button ng-click="abort(k)">x</button>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">名称:</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="请输入课程名称">
+                <input type="text" class="form-control" placeholder="请输入课程名称" ng-model="new_lesson.name">
+            </div>
+        </div>
+        <div class="form-group major">
+            <label class="col-sm-2 control-label">专业:</label>
+            <div class="col-sm-10">
+                <select ng-model="new_lesson.college" ng-options="college.name for college in colleges" class="form-control">
+                    <option value="">-- 所有 --</option>
+                </select>
+                <select ng-model="new_lesson.major" ng-options="major.name for major in majors" class="form-control">
+                    <option value="">-- 所有 --</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">课程简介:</label>
             <div class="col-sm-10">
-                <textarea class="form-control" placeholder="请输入课程简介"></textarea>
+                <textarea class="form-control" placeholder="请输入课程简介" ng-model="new_lesson.introduction"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">课程短描述:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" placeholder="请输入课程简介" ng-model="new_lesson.description"></textarea>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">教师寄语:</label>
             <div class="col-sm-10">
-                <textarea class="form-control" placeholder="请输入教师寄语"></textarea>
+                <textarea class="form-control" placeholder="请输入教师寄语" ng-model="new_lesson.wish"></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -30,14 +59,14 @@
                         <div class="panel panel-default" ng-repeat="temp_outline_item in new_lesson.temp_outline_list track by $index">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-					        <a bs-collapse-toggle>
-					          第{{ temp_outline_item.chapter }}章:  {{temp_outline_item.name}} 
-					        </a>
-					        <span>
-					      		<i class="fa fa-trash" aria-hidden="true" ng-click="new_lesson.remove_temp_outline(temp_outline_item)" data-placement="right" data-title="删除此提纲" data-trigger="hover" data-type="info" bs-tooltip></i>
-					      		<i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="new_lesson.open_outline_edit_modal(temp_outline_item)" data-placement="left" data-title="编辑此提纲" data-trigger="hover" data-type="info"bs-tooltip></i>
-					      </span>
-			      		</h4>
+                            <a bs-collapse-toggle>
+                              第{{ temp_outline_item.chapter }}章:  {{temp_outline_item.name}} 
+                            </a>
+                            <span>
+                                <i class="fa fa-trash" aria-hidden="true" ng-click="new_lesson.remove_temp_outline(temp_outline_item)" data-placement="right" data-title="删除此提纲" data-trigger="hover" data-type="info" bs-tooltip></i>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="new_lesson.open_outline_edit_modal(temp_outline_item)" data-placement="left" data-title="编辑此提纲" data-trigger="hover" data-type="info"bs-tooltip></i>
+                          </span>
+                        </h4>
                             </div>
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
@@ -63,7 +92,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-info  submit_btn">创建</button>
+                <button type="submit" class="btn btn-info  submit_btn" ng-click="create_lesson()">创建</button>
             </div>
         </div>
     </div>

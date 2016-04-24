@@ -16,7 +16,7 @@
     <div id="log-out">
         <ul>
             <li>
-                <a ng-click="log_out()">
+                <a ng-click="sign_out()">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </a>
             </li>
@@ -42,7 +42,7 @@
             </li>
             <li class="header-avator">
                 <a ng-click="go_me()">
-                    <img ng-src="../app/images/default_user_avatar.jpg" width="220" height="220">
+                    <img ng-src="{{icon.url}}" width="{{icon.width}}" height="{{icon.width}}">
                 </a>
             </li>
         </ul>
