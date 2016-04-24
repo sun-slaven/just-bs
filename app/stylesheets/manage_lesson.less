@@ -1,0 +1,94 @@
+#manage-lesson-page {
+    width: 100%;
+    margin-top: 30px;
+    .setting-left {
+        width: 20%;
+        float: left;
+        ul {
+            list-style-type: none;
+            li {
+                border-bottom: 1px solid #e6e8e9;
+                height: 60px;
+                padding-top: 20px;
+                padding-left: 20px;
+                font-size: 15px;
+                &:hover {
+                    color: red;
+                    cursor: pointer;
+                    border-left-color: red;
+                    border-left-width: 3px;
+                    border-left-style: solid;
+                }
+                &.active {
+                    border-left-width: 3px;
+                    border-left-style: solid;
+                    border-left-color: red;
+                }
+            }
+        }
+    }
+    .setting-right {
+        float: left;
+        width: 70%;
+        height: 100%;
+        padding-top: 20px;
+        margin-left: 40px;
+        #created_lessons {
+            table {
+                tbody {
+                    td {
+                        i {
+                            font-size: 30px;
+                            padding-right: 15px;
+                            &:hover {
+                                cursor: pointer;
+                            }
+                            &:first-child {
+                                color: #D2691E
+                            }
+                        }
+                    }
+                }
+                tfoot {
+                    td {
+                        vertical-align: middle;
+                        input {
+                            width: 30%;
+                        }
+                    }
+                }
+            }
+        }
+        #creat_lesson {
+            input {
+                width: 50%;
+            }
+            i {
+                font-size: 30px;
+                color: #31B0D5;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .out_line_plus {
+                margin-top: 10px;
+            }
+            .panel-group {
+                span {
+                    i {
+                        font-size: 25px !important;
+                        float: right;
+                        margin-right: 20px;
+                        &:first-child{
+                            color: black;
+                        }
+                    }
+                }
+            }
+            .submit_btn {
+                width: 40%;
+                height: 40px;
+            }
+        }
+    }
+}

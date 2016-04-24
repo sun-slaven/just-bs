@@ -17,61 +17,82 @@
         }
     }
     #nav-content {
-        width: 50%;
         float: left;
     }
     #my-search {
-        width: 25%;
         height: 50px;
-        text-align: right;
-        float: left;
-        padding-top: 10px;
+        float: right;
         color: #FFFFFF;
-        font-size: 20px;
+        font-size: 30px;
         &:hover {
             cursor: pointer;
         }
-        .search-input {
-            color: white;
-            background-color: black;
-            border: 1px solid #000;
-            font-size: 15px;
-            border-bottom-color: rgba(120, 125, 130, 0.8);
-            //ng-animate提供的两种状态,开始样子
-            &.ng-enter {
-                transition: width 1s; //css3的transition必须放在开始当中
-                width: 0px;
-            }
-            //结束时的样子
-            &.ng-enter-active {
-                width: 192px;
-            }
+        ul {
+            line-height: 50px;
+            list-style: none;
         }
     }
     #login-area {
-        width: 10%;
         float: right;
         height: 50px;
+        font-size: 30px;
         ul {
-            height: 100%;
             line-height: 50px;
+            margin: 0;
             li {
                 transition: background-color 0.5s;
                 width: 50px;
                 text-align: center;
-                &:hover {
+                &:hover  {
                     .active()
                 }
                 a {
                     text-align: center;
-                    i {
-                        font-size: 25px;
-                    }
                     img {
                         width: 28px;
                         height: 28px;
                         border-radius: 15px;
                     }
+                }
+                &.search_btn {
+                    color: #FFFFFF;
+                }
+                &.search_info{
+                    width: auto;
+                    .search-input {
+                        height: 40px;
+                        background-color: black;
+                        border: 1px solid #000;
+                        font-size: 15px;
+                        border-bottom-color: rgba(120, 125, 130, 0.8);
+                        //ng-animate提供的两种状态,开始样子
+                        &.ng-enter {
+                            transition: width 1s; //css3的transition必须放在开始当中
+                            width: 0px;
+                        }
+                        //结束时的样子
+                        &.ng-enter-active {
+                            width: 192px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #log-out {
+        float: right;
+        height: 50px;
+        font-size: 30px;
+        ul {
+            margin: 0;
+            line-height: 50px;
+            list-style: none;
+            padding-left: 0;
+            li {
+                text-align: center;
+                width: 50px;
+                &:hover {
+                    .active()
                 }
             }
         }

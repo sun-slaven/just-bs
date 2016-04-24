@@ -5,7 +5,6 @@ angular.module('just.controllers.me', ['ngCookies'])
             $scope.active_type = 'chosen_lessons'
             $scope.change_active = function(type) {
                 $scope.active_type = type;
-                //利用ng-file-upload实现文件上传
             }
             $scope.chosen_lessons = [{
                 name: "course1",

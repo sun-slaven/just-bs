@@ -8,9 +8,9 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.form_type = 'login';
 
             $scope.change_active = function(attr) {
-                    $scope.form_type = attr;
-                }
-             $scope.error_infos = []
+                $scope.form_type = attr;
+            }
+            $scope.error_infos = []
                 //login
             $scope.user = {
                 name: '',
@@ -29,8 +29,11 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.submit = function() {
                     if ($scope.can_submit()) {
                         if ($scope.form_type == 'login') {
-                            $rootScope.current_user = $scope.user
-                            $rootScope.go("/users/1/show")
+                            UserService.sign_in($scope.user, function(resp) {
+                                $rootScope.show_header = true;
+                                $rootScope.go("/users/1/show")
+                            })
+
                         }
                     }
                 }

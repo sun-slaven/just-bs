@@ -28,6 +28,35 @@ body {
     }
 }
 
+.modal-backdrop.am-fade {
+    opacity: .5;
+    transition: opacity .15s linear;
+    &.ng-enter {
+        opacity: 0;
+        &.ng-enter-active {
+            opacity: .5;
+        }
+    }
+    &.ng-leave {
+        opacity: .5;
+        &.ng-leave-active {
+            opacity: 0;
+        }
+    }
+}
+//表单验证
+input.ng-invalid {
+    border: 1px solid red;
+}
+
+input.ng-valid {
+    border: 1px solid green;
+}
+
+span.error {
+    color: red;
+}
+
 @images_path: "../app/images"; //相对于dest/application.css而言
 @import url('login.less');
 @import url('header.less');
@@ -35,4 +64,4 @@ body {
 @import url('elevator.less');
 @import url('lesson.less');
 @import url('lessons.less');
-@import url('resource.less');
+@import url('manage_lesson.less');

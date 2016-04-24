@@ -5,12 +5,12 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap','smart-table','angularQFileUpload',
+    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'smart-table', 'angularQFileUpload', 'mgcrea.ngStrap',
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$routeProvider', '$sceDelegateProvider', 'RouteConfigProvider',
-    function($routeProvider, $sceDelegateProvider, RouteConfigProvider) {
+])).config(['$routeProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
+    function($routeProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
@@ -23,10 +23,17 @@ angular.module('just', GlobalModules.get([
             })
         })
         $routeProvider.otherwise({
-            redirectTo: '/login'
+            redirectTo: '/'
+        });
+        //修改modal的全局配置
+        angular.extend($modalProvider.defaults, {
+            animation: 'am-fade-and-scale',
+            html: true,
+            templateUrl: '/app/partials/common_modal.html',
+            show: true
         });
     }
-]).run(['$rootScope', '$location', 'AnchorSmoothScrollService', function($rootScope, $location, AnchorSmoothScrollService) {
+]).run(['$rootScope', '$location', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', function($rootScope, $location, $modal, $cacheFactory, AnchorSmoothScrollService) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -42,53 +49,44 @@ angular.module('just', GlobalModules.get([
     }
 
     //cache
+    var cache = $cacheFactory('just_cache')
     $rootScope.get_cache = function(key) {
-        return $cacheFactory.get(key);
+        return cache.get(key);
     }
     $rootScope.set_cache = function(key, value) {
-        $cacheFactoryput(key, value);
+        cache.put(key, value);
     }
     $rootScope.clear_cache = function() {
-            $cacheFactory.get('$http').removeAll();
-            $cacheFactory.removeAll();
-        }
-        //nav-head controller
-    $rootScope.header_search = {
-        input_show: false,
-        search_info: '',
-        open: function() {
-            if (this.input_show == false && this.search_info == '') {
-                this.input_show = true;
-            } else {
-                if (this.can_submit()) {
-                    this.submit()
-                } else {
-                    this.close();
-                }
-            }
-        },
-        close: function() {
-            this.input_show = false
-            this.search_info = ''
-        },
-        can_submit: function() {
-            if (this.search_info) {
-                return true
-            }
-        },
-        submit: function() {
-            console.log("submit")
-            this.close()
-        }
-
-    }
-    $rootScope.go_me = function() {
-        $rootScope.go('/users/1/show')
+        if (cache.get('$http')) {
+            cache.get('$http').removeAll();
+        };
+        cache.removeAll();
     }
 
     //滚动到顶部
     $rootScope.scrollTo = function(eID) {
         AnchorSmoothScrollService.scrollTo(eID);
     }
+
+    //bootstrap  customer modals
+    $rootScope.strap_modal = function(modal_obj) {
+        return $modal(modal_obj)
+    }
+    $rootScope.confirm_modal = function(content,scope,success){
+        scope.modal_ok = success;
+        $rootScope.strap_modal({
+            content: content,
+            title :"提示".concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
+            scope: scope
+        });
+    }
+
+
+    //if show header
+    $rootScope.show_header = false;
+    if ($rootScope.get_cache('current_user')) {
+        $rootScope.show_header = true;
+    };
+
 
 }])
