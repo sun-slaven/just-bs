@@ -37,7 +37,6 @@ func CommentAdd(c *gin.Context) {
 		log.Println(commentErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, commentId, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, commentId, nil)
 	go service.FlushCommentSum(courseId, context.Ds, log)
 }

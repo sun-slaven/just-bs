@@ -18,10 +18,10 @@ func CourseListHandle(c *gin.Context) {
 	}
 	session := context.Session
 	log := context.Log
-	majorId := c.Query("major_id")
-	if majorId == "" {
-		return
-	}
+//	majorId := c.Query("major_id")
+//	if majorId == "" {
+//		return
+//	}
 	courseVoList := make([]course.CourseVo, 0)
 	courseTableList := make([]table.CourseTable, 0)
 	sql := `SELECT * FROM "COURSE" WHERE "FROZEN_STATUS" = ?`
@@ -36,6 +36,6 @@ func CourseListHandle(c *gin.Context) {
 		courseVoList = append(courseVoList, *courseVo)
 	}
 	response = middleware.NewResponse(http.StatusOK, courseVoList, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = response
 	return
 }

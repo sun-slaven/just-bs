@@ -27,7 +27,6 @@ func MarkAdd(c *gin.Context) {
 		log.Println(markErr)
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, nil, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, nil, nil)
 	go service.FlushMarkSum(courseId, context.Ds, log)
 }

@@ -40,6 +40,5 @@ func CourseAddHandle(c *gin.Context) {
 	if addErr != nil {
 		return
 	}
-	response := middleware.NewResponse(http.StatusOK, courseId, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, courseId, nil)
 }

@@ -7,15 +7,15 @@ import (
 	"just.com/common"
 )
 
-/*return id*/
-func (self *TokenService) Make(userId string) (*XToken, error) {
+/*Make return id*/
+func (self *TokenService) Make(userId string) (*UserToken, error) {
 	// 1.delete
 	tokenTable := new(table.TokenTable)
 	tokenTable.UserId = userId
 	self.Session.Delete(tokenTable)
 	// 2.insert
 	tokenTable.UUID = uuid.New()
-	//	tokenTable.UserId = userId
+	tokenTable.UserId = userId
 	tokenTable.CreateTime = time.Now()
 	tokenTable.DeadTime = time.Now().Add(24 * time.Hour)
 	insertNum, insertErr := self.Session.InsertOne(tokenTable)
@@ -26,15 +26,13 @@ func (self *TokenService) Make(userId string) (*XToken, error) {
 		}
 		return nil, TOKEN_MAKE_ERR
 	}
-	xToken := new(XToken)
-	xToken.Id = tokenTable.UUID
-	xToken.UserId = tokenTable.UserId
-	return xToken, nil
+	userToken := NewUserToken(tokenTable.UUID, userId)
+	return userToken, nil
 }
 
-/*each check add dead time*/
-func (self *TokenService) Check(xToken *XToken) bool {
-	if common.IsEmpty(xToken.Id,xToken.UserId) == true{
+/*Check each check add dead time*/
+func (self *TokenService) Check(userToken *UserToken) bool {
+	if common.IsEmpty(userToken.Id, userToken.UserId) == true {
 		return false
 	}
 	sql := `SELECT * FROM "TOKEN"
@@ -42,7 +40,7 @@ func (self *TokenService) Check(xToken *XToken) bool {
 		AND "USER_ID" = ?
 	 	AND "DEAD_TIME" > ?`
 	tokenTable := new(table.TokenTable)
-	getFlag, getErr := self.Session.Sql(sql, xToken.Id, xToken.UserId, time.Now()).Get(tokenTable)
+	getFlag, getErr := self.Session.Sql(sql, userToken.Id, userToken.UserId, time.Now()).Get(tokenTable)
 	if getErr != nil {
 		self.Log.Println(getErr)
 	}

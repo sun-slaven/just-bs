@@ -26,8 +26,8 @@ func TokenMiddleWare(c *gin.Context) {
 			c.Abort()
 			return
 		}
-		xToken := new(service.XToken)
-		unmarshalErr := json.Unmarshal([]byte(xTokenStr), xToken)
+		userToken := new(service.UserToken)
+		unmarshalErr := json.Unmarshal([]byte(xTokenStr), userToken)
 		if unmarshalErr != nil {
 			c.Abort()
 			return
@@ -36,7 +36,7 @@ func TokenMiddleWare(c *gin.Context) {
 		tokenService.Session = context.Ds.NewSession()
 		defer tokenService.Session.Close()
 		tokenService.Log = context.Log
-		if tokenService.Check(xToken) == false {
+		if tokenService.Check(userToken) == false {
 			response := table.Response{}
 			response.Ok = 0
 			response.Err = ""

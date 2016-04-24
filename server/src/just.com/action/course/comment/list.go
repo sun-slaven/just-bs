@@ -18,6 +18,5 @@ func CommentList(c *gin.Context) {
 	courseId := c.Param("course_id")
 	//core
 	commentListVo := course.LoadCommentVoList(courseId, session, log)
-	response := middleware.NewResponse(http.StatusOK, commentListVo, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, commentListVo, nil)
 }

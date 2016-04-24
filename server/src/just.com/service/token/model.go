@@ -15,15 +15,21 @@ type TokenService  struct {
 	Session *xorm.Session
 	Log     *log.Logger
 }
-/*token*/
-type XToken  struct {
-	Id     string
-	UserId string
+type UserToken  struct {
+	Id     string `json:"id"`
+	UserId string        `json:"user_id"`
 }
 
-func NewXToken(id, userId string) *XToken {
-	token := new(XToken)
+func NewUserToken(id, userId string) *UserToken {
+	token := new(UserToken)
 	token.Id = id
 	token.UserId = userId
 	return token
+}
+
+func NewTokenService(session *xorm.Session, log *log.Logger) *TokenService {
+	return &TokenService{
+		Session:session,
+		Log:log,
+	}
 }

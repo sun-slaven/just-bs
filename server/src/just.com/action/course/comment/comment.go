@@ -27,6 +27,5 @@ func Comment(c *gin.Context) {
 			log.Println(err)
 		}
 	}
-	response := middleware.NewResponse(http.StatusOK, nil, nil)
-	c.Set(middleware.RESPONSE, response)
+	context.Response = middleware.NewResponse(http.StatusOK, nil, nil)
 }

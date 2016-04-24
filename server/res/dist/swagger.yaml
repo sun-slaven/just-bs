@@ -1,0 +1,611 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 移动学习系统
+  description: API在线测试 
+  contact:
+    email: 992444037@qq.com
+host: localhost:8086
+basePath: /api/v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: courses
+    description: 课程信息
+  - name: files
+    description: 文件信息
+  - name: users
+    description: 用户
+  - name: tokens
+    desciption: 登录登出
+paths:
+  /courses:
+    get:
+      description: 获取课程列表
+      summary: 课程列表
+      operationId: course list
+      produces:
+        - application/json
+      tags:
+        - courses
+      responses:
+        '200':
+          description: course list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/course'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: 新增课程
+      operationId: add course
+      summary: 添加课程
+      produces:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course
+          in: body
+          description: 新增课程信息
+          required: true
+          schema:
+            $ref: '#/definitions/course'
+      responses:
+        '200':
+          description: course id
+          schema:
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /courses/{course_id}:
+    get:
+      description: 根据id获取课程
+      operationId: get course
+      summary: 获取课程
+      produces:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: course
+          schema:
+            $ref: '#/definitions/course'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: 删除指定课程
+      operationId: delete course
+      summary: 删除课程
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+      responses:
+        '204':
+          description: delete course
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  
+  /courses/{course_id}/comments:
+    get:
+      description: 获取课程评论
+      operationId: get course id
+      summary: 获取课程评论
+      produces:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: course response
+          schema:
+            $ref: '#/definitions/courseComment'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: 增加评论
+      operationId: add comment
+      summary: 添加评论
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema: 
+            type: string
+        - name: comment
+          in: body
+          description: Pet to add to the store
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: course response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/courseComment'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: 删除评论
+      operationId: delete comment
+      summary: 删除评论
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: 成功
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    
+  /courses/{course_id}/marks:
+    post:
+      description: 关注课程
+      operationId: mark course
+      summary: 关注课程
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: mark id
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  
+  /courses/{course_id}/marks/{mark_id}:
+    delete:
+      description: 取消关注课程
+      operationId: mark cancel
+      summary: 取消关注课程
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema: 
+            type: string
+        - name: mark_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+        
+  /courses/{course_id}/points:
+    post:
+      description: 给课程评分
+      operationId: point course
+      summary: 给课程评分
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema: 
+            type: string
+        - name: point
+          in: body
+          required: true
+          defalut: 5
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: mark id
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+            
+  /files:
+    post:
+      description: 增加文件
+      operationId: file add
+      summary: 添加文件
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - files
+      parameters:
+        - name: file
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/file'
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: file
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+
+  /files/token:
+      post:
+        description: 获取文件上传的token
+        operationId: file token
+        summary: 获取文件上传的token
+        produces:
+          - application/json
+        consumes:
+          - application/json
+        tags:
+          - files
+        parameters:
+          - name: file
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/file'
+        responses:
+          '200':
+            description: course response
+            schema:
+              description: file
+              type: string
+          default:
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/errorModel'
+
+  /files/{file_id}:
+    get:
+          description: 获取文件信息
+          operationId: file get
+          summary: 获取文件信息
+          produces:
+            - application/json
+          consumes:
+            - application/json
+          tags:
+            - files
+          parameters:
+            - name: file
+              in: body
+              required: true
+              schema:
+                $ref: '#/definitions/file'
+          responses:
+            '200':
+              description: course response
+              schema:
+                description: file
+                type: string
+            default:
+              description: unexpected error
+              schema:
+                $ref: '#/definitions/errorModel'
+
+
+  /tokens:
+    post:
+      description: 登录-获取token
+      operationId: token get
+      summary: 登录
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - tokens
+      parameters:
+        - name: 登录信息
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/login'
+      responses:
+        '200':
+          description: 成功
+          schema:
+              $ref: '#/definitions/loginResponse'
+
+    delete:
+      description: 登出-删除token
+      operationId: token delete
+      summary: 登出
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - tokens
+      parameters:
+        - name: file
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/file'
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: file
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+
+  /users:
+    post:
+      description: 注册
+      operationId: user register
+      summary: 注册
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/register'
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: file
+            type: string
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+
+  
+definitions:
+  image:
+    type: object
+    required:
+      - url
+    properties:
+      url:
+        type: string
+      width:
+        type: integer
+        format: int64
+      height:
+        type: integer
+        format: int64
+  
+  user:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+      name:
+        type: string
+        default: '小泡子仔'
+      icon:
+        $ref: '#/definitions/image'
+  
+  courseComment:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+      content:
+        type: string
+      create_user:
+        $ref: '#/definitions/user'
+      create_time:
+        type: string
+  
+  course:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      introduction:
+        type: string
+      syllabus:
+        type: string
+      plan:
+        type: string
+      experiment:
+        type: string
+      icon:
+        $ref: '#/definitions/image'
+      mark_sum:
+        type: integer
+        format: int64
+      comment_sum:
+        type: string
+      major:
+        type: string
+      college:
+        type: string
+      point:
+        type: integer
+        format: int64
+      point_person:
+        type: string
+      point_status:
+        type: string
+  
+  file:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+      create_time:
+        type: string
+
+  register:
+    type: object
+    properties:
+      email:
+        type: string
+        default: '992444037@qq.com'
+      user_name:
+        type: string
+        default: '小泡子仔'
+      code:
+        type: string
+        default: '1234'
+      password:
+        type: string
+        default: '123456'
+      password2:
+        type: string
+        default: '123456'
+
+  login:
+      type: object
+      properties:
+        email:
+          type: string
+          default: '992444037@qq.com'
+        password:
+          type: string
+          default: '123456'
+
+
+  loginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/definitions/user'
+        token:
+          $ref: '#/definitions/token'
+
+  token:
+      type: object
+      properties:
+        id:
+          type: string
+          default: 'b195a07a-7c42-4cbe-af01-6882b5bc3a10'
+        user_id:
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

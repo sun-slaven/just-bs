@@ -21,9 +21,13 @@ func LoadUserVo(userId string, session *xorm.Session, log *log.Logger) *UserVo {
 		}
 		return nil
 	}
-	userVo := new(UserVo)
-	userVo.UUID = userTable.UUID
-	userVo.Name = userTable.Name
-	userVo.Icon = file.NewImageVo(userTable.IconUrl,userTable.IconWidth,userTable.IconHeight)
-	return userVo
+	return LoadUserVoByTable(userTable)
+}
+
+func LoadUserVoByTable(table *table.UserTable) *UserVo {
+	uv := new(UserVo)
+	uv.UUID = table.UUID
+	uv.Name = table.Name
+	uv.Icon = file.NewImageVo(table.IconUrl, table.IconWidth, table.IconHeight)
+	return uv
 }

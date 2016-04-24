@@ -24,12 +24,12 @@ func GetContext(c *gin.Context) (*middleware.Context, bool) {
 	return context, true
 }
 
-func GetToken(c *gin.Context) (*service.XToken, bool) {
+func GetToken(c *gin.Context) (*service.UserToken, bool) {
 	tokenTemp, tokenTempFlag := c.Get(middleware.MIDDLEWARE_TOKEN)
 	if tokenTempFlag == false {
 		return nil,tokenTempFlag
 	}
-	token, tokenFlag := tokenTemp.(*service.XToken)
+	token, tokenFlag := tokenTemp.(*service.UserToken)
 	if tokenFlag == false {
 		return nil, tokenFlag
 	}

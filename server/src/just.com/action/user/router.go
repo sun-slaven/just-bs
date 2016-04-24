@@ -8,9 +8,8 @@ import (
 	"just.com/dto"
 )
 
-func BuildRouter(g *gin.RouterGroup) {
-	g.POST("")    //register
-	g.Any("/:user_id", User)
+func BuildRouter(group *gin.RouterGroup) {
+	group.Any("/:user_id", User)
 }
 
 func User(c *gin.Context) {

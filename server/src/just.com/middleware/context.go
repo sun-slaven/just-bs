@@ -8,9 +8,10 @@ import (
 )
 
 type Context struct {
-	Ds      *db.DataSource
-	Log     *log.Logger
-	Session *xorm.Session
+	Ds       *db.DataSource
+	Log      *log.Logger
+	Session  *xorm.Session
+	Response *Response
 }
 
 type Response  struct {
@@ -33,6 +34,8 @@ func ContextMiddleWare(ds *db.DataSource, log *log.Logger) gin.HandlerFunc {
 		context.Log = log
 		context.Ds = ds
 		context.Session = ds.NewSession()
+		response := NewResponse(http.StatusOK, nil, nil)
+		context.Response = response
 		defer context.Session.Close()
 		beginErr := context.Session.Begin()
 		if beginErr != nil {
@@ -40,11 +43,8 @@ func ContextMiddleWare(ds *db.DataSource, log *log.Logger) gin.HandlerFunc {
 		}
 		c.Set(MLEARNING_CONTENT, context)
 		c.Next()    //next
-		response, flag := c.MustGet(RESPONSE).(*Response)
-		if flag == false {
-			return
-		}
 		// session rollback or commit
+		response = context.Response
 		if response.status == http.StatusOK {
 			// commit
 			commitErr := context.Session.Commit()

@@ -1,5 +1,9 @@
 package common
-import "crypto/md5"
+import (
+	"crypto/md5"
+	"encoding/hex"
+)
+
 
 func Md5(value string) string {
 	// new
@@ -7,6 +11,5 @@ func Md5(value string) string {
 	// write
 	md5Ctx.Write([]byte(value))
 	// sum
-	result := md5Ctx.Sum(nil)
-	return string(result)
+	return hex.EncodeToString(md5Ctx.Sum(nil))
 }

@@ -3,8 +3,9 @@ import "time"
 
 type UserTable struct {
 	UUID         string    `xorm:"pk 'UUID'"`
-	RoleName         string        `xorm:"'ROLE_NAME'"`
+	RoleName     string        `xorm:"'ROLE_NAME'"`
 	Name         string        `xorm:"'NAME'"`
+	Password     string `xorm:"'PASSWORD'"`
 	Number       string    `xorm:"'NUMBER'"`
 	Age          int64    `xorm:"'AGE'"`
 	Sex          int64    `xorm:"'SEX'"`
@@ -19,6 +20,7 @@ type UserTable struct {
 	FrozenStatus string    `xorm:"'FROZEN_STATUS'"`
 	FrozenTime   time.Time    `xorm:"deleted 'FROZEN_TIME'"`
 }
+
 func (self *UserTable)TableName() string {
 	return "USER"
 }
