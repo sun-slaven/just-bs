@@ -2,7 +2,7 @@ GlobalModules.add_controller('user')
 angular.module('just.controllers.user', ['ngCookies'])
     .controller('UserController', ['$rootScope', '$scope', 'UserService',
         function($rootScope, $scope, UserService) {
-            if ($rootScope.user) {
+            if ($rootScope.current_user) {
                 $rootScope.go('/')
             }
             $scope.form_type = 'login';
@@ -13,8 +13,8 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.error_infos = []
                 //login
             $scope.user = {
-                email: $rootScope.get_cookie('email') || '',
-                password: $rootScope.get_cookie('password') || '',
+                email: $rootScope.get_storage('email') || '',
+                password: $rootScope.get_storage('password') || '',
                 remember_me: true
             }
             $scope.can_submit = function() {
@@ -30,13 +30,15 @@ angular.module('just.controllers.user', ['ngCookies'])
                     if ($scope.can_submit()) {
                         if ($scope.form_type == 'login') {
                             if ($scope.user.remember_me) {
-                                $rootScope.set_cookie('email', $scope.user.email)
-                                $rootScope.set_cookie('password', $scope.user.password)
-                            };
+                                $rootScope.set_storage('email', $scope.user.email)
+                                $rootScope.set_storage('password', $scope.user.password)
+                            }else{
+                                $rootScope.set_storage('email', null)
+                                $rootScope.set_storage('password', null)
+                            }
                             UserService.sign_in($scope.user, function(resp) {
                                 $rootScope.icon = resp.user.icon;
-                                $rootScope.show_header = true;
-                                $rootScope.go("/users/" + $rootScope.user.id + "/me");
+                                $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
                             })
 
                         }

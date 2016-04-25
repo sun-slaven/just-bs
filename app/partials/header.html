@@ -1,4 +1,4 @@
-<nav class="navbar navbar" role="navigation" id="nav-header" ng-show="show_header" ng-controller="HeaderController">
+<nav class="navbar navbar" role="navigation" id="nav-header" ng-if="show_header" ng-controller="HeaderController">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-content">
             <span class="sr-only">切换导航</span>
@@ -14,9 +14,9 @@
         </ul>
     </div>
     <div id="log-out">
-        <ul>
+        <ul ng-click="sign_out()">
             <li>
-                <a ng-click="sign_out()">
+                <a>
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </a>
             </li>

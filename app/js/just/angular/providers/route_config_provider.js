@@ -6,6 +6,10 @@ provider('RouteConfig', function() {
             return '/app/partials/' + url + '.html';
         }
         var base_config = [{
+            path: '/',
+            templateUrl: partial_url('user/login'),
+            controller: 'UserController'
+        },{
             path: '/login',
             templateUrl: partial_url('user/login'),
             controller: 'UserController'

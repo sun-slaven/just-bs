@@ -3,15 +3,15 @@ angular.module('just.controllers.header', [])
     .controller('HeaderController', ['$rootScope', '$scope', 'UserService',
         function($rootScope, $scope, UserService) {
 
-            $rootScope.show_header = true;
             //log out
             $scope.sign_out = function() {
                     $rootScope.confirm_modal("确认退出吗?", $scope, function() {
-                        UserService.sign_out(function() {
-                            $rootScope.show_header = false;
-                            $rootScope.go('/login');
-                        })
-                    })
+                        $rootScope.current_user = null;//can delete , in service
+                        $rootScope.go('/login');
+                    //     UserService.sign_out(function() {
+                    //         $rootScope.go('/login');
+                    //     })
+                     })
                 }
                 //nav-head controller
             $scope.header_search = {
@@ -44,7 +44,7 @@ angular.module('just.controllers.header', [])
 
             }
             $scope.go_me = function() {
-                $rootScope.go('/users/'+ $rootScope.user.id + '/me')
+                $rootScope.go('/users/'+ $rootScope.current_user.id + '/me')
             }
 
             $scope.go_manager_lessons = function() {
