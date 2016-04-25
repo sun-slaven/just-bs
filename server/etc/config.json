@@ -21,6 +21,7 @@
     "from": "992444037@qq.com",
     "from_name": "移动学习系统",
     "subject": "激活账户",
-    "request_url": "http://sendcloud.sohu.com/webapi/mail.send_template.json"
+    "request_url": "http://sendcloud.sohu.com/webapi/mail.send_template.json",
+    "active_url":"http://the-world-wang.top/api/v1/public/user_active"
   }
 }

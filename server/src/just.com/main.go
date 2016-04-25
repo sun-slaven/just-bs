@@ -15,6 +15,7 @@ import (
 	"just.com/action/token"
 	"just.com/middleware"
 	"just.com/action/college"
+	"just.com/action/public"
 )
 
 func main() {
@@ -56,6 +57,12 @@ func main() {
 	course.BuildRouter(mLearingGroup.Group("/courses"))
 	user.BuildRouter(mLearingGroup.Group("/users"))
 	token.BuildRouter(mLearingGroup.Group("/tokens"))
+
+	// public
+	publicGroup := router.Group("/api/v1")
+	publicGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
+	public.BuildRouter(publicGroup.Group("/public"))
+
 	s := &http.Server{
 		Addr: config.Port,
 		Handler:router,

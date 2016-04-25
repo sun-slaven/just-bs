@@ -26,7 +26,7 @@ func NewEamilService(config etc.SendCloudConfig) *EmailService {
 func (self *EmailService) SendMail(email, username string, userToken *service.UserToken) {
 	RequestURI := self.Config.RequestUrl
 	//不同于登录SendCloud站点的帐号，您需要登录后台创建发信子帐号，使用子帐号和密码才可以进行邮件的发送。
-	activeUrl := getUrl(userToken)
+	activeUrl := self.Config.ActiveUrl + "?id=" + userToken.Id + "&user_id=" + userToken.UserId
 	PostParams := url.Values{
 		"api_user": {self.Config.ApiUser},
 		"api_key":  {self.Config.ApiKey},
@@ -58,10 +58,6 @@ func getContent(email string, username string, url string) string {
 	buffer := new(bytes.Buffer)
 	t.Execute(buffer, emailContent)
 	return buffer.String()
-}
-
-func getUrl(userToken *service.UserToken) string {
-	return "http://the-world-wang.top/user/active?id=" + userToken.Id + "&user_id=" + userToken.UserId
 }
 
 func Code(n int) {

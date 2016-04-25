@@ -69,12 +69,18 @@ func (self *UserService) Register(email, name, password, roleName string) (userL
 	if common.IsEmpty(email, name, roleName) == true {
 		return
 	}
+	// 2.check the email
+	_, getFlag := self.GetByEmail(email)
+	if getFlag {
+		err = service.SERVICE_USER_REGISTER_EMAIL_EXISTS_ERR
+		return
+	}
 	// 2.insert
 	user := new(table.UserTable)
 	user.UUID = uuid.New()
 	user.RoleName = roleName
 	user.Name = name
-	user.Password = password
+	user.Password = common.Md5(password)
 	user.Number = ""
 	user.Age = 0
 	user.Sex = 0
