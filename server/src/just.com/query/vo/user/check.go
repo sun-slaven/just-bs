@@ -5,6 +5,7 @@ import (
 	"just.com/model/db/table"
 	"just.com/common"
 	"just.com/service/token"
+	"strings"
 )
 
 type UserLoginVo struct {
@@ -21,7 +22,7 @@ func CheckUser(email string, password string, session *xorm.Session, log *log.Lo
 		log.Println(getErr)
 		return userLoginVo, false
 	}
-	if common.Md5(password) != userTable.Password {
+	if common.Md5(password) != strings.ToLower(userTable.Password) {
 		return userLoginVo, false
 	}
 	// token

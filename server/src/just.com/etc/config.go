@@ -33,4 +33,5 @@ type SendCloudConfig struct {
 	FromName   string `json:"from_name"`
 	Subject    string `json:"subject"`
 	RequestUrl string `json:"request_url"`
+	ActiveUrl  string `json:"active_url"`
 }
