@@ -65,6 +65,7 @@ module.exports = function(grunt) {
                 src: [
                     'app/lib/grunt_bower/angular/angular.js',
                     'app/lib/grunt_bower/angular-cookies/angular-cookies.js',
+                    'app/lib/grunt_bower/angularLocalStorage/angularLocalStorage.min.js',
                     'app/lib/grunt_bower/angular-resource/angular-resource.js',
                     'app/lib/grunt_bower/angular-route/angular-route.js',
                     'app/lib/grunt_bower/angular-animate/angular-animate.js',

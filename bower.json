@@ -29,6 +29,7 @@
     "ng-file-upload": "^12.0.1",
     "angular-smart-table": "^2.1.8",
     "angular-qiniu-upload": "^0.0.4",
-    "angular-strap": "^2.3.8"
+    "angular-strap": "^2.3.8",
+    "angularLocalStorage": "^0.3.2"
   }
 }

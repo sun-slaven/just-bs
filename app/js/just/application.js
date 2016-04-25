@@ -5,12 +5,12 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'smart-table', 'angularQFileUpload', 'mgcrea.ngStrap',
+    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'smart-table', 'angularQFileUpload', 'mgcrea.ngStrap', 'angularLocalStorage',
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$routeProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
-    function($routeProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
+])).config(['$routeProvider','$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
+    function($routeProvider, $locationProvider,$sceDelegateProvider, RouteConfigProvider, $modalProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
@@ -25,6 +25,7 @@ angular.module('just', GlobalModules.get([
         $routeProvider.otherwise({
             redirectTo: '/login'
         });
+        $locationProvider.html5Mode(true);// remove # in the url
         //修改modal的全局配置
         angular.extend($modalProvider.defaults, {
             animation: 'am-fade-and-scale',
@@ -33,7 +34,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$modal', '$cacheFactory', '$cookies', '$cookieStore', 'AnchorSmoothScrollService', function($rootScope, $location, $modal, $cacheFactory, $cookies, $cookieStore, AnchorSmoothScrollService) {
+]).run(['$rootScope', '$location', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', function($rootScope, $location, $modal, $cacheFactory, AnchorSmoothScrollService, storage) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -62,18 +63,16 @@ angular.module('just', GlobalModules.get([
             };
             cache.removeAll();
         }
-        //cookie
-    $rootScope.get_cookie = function(key) {
-        return $cookieStore.get(key);
+        //localStorage
+    $rootScope.get_storage = function(key) {
+        return storage.get(key);
     }
-    $rootScope.set_cookie = function(key, value) {
-        $cookieStore.put(key, value);
+    $rootScope.set_storage = function(key, value) {
+        storage.set(key, value);
     }
-    $rootScope.remove_cookie = function(key) {
-        $cookieStore.remove(key);
+    $rootScope.clear_storage = function() {
+        storage.clearAll();
     }
-    $cookieStore.put("test","test")
-    console.log($rootScope.get_cookie("test"))
 
     //滚动到顶部
     $rootScope.scrollTo = function(eID) {
@@ -94,11 +93,14 @@ angular.module('just', GlobalModules.get([
     }
 
 
-    //if show header
-    $rootScope.show_header = false;
-    if ($rootScope.get_cache('current_user')) {
-        $rootScope.show_header = true;
-    };
-
+    $rootScope.$watch(function() {
+        return $rootScope.current_user
+    }, function(newValue, oldValue) {
+        if (newValue) {
+            $rootScope.show_header = true;
+        } else {
+            $rootScope.show_header = false;
+        }
+    })
 
 }])

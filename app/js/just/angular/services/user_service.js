@@ -25,6 +25,7 @@ factory('UserService', ['$rootScope', '$resource', '$http',
                 user: user
             }, function(resp) {
                 set_user(null)
+                $rootScope.clear_cache()
                 $rootScope.reload(); //route reload
                 if (success) { success(resp) }
             })
@@ -41,9 +42,7 @@ factory('UserService', ['$rootScope', '$resource', '$http',
         }
 
         function set_user(new_user) {
-            $rootScope.clear_cache()
-            $rootScope.user = new_user
-            $rootScope.set_cache('user', new_user)
+            $rootScope.current_user = new_user
         }
 
         return {
