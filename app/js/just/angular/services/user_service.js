@@ -15,7 +15,6 @@ factory('UserService', ['$rootScope', '$resource', '$http',
                 email: user.email,
                 password: user.password
             }, function(resp) {
-                set_user(resp.user);
                 if (success) { success(resp) }
             })
         }
@@ -33,10 +32,12 @@ factory('UserService', ['$rootScope', '$resource', '$http',
 
         function register(user, success) {
             registerAPI.register({}, {
+                user_name: user.name,
                 email: user.email,
-                password: user.password
+                password: user.password,
+                password2: user.password_again
             }, function(resp) {
-                set_user(resp.user);
+                console.log(resp)
                 if (success) { success(resp) }
             })
         }

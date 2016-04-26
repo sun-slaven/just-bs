@@ -15,7 +15,7 @@
             </ul>
         </div>
 
-        <div class="form" ng-if="form_type == 'login'">
+        <div class="form" ng-show="form_type == 'login'">
             <div class="form-group">
                 <input type="email" class="form-control" ng-model="user.email" placeholder="请输入登陆邮箱" autocomplete="true" required>
             </div>
@@ -27,7 +27,10 @@
             </div>
             <div class="login-form-btn btn btn-default" ng-click="submit()" ng-disabled="!can_submit()">登录</div>
         </div>
-        <div class="form" ng-if="form_type == 'register'">
+        <div class="form" ng-show="form_type == 'register'">
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="register.name" placeholder="请输入用户名">
+            </div>
             <div class="form-group">
                 <input type="email" class="form-control" ng-model="register.email" placeholder="请输入注册邮箱">
             </div>
@@ -37,7 +40,7 @@
             <div class="form-group">
                 <input type="password" class="form-control" ng-model="register.password_again" placeholder="请再一次输入密码">
             </div>
-            <div class="login-form-btn btn btn-default" ng-click="register()" ng-disabled="!can_register()">注册</div>
+            <div class="login-form-btn btn btn-default" ng-click="register_ok()" ng-disabled="!can_register()">注册</div>
         </div>
     </div>
 </div>
