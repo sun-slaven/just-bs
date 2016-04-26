@@ -1,13 +1,13 @@
 package college
 
 type CollegeVo struct {
-	Id        string
-	Name      string
+	Id        string  `json:"id"`
+	Name      string        `json:"name"`
 	MajorList []MajorVo `json:"major_list"`
 }
 
 
 type MajorVo struct {
-	Id   string
-	Name string
+	Id   string        `json:"id"`
+	Name string        `json:"name"`
 }
