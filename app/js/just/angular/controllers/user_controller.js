@@ -32,7 +32,7 @@ angular.module('just.controllers.user', ['ngCookies'])
                             if ($scope.user.remember_me) {
                                 $rootScope.set_storage('email', $scope.user.email)
                                 $rootScope.set_storage('password', $scope.user.password)
-                            }else{
+                            } else {
                                 $rootScope.set_storage('email', null)
                                 $rootScope.set_storage('password', null)
                             }
@@ -46,22 +46,24 @@ angular.module('just.controllers.user', ['ngCookies'])
                 }
                 //register
             $scope.register = {
+                name: '',
                 email: '',
                 password: '',
                 password_again: ''
             }
             $scope.can_register = function() {
-                if ($scope.register.email) {
+                if ($scope.register.name && $scope.register.email) {
                     if ($scope.register.password && ($scope.register.password === $scope.register.password_again)) {
                         return true;
                     };
                 };
                 return false
             }
-            $scope.register = function() {
+            $scope.register_ok = function() {
                 if ($scope.can_register()) {
-                    $rootScope.current_user = $scope.register
-                    $rootScope.go("/users/1/show")
+                    UserService.register($scope.register, function(resp) {
+                        $scope.register_request_success = "邮件已经发送到邮箱,请登陆邮箱确认后登陆"
+                    })
                 };
             }
 

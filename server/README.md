@@ -32,3 +32,6 @@ nginx的端口可以随便改(我默认8086)
 1. / 根目录为前端目录,映射`JUST_PATH`的上一层路径
 2. /api 后端api路径,如`/api/v1/courses`
 3. /res 后端测试demo,映射`JUST_PATH/res`目录
+
+## API page:
+http://localhost:8086/res/dist/
