@@ -4,38 +4,44 @@ import (
 	"net/http"
 	"just.com/middleware"
 	"just.com/action"
-	"just.com/model/db/table"
+	"log"
 	"just.com/query/vo/course"
+	"just.com/model/db/table"
 )
+
+type CourseListRequest struct {
+	MajorId   string `form:"major_id"`
+	CollegeId string `form:"college_id"`
+	Mark      bool        `form:"mark"`
+	Page      int64 `form:"page"`
+	PageSize  int64 `form:"page_size"`
+}
+
+//func NewCourseLitRequest() *CourseListRequest {
+//	return &CourseListRequest{Mark:true, Page:1, PageSize:20}
+//}
 
 /*需要过滤条件 major_id */
 func CourseListHandle(c *gin.Context) {
-	var response *middleware.Response
+	response := middleware.NewResponse(http.StatusOK, nil, nil)
 	context, contextFlag := action.GetContext(c)
 	if contextFlag == false {
-		response = middleware.NewResponse(http.StatusOK, nil, nil)
 		return
 	}
-	session := context.Session
-	log := context.Log
-//	majorId := c.Query("major_id")
-//	if majorId == "" {
-//		return
-//	}
-	courseVoList := make([]course.CourseVo, 0)
-	courseTableList := make([]table.CourseTable, 0)
-	sql := `SELECT * FROM "COURSE" WHERE "FROZEN_STATUS" = ?`
-	findErr := session.Sql(sql, "N").Find(&courseTableList)
-	if findErr != nil {
-		log.Println(findErr)
-		response = middleware.NewResponse(http.StatusOK, nil, nil)
+	defer func() {
+		context.Response = response
+	}()
+	request := new(CourseListRequest)
+	log.Println(request)
+	bindErr := c.Bind(request)
+	if bindErr != nil {
+		log.Println(bindErr)
 		return
 	}
-	for _, courseTable := range courseTableList {
-		courseVo := course.NewCourseVo(&courseTable)
-		courseVoList = append(courseVoList, *courseVo)
+	courseVoList, err := course.LoadCourseVoList(&table.CourseTable{MajorId:request.MajorId, CollegeId:request.CollegeId}, context.Session, context.Log)
+	if err != nil {
+		context.Log.Println(err)
 	}
 	response = middleware.NewResponse(http.StatusOK, courseVoList, nil)
-	context.Response = response
 	return
 }

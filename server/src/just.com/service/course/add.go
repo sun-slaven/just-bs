@@ -20,9 +20,9 @@ func (self *CourseService) Add(dto *dto.CourseDto, userId string) (string, error
 	courseTable.Introduction = dto.Introduction
 	courseTable.Syllabus = dto.Syllabus
 	courseTable.Experiment = dto.Experiment
-	courseTable.Plan = dto.Plan
-	courseTable.Major = dto.Major
-	courseTable.College = dto.College
+	courseTable.Wish = dto.Wish
+	courseTable.MajorId = dto.Major
+	courseTable.MajorId = dto.College
 	courseTable.CreateUser = userId
 	courseTable.CreateTime = time.Now()
 	courseTable.UpdateUser = userId

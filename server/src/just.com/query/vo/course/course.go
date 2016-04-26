@@ -4,51 +4,97 @@ import (
 	"just.com/model/db/table"
 	"github.com/go-xorm/xorm"
 	"log"
+	"just.com/query/vo/college"
+	"just.com/query/vo/user"
+	"just.com/query"
 )
 
 type CourseVo struct {
 	UUID         string `json:"id"`
 	Name         string    `json:"name"`
+	Description  string `json:"description"`
 	Introduction string    `json:"introduction"`
 	Syllabus     string    `json:"syllabus"`
-	Plan         string        `json:"plan"`
+	Wish         string        `json:"wish"`
 	Experiment   string        `json:"experiment"`
-	Icon         file.ImageVo    `json:"icon"`
+	Icon         *file.ImageVo    `json:"icon"`
 	MarkSum      int64    `json:"mark_sum"`
 	CommentSum   int64 `json:"comment_sum"`
-	Major        string    `json:"major"`
-	College      string    `json:"college"`
+	Major        *college.MajorVo    `json:"major"`
+	College      *college.CollegeVo    `json:"college"`
 	Point        int64 `json:"point"`
 	PointPerson  int64 `json:"point_person"`
 	PointStatus  string `json:"point_status"`
+	Teacher      *user.UserVo `json:"teacher"`
 }
 
-func NewCourseVo(t *table.CourseTable) *CourseVo {
-	cv := new(CourseVo)
-	cv.UUID = t.UUID
-	cv.Name = t.Name
-	cv.Introduction = t.Introduction
-	cv.Syllabus = t.Syllabus
-	cv.Plan = t.Plan
-	cv.Experiment = t.Experiment
+func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
+	err = query.QUERY_COURSE_LOAD_ERR
+	getFlag, getErr := session.Get(courseTable)
+	if getFlag == false {
+		if getErr != nil {
+			log.Println(getErr)
+		}
+		return nil, err
+	}
+	return LoadCourseVoFromTable(courseTable, session, log)
+}
 
-	icon := file.ImageVo{}
-	icon.Url = t.IconUrl
-	icon.Width = t.IconWidth
-	icon.Height = t.IconHeight
 
+func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
+	err = query.QUERY_COURSE_LOAD_FROM_TABLE_ERR
+	cv = new(CourseVo)
+	cv.UUID = courseTable.UUID
+	cv.Name = courseTable.Name
+	cv.Description = courseTable.Description
+	cv.Introduction = courseTable.Introduction
+	cv.Syllabus = courseTable.Syllabus
+	cv.Wish = courseTable.Wish
+	cv.Experiment = courseTable.Experiment
+
+	// icon
+	icon := new(file.ImageVo)
+	icon.Url = courseTable.IconUrl
+	icon.Width = courseTable.IconWidth
+	icon.Height = courseTable.IconHeight
 	cv.Icon = icon
-	cv.MarkSum = t.MarkSum
-	cv.CommentSum = t.CommentSum
-	cv.Major = t.Major
-	cv.College = t.College
-	if t.PointPerson > 0 {
-		cv.Point = t.Points / t.PointPerson
+	cv.MarkSum = courseTable.MarkSum
+	cv.CommentSum = courseTable.CommentSum
+
+	// college
+	collegeTable := new(table.CollegeTable)
+	getFlag, getErr := session.Get(collegeTable)
+	if getFlag == false {
+		if getErr != nil {
+			log.Println(getErr)
+			return nil, err
+		}
+		log.Println(err.Error())
+	}
+	cv.College = college.LoadCollegeVo(collegeTable)
+
+	// major
+	majorTable := new(table.MajorTable)
+	getFlag, getErr = session.Get(majorTable)
+	if getFlag == false {
+		if getErr != nil {
+			log.Println(getErr)
+			return nil, err
+		}
+		log.Println(err.Error())
+	}
+	cv.Major = college.LoadMajorVo(majorTable)
+
+	// teacher
+	cv.Teacher = user.LoadUserVo(courseTable.TeacherId, session, log)
+
+	if courseTable.PointPerson > 0 {
+		cv.Point = courseTable.Points / courseTable.PointPerson
 	}else {
 		cv.Point = 0
 	}
-	cv.PointPerson = t.PointPerson
-	return cv
+	cv.PointPerson = courseTable.PointPerson
+	return cv, nil
 }
 
 /*load point status*/

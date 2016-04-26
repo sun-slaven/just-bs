@@ -50,6 +50,35 @@ paths:
         - application/json
       tags:
         - courses
+      parameters:
+        - name: college_id
+          in: query
+          description: 学员号
+          required: false
+          type: string
+        - name: major_id
+          in: query
+          description: 专业号
+          required: false
+          type: string
+        - name: mark
+          in: query
+          description: 是否关注
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          description: 是否关注
+          required: false
+          type: integer
+          format: int64
+        - name: page_size
+          in: query
+          description: 是否关注
+          required: false
+          type: integer
+          format: in64
+
       responses:
         '200':
           description: course list
