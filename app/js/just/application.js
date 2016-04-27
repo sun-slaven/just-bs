@@ -9,8 +9,8 @@ angular.module('just', GlobalModules.get([
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$routeProvider','$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
-    function($routeProvider, $locationProvider,$sceDelegateProvider, RouteConfigProvider, $modalProvider) {
+])).config(['$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
+    function($routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
@@ -25,7 +25,8 @@ angular.module('just', GlobalModules.get([
         $routeProvider.otherwise({
             redirectTo: '/login'
         });
-        $locationProvider.html5Mode(true);// remove # in the url
+        // $locationProvider.html5Mode(true); // remove # in the url
+        // $locationProvider.hashPrefix = '!';
         //修改modal的全局配置
         angular.extend($modalProvider.defaults, {
             animation: 'am-fade-and-scale',
@@ -34,7 +35,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', function($rootScope, $location, $modal, $cacheFactory, AnchorSmoothScrollService, storage) {
+]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -84,23 +85,49 @@ angular.module('just', GlobalModules.get([
         return $modal(modal_obj)
     }
     $rootScope.confirm_modal = function(content, scope, success) {
-        scope.modal_ok = success;
-        $rootScope.strap_modal({
-            content: content,
-            title: "提示".concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
-            scope: scope
-        });
+            scope.modal_ok = success;
+            $rootScope.strap_modal({
+                content: content,
+                title: "提示".concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
+                scope: scope
+            });
+        }
+        //alert
+    $rootScope.alert_modal = function(modal_obj) {
+        return $alert(modal_obj)
     }
 
 
-    $rootScope.$watch(function() {
-        return $rootScope.current_user
-    }, function(newValue, oldValue) {
-        if (newValue) {
-            $rootScope.show_header = true;
-        } else {
-            $rootScope.show_header = false;
+    $rootScope.$on('$routeChangeSuccess', function(evt, next, current) {
+        //refuse change the url to /# then header show
+        if ($location.path() == '/') {
+            //     UserService.sign_out(function() {
+            //     })
+        };
+        //init lessons index page data
+        if ($location.path().indexOf('/me') > -1) {
+            if ($rootScope.college_major == undefined) {
+                $rootScope.all_colleges = []
+                $rootScope.all_majors = []
+                CollegeMajorService.get_college_major(function(response) {
+                    for (var i = 0; i < response.length; i++) {
+                        $rootScope.all_colleges.push(response[i])
+                        for (index in response[i].major_list) {
+                            response[i].major_list[index].college_id = response[i].id;
+                            $rootScope.all_majors.push(response[i].major_list[index])
+                        }
+                    }
+                });
+            }
+
+            if ($rootScope.all_lessons == undefined) {
+                LessonsService.lessons_list(function(resp) {
+                    $rootScope.all_lessons = resp;
+                })
+            };
+
         }
     })
+
 
 }])
