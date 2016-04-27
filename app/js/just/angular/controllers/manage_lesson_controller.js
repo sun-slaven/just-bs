@@ -53,17 +53,46 @@ angular.module('just.controllers.manage_lesson', [])
             });
         }
 
-        $scope.create_lesson = function(resp){
-            LessonsService.create_lesson($scope.new_lesson,function(){
+        $scope.create_lesson = function(resp) {
+                LessonsService.create_lesson($scope.new_lesson, function() {
 
-            })
+                })
+            }
+            //学院专业联动 由于使用ng-include 产生子scope,所以使用#$watch无法达到效果
+        $scope.colleges = $rootScope.all_colleges;
+        $scope.majors = $rootScope.all_majors;
+        $scope.chosen_college = null;
+        $scope.chosen_major = null;
+        $scope.change_college = function(college) {
+            if (college) {
+                $scope.majors = college.major_list;
+            } else {
+                $scope.majors = $rootScope.all_majors;
+            }
         }
+        $scope.change_major = function(major) {
+            if ($scope.chosen_college) {
+                $scope.majors = $scope.chosen_college.major_list;
+                return;
+            };
+            if (major) {
+                angular.forEach($rootScope.all_colleges, function(college) {
+                    if (college.id == major.college_id) {
+                        $scope.chosen_college = college;
+                    };
+                })
+            } else {
+                $scope.majors = $rootScope.all_majors;
+            }
+        }
+
+
 
         //新建lesson
         $scope.new_lesson = {
             name: "",
-            college: null,
-            major: null,
+            college_id: null,
+            major_id: null,
             introduction: '',
             description: '',
             outline_list: [],

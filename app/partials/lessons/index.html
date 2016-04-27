@@ -6,7 +6,7 @@
         <div class="filter-row clearfix">
             <span>学院:</span>
             <div class="filter-body col-xs-2">
-                <select ng-model="chosen_college" ng-options="college.name for college in colleges" class="form-control">
+                <select ng-model="chosen_college" ng-options="college.name for college in colleges" class="form-control" ng-change="change_college(college)">
                     <option value="">-- 所有 --</option>
                 </select>
             </div>
@@ -14,7 +14,7 @@
         <div class="filter-row clearfix">
             <span>专业:</span>
             <div class="filter-body col-xs-2">
-                <select ng-model="chosen_major" ng-options="major.name for major in majors" class="form-control">
+                <select ng-model="chosen_major" ng-options="major.name for major in majors" class="form-control" ng-change="change_major(major)">
                     <option value="">-- 所有 --</option>
                 </select>
             </div>

@@ -1,0 +1,68 @@
+/*需要设置使body铺满高度*/
+
+html,
+body {
+    height: 100%;
+}
+
+.divider(@color: #FFFFFF, @height: 1px) {
+    .divider {
+        background-color: @color;
+        height: @height;
+    }
+}
+
+.one-lesson {
+    height: 240px;
+    text-align: center;
+    padding-top: 20px;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
+    .lesson-img {}
+    p {
+        color: #b4bbbf
+    }
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5)
+    }
+}
+
+.modal-backdrop.am-fade {
+    opacity: .5;
+    transition: opacity .15s linear;
+    &.ng-enter {
+        opacity: 0;
+        &.ng-enter-active {
+            opacity: .5;
+        }
+    }
+    &.ng-leave {
+        opacity: .5;
+        &.ng-leave-active {
+            opacity: 0;
+        }
+    }
+}
+
+//表单验证
+input.ng-invalid {
+    border: 1px solid red;
+}
+
+input.ng-valid {
+    border: 1px solid green;
+}
+
+span.error {
+    color: red;
+}
+
+.alert {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 20%;
+    right: 20%;
+    z-index: 9999;
+}
