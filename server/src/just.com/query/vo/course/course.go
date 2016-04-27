@@ -94,6 +94,7 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 		cv.Point = 0
 	}
 	cv.PointPerson = courseTable.PointPerson
+	cv.PointStatus = "N"
 	return cv, nil
 }
 

@@ -23,7 +23,7 @@ type CourseTable struct {
 	FrozenTime   time.Time `xorm:"'FROZEN_TIME'"`
 	MajorId      string    `xorm:"'MAJOR_ID'"`
 	CollegeId    string    `xorm:"'COLLEGE_ID'"`
-	TeacherId    string `xrom:"'TEACHER_ID'"`
+	TeacherId    string `xorm:"'TEACHER_ID'"`
 	Points       int64    `xorm:"'POINTS'"`
 	PointPerson  int64 `xorm:"'POINT_PERSON'"`
 }

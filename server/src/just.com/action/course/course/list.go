@@ -17,10 +17,6 @@ type CourseListRequest struct {
 	PageSize  int64 `form:"page_size"`
 }
 
-//func NewCourseLitRequest() *CourseListRequest {
-//	return &CourseListRequest{Mark:true, Page:1, PageSize:20}
-//}
-
 /*需要过滤条件 major_id */
 func CourseListHandle(c *gin.Context) {
 	response := middleware.NewResponse(http.StatusOK, nil, nil)
@@ -31,14 +27,24 @@ func CourseListHandle(c *gin.Context) {
 	defer func() {
 		context.Response = response
 	}()
-	request := new(CourseListRequest)
-	log.Println(request)
+	request := &CourseListRequest{Mark:true, Page:1, PageSize:10}
 	bindErr := c.Bind(request)
 	if bindErr != nil {
 		log.Println(bindErr)
 		return
 	}
-	courseVoList, err := course.LoadCourseVoList(&table.CourseTable{MajorId:request.MajorId, CollegeId:request.CollegeId}, context.Session, context.Log)
+	if request.Page <= 0 || request.PageSize <= 0 {
+		return
+	}
+	table := new(table.CourseTable)
+	if request.MajorId != "" {
+		table.MajorId = request.MajorId
+	}
+	if request.CollegeId != "" {
+		table.CollegeId = request.CollegeId
+	}
+	courseVoList, err := course.LoadCourseVoList(table, context.Session, context.Log)
+	log.Println(courseVoList[0].Teacher)
 	if err != nil {
 		context.Log.Println(err)
 	}
