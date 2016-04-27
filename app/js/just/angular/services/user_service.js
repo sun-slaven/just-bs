@@ -15,6 +15,7 @@ factory('UserService', ['$rootScope', '$resource', '$http',
                 email: user.email,
                 password: user.password
             }, function(resp) {
+                set_user(resp.user);
                 if (success) { success(resp) }
             })
         }

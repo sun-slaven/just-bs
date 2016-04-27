@@ -37,6 +37,7 @@ angular.module('just.controllers.user', ['ngCookies'])
                                 $rootScope.set_storage('password', null)
                             }
                             UserService.sign_in($scope.user, function(resp) {
+                                $rootScope.set_cache('token', resp.token)
                                 $rootScope.icon = resp.user.icon;
                                 $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
                             })
@@ -62,10 +63,15 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.register_ok = function() {
                 if ($scope.can_register()) {
                     UserService.register($scope.register, function(resp) {
-                        $scope.register_request_success = "邮件已经发送到邮箱,请登陆邮箱确认后登陆"
+                            $rootScope.alert_modal({
+                                title: "提示",
+                                content: "邮件已经发送到邮箱,请登陆邮箱确认后登陆",
+                                placement: 'top-right', 
+                                type: 'info', 
+                                show: true
+                            })  
                     })
-                };
-            }
-
+            };
         }
-    ])
+
+    }])

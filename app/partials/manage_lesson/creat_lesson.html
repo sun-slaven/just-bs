@@ -21,10 +21,10 @@
         <div class="form-group major">
             <label class="col-sm-2 control-label">专业:</label>
             <div class="col-sm-10">
-                <select ng-model="new_lesson.college" ng-options="college.name for college in colleges" class="form-control">
+                <select ng-model="chosen_college" ng-options="college.name for college in colleges" class="form-control" ng-change="change_college(chosen_college)">
                     <option value="">-- 所有 --</option>
                 </select>
-                <select ng-model="new_lesson.major" ng-options="major.name for major in majors" class="form-control">
+                <select ng-model="chosen_major"ng-options="major.name for major in majors" class="form-control" ng-change="change_major(chosen_major)">
                     <option value="">-- 所有 --</option>
                 </select>
             </div>
