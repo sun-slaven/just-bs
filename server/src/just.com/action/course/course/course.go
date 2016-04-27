@@ -11,13 +11,13 @@ import (
 
 func CourseHandle(c *gin.Context) {
 	context, contextFlag := action.GetContext(c)
-	if contextFlag == false{
+	if contextFlag == false {
 		return
 	}
 	session := context.Session
 	log := context.Log
-	token,tokenFlag :=action.GetToken(c)
-	if tokenFlag == false{
+	token, tokenFlag := action.GetToken(c)
+	if tokenFlag == false {
 		return
 	}
 	courseId := c.Param("course_id")
@@ -27,20 +27,18 @@ func CourseHandle(c *gin.Context) {
 	switch c.Request.Method {
 	// 根据id获取course
 	case action.METHOD_GET:
-		courseTable := new(table.CourseTable)
-		getFlag,getErr:= session.Id(courseId).Get(courseTable)
-		if getFlag == false{
-			if getErr !=nil{
-				log.Println(getErr)
-			}
+		courseTable := &table.CourseTable{UUID:courseId}
+		courseVo, err := course.LoadCourseVo(courseTable, session, log)
+		if err != nil {
+			log.Println(courseVo)
+			return
 		}
-		courseVo := course.NewCourseVo(courseTable)
-		courseVo.LoadPointStatus(token.Id,session,log)
+		courseVo.LoadPointStatus(token.Id, session, log)
 		data = courseVo
 	case action.METHOD_PUT:
 	// 根据id删除课程
 	case action.METHOD_DELETE:
 		cs.Delete(courseId)
 	}
-	context.Response = middleware.NewResponse(http.StatusOK,data , nil)
+	context.Response = middleware.NewResponse(http.StatusOK, data, nil)
 }

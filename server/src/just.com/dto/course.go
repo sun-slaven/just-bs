@@ -4,18 +4,18 @@ type CourseDto struct {
 	Name         string
 	Introduction string
 	Syllabus     string
-	Plan         string
+	Wish         string
 	Experiment   string
 	Major        string
 	College      string
 }
 
-func NewCouseDto(name ,intro,syllabus,plan,experiment,major,college string) *CourseDto {
+func NewCouseDto(name ,intro,syllabus,wish,experiment,major,college string) *CourseDto {
 	courseDto := new(CourseDto)
 	courseDto.Name = name
 	courseDto.Introduction = intro
 	courseDto.Syllabus = syllabus
-	courseDto.Plan = plan
+	courseDto.Wish = wish
 	courseDto.Experiment = experiment
 	courseDto.Major = major
 	courseDto.College = college

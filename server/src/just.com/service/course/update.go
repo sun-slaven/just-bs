@@ -8,7 +8,7 @@ import (
 
 
 func (self *CourseService) Update(dto dto.CourseDto, courseId string, userId string) error {
-	isEmpty := common.IsEmpty(dto.Name, dto.Introduction, dto.Syllabus, dto.Experiment, dto.Plan, dto.Plan, dto.Major, dto.College)
+	isEmpty := common.IsEmpty(dto.Name, dto.Introduction, dto.Syllabus, dto.Experiment, dto.Wish, dto.Major, dto.College)
 	if isEmpty {
 		return COURSE_UPDATE_ERR
 	}
@@ -17,9 +17,9 @@ func (self *CourseService) Update(dto dto.CourseDto, courseId string, userId str
 	courseTable.Introduction = dto.Introduction
 	courseTable.Syllabus = dto.Syllabus
 	courseTable.Experiment = dto.Experiment
-	courseTable.Plan = dto.Plan
-	courseTable.Major = dto.Major
-	courseTable.College = dto.College
+	courseTable.Wish = dto.Wish
+	courseTable.MajorId = dto.Major
+	courseTable.CollegeId = dto.College
 	courseTable.UpdateUser = userId
 	courseTable.UpdateTime = time.Now()
 	updateNum, updateErr := self.Session.Id(courseId).Update(&courseTable)

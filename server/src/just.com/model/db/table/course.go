@@ -4,9 +4,10 @@ import "time"
 type CourseTable struct {
 	UUID         string `xorm:"pk 'UUID'"`
 	Name         string `xorm:"'NAME'"`
+	Description  string `xorm:"'DESCRIPTION'"`
 	Introduction string `xorm:"'INTRODUCTION'"`
 	Syllabus     string `xorm:"'SYLLABUS'"`
-	Plan         string `xorm:"'PLAN'"`
+	Wish         string `xorm:"'WISH'"`
 	Experiment   string `xorm:"'EXPERIMENT'"`
 	IconId       string `xorm:"'ICON_ID'"`
 	IconUrl      string `xorm:"'ICON_URL'"`
@@ -20,8 +21,9 @@ type CourseTable struct {
 	UpdateUser   string `xorm:"'UPDATE_USER'"`
 	FrozenStatus string `xorm:"'FROZEN_STATUS'"`
 	FrozenTime   time.Time `xorm:"'FROZEN_TIME'"`
-	Major        string    `xorm:"'MAJOR'"`
-	College      string    `xorm:"'COLLEGE'"`
+	MajorId      string    `xorm:"'MAJOR_ID'"`
+	CollegeId    string    `xorm:"'COLLEGE_ID'"`
+	TeacherId    string `xorm:"'TEACHER_ID'"`
 	Points       int64    `xorm:"'POINTS'"`
 	PointPerson  int64 `xorm:"'POINT_PERSON'"`
 }
