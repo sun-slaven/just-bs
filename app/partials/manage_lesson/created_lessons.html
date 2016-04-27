@@ -5,9 +5,10 @@
             <tr>
                 <th>序号</th>
                 <th>课程名称</th>
+                <th st-sort="major">所属专业</th>
+                <th st-sort="subscribe_amount">订阅人数</th>
                 <th st-sort="created_time">创建时间</th>
                 <th st-sort="updated_time">更新时间</th>
-                <th st-sort="subscribe_amount">听课人数</th>
                 <th>操作</th>
             </tr>
             <tr>
@@ -20,9 +21,10 @@
             <tr st-select-row="row" ng-repeat="lesson in useful_lessons" ng-class="{active: $index % 4 == 0 , success: $index % 4 == 1 , warning: $index % 4 == 2, danger: $index % 4 == 3}">
                 <td>{{$index}}</td>
                 <td>{{lesson.name}}</td>
+                <td>{{lesson.major.name}}</td>
+                <td>{{lesson.subscribe_amount}}</td>
                 <td>{{lesson.created_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>{{lesson.updated_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{lesson.subscribe_amount}}</td>
                 <td>
                     <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="edit(lesson)" data-placement="left" data-title="编辑" data-trigger="hover" data-type="info" bs-tooltip></i>
                     <i class="fa fa-trash" aria-hidden="true" ng-click="delete(lesson)" data-placement="right" data-title="删除" data-trigger="hover" bs-tooltip></i>

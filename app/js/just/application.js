@@ -9,8 +9,8 @@ angular.module('just', GlobalModules.get([
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
-    function($routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
+])).config(['$httpProvider','$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
+    function($httpProvider,$routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
@@ -25,6 +25,17 @@ angular.module('just', GlobalModules.get([
         $routeProvider.otherwise({
             redirectTo: '/login'
         });
+        //disable get method cache globally
+        //initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        //disable IE ajax request caching
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+
         // $locationProvider.html5Mode(true); // remove # in the url
         // $locationProvider.hashPrefix = '!';
         //修改modal的全局配置
@@ -35,7 +46,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert) {
+]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', 'UserService',function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert,UserService) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -75,6 +86,19 @@ angular.module('just', GlobalModules.get([
         storage.clearAll();
     }
 
+    //role
+    $rootScope.is_student = function() {
+        return $rootScope.current_user.role.name == 'STUDENT';
+    }
+    $rootScope.is_teacher = function() {
+        return $rootScope.current_user.role.name == 'TEACHER';
+    }
+    $rootScope.is_admin = function() {
+        return $rootScope.current_user.role.name == 'ADMIN';
+    }
+
+
+
     //滚动到顶部
     $rootScope.scrollTo = function(eID) {
         AnchorSmoothScrollService.scrollTo(eID);
@@ -100,10 +124,15 @@ angular.module('just', GlobalModules.get([
 
     $rootScope.$on('$routeChangeSuccess', function(evt, next, current) {
         //refuse change the url to /# then header show
-        if ($location.path() == '/') {
+        if ($location.path() == '/' || $location.path() == '/login') {
+            $rootScope.current_user = null;
             //     UserService.sign_out(function() {
             //     })
-        };
+        }else{
+            if ($rootScope.get_storage('email') && $rootScope.get_storage('password')) {
+                UserService.sign_in({})
+            };
+        }
         //init lessons index page data
         if ($location.path().indexOf('/me') > -1) {
             if ($rootScope.college_major == undefined) {

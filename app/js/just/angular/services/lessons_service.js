@@ -4,7 +4,7 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
     function($rootScope, $resource, $http) {
 
         var lessonsAPI = $resource('/api/v1/courses', {}, {
-            lessons_list:{method: 'get' , isArray: true},
+            lessons_list:{method: 'get' , isArray: true,cache : false},
             create_lesson:{method: 'post' , isArray: false},
         })
 

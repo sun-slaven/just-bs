@@ -9,11 +9,13 @@ factory('UserService', ['$rootScope', '$resource', '$http',
         var registerAPI = $resource('/api/v1/users', {}, {
                 register: { method: 'post' }
             })
-            //992444037@qq.com  123456
+            //992444037@qq.com  123456   STUDENT
+            //158274194@qq.com   123456  TEACHER
+            //893196569@qq.com  123456   ADMIN
         function sign_in(user, success) {
             userAPI.sign_in({}, {
-                email: user.email,
-                password: user.password
+                email: user.email || $rootScope.get_storage('email'),
+                password: user.password || $rootScope.get_storage('password')
             }, function(resp) {
                 set_user(resp.user);
                 if (success) { success(resp) }
