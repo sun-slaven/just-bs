@@ -43,6 +43,7 @@ func CourseListHandle(c *gin.Context) {
 	if request.CollegeId != "" {
 		table.CollegeId = request.CollegeId
 	}
+	// TODO mark
 	courseVoList, err := course.LoadCourseVoList(table, context.Session, context.Log)
 	log.Println(courseVoList[0].Teacher)
 	if err != nil {

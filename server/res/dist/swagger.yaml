@@ -356,7 +356,7 @@ paths:
           schema:
             $ref: '#/definitions/errorModel'
 
-  /files/token:
+  /files/tokens:
       post:
         description: 获取文件上传的token
         operationId: file token
@@ -371,18 +371,15 @@ paths:
           - name: file
             in: body
             required: true
+            description: name为文件名,file_type为文件类型
             schema:
-              $ref: '#/definitions/file'
+              $ref: '#/definitions/file_token'
         responses:
           '200':
-            description: course response
+            description: file response
             schema:
-              description: file
+              description: fileToken
               type: string
-          default:
-            description: unexpected error
-            schema:
-              $ref: '#/definitions/errorModel'
 
   /files/{file_id}:
     get:
@@ -597,6 +594,16 @@ definitions:
         type: string
       create_time:
         type: string
+
+  file_token:
+    type: object
+    properties:
+      name:
+        type: string
+        default: '学习文档'
+      file_type:
+        type: string
+        default: 'image/video/file'
 
   register:
     type: object

@@ -16,6 +16,7 @@ import (
 	"just.com/middleware"
 	"just.com/action/college"
 	"just.com/action/public"
+	"just.com/action/file"
 )
 
 func main() {
@@ -57,6 +58,7 @@ func main() {
 	course.BuildRouter(mLearingGroup.Group("/courses"))
 	user.BuildRouter(mLearingGroup.Group("/users"))
 	token.BuildRouter(mLearingGroup.Group("/tokens"))
+	file.BuildRouter(mLearingGroup.Group("/files"))
 
 	// public
 	publicGroup := router.Group("/api/v1")

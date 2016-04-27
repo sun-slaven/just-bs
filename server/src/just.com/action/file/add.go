@@ -20,7 +20,7 @@ func FileAdd(c *gin.Context) {
 	log := context.Log
 	// request
 	courseId := c.Param("course_id")
-	//core
+	// core
 	fileService := service.NewFileService(session, log)
 	fileId, addErr := fileService.Add(courseId, "file name", "httpbaidu", token.UserId)
 	if addErr != nil {

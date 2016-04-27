@@ -16,10 +16,11 @@ type DBConfig struct {
 }
 
 type QiniuConfig struct {
-	AK     string `json:"ak"`
-	SK     string `json:"sk"`
-	Bucket string    `json:"bucket"`
-	Domin  string `json:"domain"`
+	AK          string `json:"ak"`
+	SK          string `json:"sk"`
+	Bucket      string    `json:"bucket"`
+	Domin       string `json:"domain"`
+	CallbackUrl string `json:"callback_url"`
 }
 
 type RedisConfig  struct {
