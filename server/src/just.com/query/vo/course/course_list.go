@@ -20,7 +20,6 @@ func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *
 		if err != nil {
 			log.Println(err)
 		}
-		log.Println(courseVo.Teacher)
 		courseVoList = append(courseVoList, courseVo)
 	}
 	return courseVoList, nil

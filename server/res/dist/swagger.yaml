@@ -66,18 +66,6 @@ paths:
           description: 是否关注
           required: false
           type: boolean
-        - name: page
-          in: query
-          description: 是否关注
-          required: false
-          type: integer
-          format: int64
-        - name: page_size
-          in: query
-          description: 是否关注
-          required: false
-          type: integer
-          format: in64
 
       responses:
         '200':
@@ -525,9 +513,24 @@ definitions:
       name:
         type: string
         default: '小泡子仔'
+      email:
+        type: string
+      role:
+        $ref: '#/definitions/role'
       icon:
         $ref: '#/definitions/image'
-  
+  role:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+       type: string
+      name:
+        type: string
+        default: 'STUDENT'
+
+
   courseComment:
     type: object
     required:
@@ -549,15 +552,16 @@ definitions:
       - name
     properties:
       id:
-        type: integer
-        format: int64
+        type: string
       name:
+        type: string
+      description:
         type: string
       introduction:
         type: string
       syllabus:
         type: string
-      plan:
+      wish:
         type: string
       experiment:
         type: string
@@ -579,6 +583,8 @@ definitions:
         type: string
       point_status:
         type: string
+      teacher:
+        $ref: '#/definitions/user'
   
   file:
     type: object
