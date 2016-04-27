@@ -1,4 +1,4 @@
-<nav class="navbar navbar" role="navigation" id="nav-header" ng-show="current_user" ng-controller="HeaderController">
+<nav class="navbar navbar" role="navigation" id="nav-header" ng-if="current_user" ng-controller="HeaderController">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-content">
             <span class="sr-only">切换导航</span>
@@ -35,7 +35,7 @@
                     <i class="fa fa-commenting-o"></i>
                 </a>
             </li>
-            <li class="manage-lessons">
+            <li class="manage-lessons" ng-show="is_teacher()">
                 <a ng-click="go_manager_lessons()">
                     <i class="fa fa-book"></i>
                 </a>

@@ -4,7 +4,7 @@ angular.module('just.controllers.lesson', [])
         function($rootScope, $scope) {
             $scope.lesson = {
                 title: "java程序设计",
-                teacher: "藤苇",
+                teacher: "xx",
                 length: '1小时12分钟',
                 description: "本课程从最基本的概念开始讲起，步步深入，带领大家学习HTML、CSS样式基础知识，了解各种常用标签的意义以及基本用法，后半部分讲解CSS样式代码添加，为后面的案例课程打下基础"
             }

@@ -1,28 +1,15 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', function($rootScope, $scope, $qupload, $log, $filter, LessonsService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', 'CommonUtil', function($rootScope, $scope, $qupload, $log, $filter, LessonsService, CommonUtil) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
         }
-
-        $scope.useful_lessons = [{
-            name: 'AngularJS',
-            created_time: new Date('2016-04-19 20:56:06'),
-            updated_time: new Date('2016-04-20 20:56:06'),
-            subscribe_amount: 1
-        }, {
-            name: 'Go',
-            created_time: new Date('2016-04-19 20:55:11'),
-            updated_time: new Date('2016-04-20 20:55:11'),
-            subscribe_amount: 2
-        }, {
-            name: 'Bootstrap',
-            created_time: new Date('2016-04-19 19:47:33'),
-            updated_time: new Date('2016-04-20 19:47:33'),
-            subscribe_amount: 3
-        }]
         $scope.itemsByPage = 2;
+
+        //TODO
+        $scope.useful_lessons = CommonUtil.getMyCreatedLessons()
+
 
         $scope.show_modal = function() {
             // var myOtherModal = $rootScope.custom_modal($scope,'')
