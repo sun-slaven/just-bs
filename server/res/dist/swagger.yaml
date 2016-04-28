@@ -371,15 +371,14 @@ paths:
           - name: file
             in: body
             required: true
-            description: name为文件名,file_type为文件类型
+            description: suffix为文件后缀,type为上传文件的类型
             schema:
-              $ref: '#/definitions/file_token'
+              $ref: '#/definitions/fileTokenRequest'
         responses:
           '200':
             description: file response
             schema:
-              description: fileToken
-              type: string
+              $ref: '#/definitions/fileToken'
 
   /files/{file_id}:
     get:
@@ -595,15 +594,25 @@ definitions:
       create_time:
         type: string
 
-  file_token:
+  fileTokenRequest:
     type: object
     properties:
-      name:
+      suffix:
         type: string
-        default: '学习文档'
-      file_type:
+        default: '.png'
+      type:
         type: string
         default: 'image/video/file'
+
+  fileToken:
+    type: object
+    properties:
+      key:
+        type: string
+        default: 'b195a07a-7c42-4cbe-af01-6882b5bc3a10'
+      token:
+        type: string
+        default: '很长一段'
 
   register:
     type: object

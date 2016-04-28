@@ -38,8 +38,7 @@ func main() {
 	// 3.redis
 	//	rds := db.NewRedisDataSource(config.RedisConfig)
 	// 3.qiniu fs
-	qiniuFileSystem := qiniu.New(config.QiniuConfig)
-	logger.Println(qiniuFileSystem)
+	qiniuFileSystem := qiniu.NewQiniuFileSystem(config.QiniuConfig)
 	// email
 	sendConfig := config.SendCloudConfig
 	// interface
@@ -51,6 +50,8 @@ func main() {
 	mLearingGroup := router.Group("/api/v1")
 	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	//	justGroup.Use(middleware.LogMiddleware)
+	mLearingGroup.Use(middleware.FileSystemMiddlaware(qiniuFileSystem))
+
 	mLearingGroup.Use(middleware.TokenTest)
 	mLearingGroup.Use(middleware.EmailMiddleware(sendConfig))
 	//	mLearingGroup.Use(middleware.TokenMiddleWare)

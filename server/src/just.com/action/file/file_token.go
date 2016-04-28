@@ -4,11 +4,12 @@ import (
 	"just.com/action"
 	"just.com/middleware"
 	"net/http"
+	"just.com/model/qiniu"
 )
 
 type FileTokenRequest struct {
-	Name     string `json:"name"`
-	FileType string `json:"file_type"`
+	Suffix string `json:"suffix"`
+	Type   string `json:"type"`
 }
 
 func FileTokenHandle(c *gin.Context) {
@@ -26,4 +27,6 @@ func FileTokenHandle(c *gin.Context) {
 		context.Log.Println(bindErr)
 		return
 	}
+	fileSystem := c.MustGet(middleware.MIDDLEWARE_FILE_SYSTEM).(*qiniu.QiniuFileSystem)
+	response = middleware.NewResponse(http.StatusOK, fileSystem.MakeToken(request.Suffix, request.Type), nil)
 }
