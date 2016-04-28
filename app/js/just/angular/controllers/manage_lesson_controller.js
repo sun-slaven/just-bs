@@ -8,7 +8,7 @@ angular.module('just.controllers.manage_lesson', [])
         $scope.itemsByPage = 2;
 
         //TODO
-        $scope.useful_lessons = CommonUtil.getMyCreatedLessons()
+        //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
 
 
         $scope.show_modal = function() {
@@ -50,6 +50,7 @@ angular.module('just.controllers.manage_lesson', [])
         $scope.majors = $rootScope.all_majors;
         $scope.chosen_college = null;
         $scope.chosen_major = null;
+        console.log("test")
         $scope.change_college = function(college) {
             if (college) {
                 $scope.majors = college.major_list;
