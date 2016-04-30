@@ -62,19 +62,19 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	cv.CommentSum = courseTable.CommentSum
 
 	// college
-	collegeTable := new(table.CollegeTable)
+	collegeTable := &table.CollegeTable{UUID:courseTable.CollegeId}
 	getFlag, getErr := session.Get(collegeTable)
 	if getFlag == false {
 		if getErr != nil {
 			log.Println(getErr)
 			return nil, err
 		}
-		log.Println(err.Error())
+		log.Println(err)
 	}
 	cv.College = college.LoadCollegeVo(collegeTable)
 
 	// major
-	majorTable := new(table.MajorTable)
+	majorTable := &table.MajorTable{UUID:courseTable.MajorId}
 	getFlag, getErr = session.Get(majorTable)
 	if getFlag == false {
 		if getErr != nil {
