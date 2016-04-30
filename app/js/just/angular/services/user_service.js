@@ -9,6 +9,10 @@ factory('UserService', ['$rootScope', '$resource', '$http',
         var registerAPI = $resource('/api/v1/users', {}, {
                 register: { method: 'post' }
             })
+
+        var myLessonsAPI = $resource('/api/v1/users/courses', {}, {
+                myLessons: { method: 'get' ,isArray: true}
+        })
             //992444037@qq.com  123456   STUDENT
             //158274194@qq.com   123456  TEACHER
             //893196569@qq.com  123456   ADMIN
@@ -19,6 +23,8 @@ factory('UserService', ['$rootScope', '$resource', '$http',
             }, function(resp) {
                 set_user(resp.user);
                 if (success) { success(resp) }
+            },function(error){
+                console.log(error)
             })
         }
 
@@ -49,10 +55,18 @@ factory('UserService', ['$rootScope', '$resource', '$http',
             $rootScope.current_user = new_user
         }
 
+        function myLessons(user,callback){
+            myLessonsAPI.myLessons({},function(resp){
+                
+                if (callback) {callback(resp)};
+            })
+        }
+
         return {
             sign_in: sign_in,
             sign_out: sign_out,
-            register: register
+            register: register,
+            myLessons: myLessons
         }
     }
 ])

@@ -1,11 +1,12 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', 'CommonUtil', function($rootScope, $scope, $qupload, $log, $filter, LessonsService, CommonUtil) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', 'CommonUtil', 'FileService', function($rootScope, $scope, $qupload, $log, $filter, LessonsService, CommonUtil, FileService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
         }
         $scope.itemsByPage = 2;
+
 
         //TODO
         //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
@@ -40,23 +41,19 @@ angular.module('just.controllers.manage_lesson', [])
             });
         }
 
-        $scope.create_lesson = function(resp) {
-                LessonsService.create_lesson($scope.new_lesson, function() {
 
-                })
-            }
-            //学院专业联动 由于使用ng-include 产生子scope,所以使用#$watch无法达到效果
+        //学院专业联动 由于使用ng-include 产生子scope,所以使用#$watch无法达到效果
         $scope.colleges = $rootScope.all_colleges;
         $scope.majors = $rootScope.all_majors;
         $scope.chosen_college = null;
         $scope.chosen_major = null;
-        console.log("test")
         $scope.change_college = function(college) {
             if (college) {
                 $scope.majors = college.major_list;
             } else {
                 $scope.majors = $rootScope.all_majors;
             }
+            $scope.new_lesson.college_id = college.id;
         }
         $scope.change_major = function(major) {
             if ($scope.chosen_college) {
@@ -72,12 +69,13 @@ angular.module('just.controllers.manage_lesson', [])
             } else {
                 $scope.majors = $rootScope.all_majors;
             }
+            $scope.new_lesson.major_id = major.id;
         }
-
 
 
         //新建lesson
         $scope.new_lesson = {
+            icon: null,
             name: "",
             college_id: null,
             major_id: null,
@@ -98,30 +96,30 @@ angular.module('just.controllers.manage_lesson', [])
                 $scope.modal_content_url = '/manage_lesson/_new_lesson_modal_content';
                 $scope.modal_type = 'open_outline_plus_modal';
                 $scope.new_lesson.temp_outline = {
-                    chapter: '',
-                    name: '',
-                    introduction: '',
-                };
-                $scope.modal_ok = function() {
-                    if ($scope.modal_type == 'open_outline_plus_modal') {
-                        //如果直接将$scope.new_lesson.temp_outline则放进去的值依然会根据watch改变,和"="一样,故用copy API,=本质是引用复制,后者是新创建一个对象然后进行深度值复制
-                        $scope.new_lesson.temp_outline_list.push($scope.new_lesson.temp_outline);
-                        $scope.new_lesson.temp_outline = {
-                            chapter: '',
-                            name: '',
-                            introduction: '',
-                        }
-                    } else {
-                        var keepGoing = true;
-                        angular.forEach($scope.new_lesson.temp_outline_list, function(item, index) {
-                            if (keepGoing) {
-                                $scope.new_lesson.temp_outline_list.splice(index, 1, $scope.new_lesson.temp_outline);
-                                keepGoing = false;
+                        chapter: '',
+                        name: '',
+                        introduction: '',
+                    },
+                    $scope.modal_ok = function() {
+                        if ($scope.modal_type == 'open_outline_plus_modal') {
+                            //如果直接将$scope.new_lesson.temp_outline则放进去的值依然会根据watch改变,和"="一样,故用copy API,=本质是引用复制,后者是新创建一个对象然后进行深度值复制
+                            $scope.new_lesson.temp_outline_list.push($scope.new_lesson.temp_outline);
+                            $scope.new_lesson.temp_outline = {
+                                chapter: '',
+                                name: '',
+                                introduction: '',
                             }
+                        } else {
+                            var keepGoing = true;
+                            angular.forEach($scope.new_lesson.temp_outline_list, function(item, index) {
+                                if (keepGoing) {
+                                    $scope.new_lesson.temp_outline_list.splice(index, 1, $scope.new_lesson.temp_outline);
+                                    keepGoing = false;
+                                }
 
-                        })
+                            })
+                        }
                     }
-                }
                 $rootScope.strap_modal({
                     scope: $scope, //将scope传入,便可以在modal中调用本scope的方法
                 })
@@ -150,40 +148,67 @@ angular.module('just.controllers.manage_lesson', [])
         // collapse default value
         $scope.new_lesson.temp_outline_list.active_outline_index = -1;
 
+
+
         //upload to qiniu
         $scope.selectFiles = [];
-
-        var start = function(index) {
-            $scope.selectFiles[index].progress = {
+        $scope.start = function(file) {
+            file.progress = {
                 p: 0
             };
-            $scope.selectFiles[index].upload = $qupload.upload({
-                key: '<your qiniu file key>',
-                file: $scope.selectFiles[index].file,
-                token: '<your qiniu UpToken>'
+            file.upload = $qupload.upload({
+                file: file,
+                key: file.key,
+                token: file.token
             });
-            $scope.selectFiles[index].upload.then(function(response) {
-                $log.info(response);
+            console.log(file.upload)
+            file.upload.then(function(response) {
+                console.log(response)
             }, function(response) {
-                $log.info(response);
+                console.log(response)
             }, function(evt) {
-                $scope.selectFiles[index].progress.p = Math.floor(100 * evt.loaded / evt.totalSize);
+                console.log(evt)
+                file.progress.p = Math.floor(100 * evt.loaded / evt.totalSize);
             });
         };
-
         $scope.abort = function(index) {
             $scope.selectFiles[index].upload.abort();
             $scope.selectFiles.splice(index, 1);
         };
-
         $scope.onFileSelect = function($files) {
-            var offsetx = $scope.selectFiles.length;
             for (var i = 0; i < $files.length; i++) {
+                var suffix = $files[i].name.substr($files[i].name.indexOf('.')).toLowerCase(); //文件后缀
+                var type = CommonUtil.adjustFileType(suffix);//image/video/file
+                var fileObj = {
+                    suffix: suffix,
+                    type: type
+                }
+                get_token_and_start( i ,$files[i], fileObj)
+            };
+        }
+        var get_token_and_start = function(i, file, fileObj) {
+            FileService.get_file_token(fileObj).$promise.then(function(resp) {
+                 var offsetx = $scope.selectFiles.length;
                 $scope.selectFiles[i + offsetx] = {
-                    file: $files[i]
+                    file: file,
+                    key: resp.key,
+                    token: resp.token
                 };
-                start(i + offsetx);
-            }
-        };
+                $scope.start($scope.selectFiles[i + offsetx])
+            })
+        }
+
+        $scope.create_lesson = function(resp) {
+            //1.上传文件
+            angular.forEach($scope.selectFiles, function(ready_file) {
+                $scope.start(ready_file);
+            })
+            LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                console.log(resp)
+            })
+        }
+
+
+
 
     }])

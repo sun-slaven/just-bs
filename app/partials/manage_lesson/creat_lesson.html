@@ -3,7 +3,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">课程图片:</label>
             <div class="col-sm-10">
-                <div ng-file-select="onFileSelect($files)" data-multiple="false" title="select file" onclick="this.value = null" class="btn btn-upload">上传图片</div>
+                <div ng-file-select="onFileSelect($files)"  title="select file" onclick="this.value = null" class="btn btn-upload">上传图片</div>
                 <ol>
                     <li ng-repeat="(k,v) in selectFiles">
                         {{v.file.name}} - {{v.progress.p}}%

@@ -88,13 +88,13 @@ angular.module('just', GlobalModules.get([
 
     //role
     $rootScope.is_student = function() {
-        return $rootScope.current_user.role.name == 'STUDENT';
+        return $rootScope.current_user.role_name == 'STUDENT';
     }
     $rootScope.is_teacher = function() {
-        return $rootScope.current_user.role.name == 'TEACHER';
+        return $rootScope.current_user.role_name == 'TEACHER';
     }
     $rootScope.is_admin = function() {
-        return $rootScope.current_user.role.name == 'ADMIN';
+        return $rootScope.current_user.role_name == 'ADMIN';
     }
 
 
