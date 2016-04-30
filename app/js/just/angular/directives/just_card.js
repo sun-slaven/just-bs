@@ -20,7 +20,8 @@ angular.module('just.directives.just_card', [])
             // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
             link: function($scope, iElm, iAttrs, controller) {
                 $scope.choose_lesson = function(lesson) {
-                    $rootScope.go('/users/1/lessons/1/show')
+                    $rootScope.go('/users/'+$rootScope.current_user.id+ '/lessons/'+lesson.id+'/show')
+                    $rootScope.current_lesson = lesson;
                 }
             }
         };
