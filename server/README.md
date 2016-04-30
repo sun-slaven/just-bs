@@ -35,3 +35,11 @@ nginx的端口可以随便改(我默认8086)
 
 ## API page:
 http://localhost:8086/res/dist/
+
+# 更新记录
+
+## 4.30
+1. user的view去掉role,改成单独的role_name,因为role的id传递过去也没什么意义,而且最好不要传递,设计到的接口有 `POST /tokens`和 `GET /courses`
+2. 加入`Authorization`控制,在`Header`的`Authorization`里面增加`token`(不知道前端是不是要序列化,反正我的后端是反序列化得到的`token`),白名单在`etc/config.json`的`while_list`控制.
+3. 在swagger里面测试API的时候需要在`api_key`那边加上已经注册的邮箱,我加了一层中间件会自动给这些request加header`Authorization`
+4. 接口 : 用户关注课程 `users/courses`

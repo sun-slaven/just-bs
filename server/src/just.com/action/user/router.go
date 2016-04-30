@@ -8,11 +8,6 @@ import (
 	"just.com/dto"
 )
 
-func BuildRouter(group *gin.RouterGroup) {
-	group.POST("/", RegisterHandle)
-	group.Any("/:user_id", User)
-}
-
 func User(c *gin.Context) {
 	contextTemp, contextTempFlag := c.Get(middleware.MLEARNING_CONTENT)
 	if contextTempFlag == false {
@@ -46,7 +41,7 @@ func User(c *gin.Context) {
 	switch err {
 	case nil:
 		c.JSON(http.StatusOK, result)
-	case middleware.NO_AUTHORITATION:
+	case middleware.NO_AUTHORITATION_ERR:
 		c.JSON(http.StatusNonAuthoritativeInfo, result)
 	default:
 		c.JSON(http.StatusNotModified, result)

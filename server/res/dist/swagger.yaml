@@ -61,11 +61,6 @@ paths:
           description: 专业号
           required: false
           type: string
-        - name: mark
-          in: query
-          description: 是否关注
-          required: false
-          type: boolean
 
       responses:
         '200':
@@ -480,8 +475,25 @@ paths:
         '200':
           description: course response
           schema:
-            description: file
             type: string
+
+  /users/courses:
+    get:
+      description: 获取用户关注课程
+      operationId: user course mark
+      summary: 获取用户关注课程
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      responses:
+        '200':
+          description: course response
+          schema:
+            $ref: '#/definitions/course'
+
   
 definitions:
   image:
@@ -511,8 +523,9 @@ definitions:
         default: '小泡子仔'
       email:
         type: string
-      role:
-        $ref: '#/definitions/role'
+      role_name:
+        type: string
+        default: 'STUDENT'
       icon:
         $ref: '#/definitions/image'
   role:
@@ -549,29 +562,37 @@ definitions:
     properties:
       id:
         type: string
+        default: '017fa5fb-e1a1-4715-9b30-18d95e3150fc'
       name:
         type: string
+        defalut: '数据库'
       description:
         type: string
+        default: '专业基础课程'
       introduction:
         type: string
+        default: '学习基本数据库操作知识'
       syllabus:
         type: string
+        default: '教学大纲(暂时用不上)'
       wish:
         type: string
+        default: '教师寄语:希望你们好好学'
       experiment:
         type: string
+        defalut: '实验安排如下...'
       icon:
         $ref: '#/definitions/image'
       mark_sum:
         type: integer
         format: int64
       comment_sum:
-        type: string
+        type: integer
+        formate: int64
       major:
-        type: string
+        $ref: '#/definitions/major'
       college:
-        type: string
+        $ref: '#/definitions/college'
       point:
         type: integer
         format: int64

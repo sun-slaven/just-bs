@@ -1,11 +1,15 @@
 package etc
+import (
+	"strings"
+)
 
 type Config struct {
 	DBConfig `json:"db"`
 	QiniuConfig `json:"qiniu"`
-	Port string `json:"port"`
+	Port            string `json:"port"`
 	RedisConfig `json:"redis"`
 	SendCloudConfig `json:"send_cloud"`
+	WhiteListConfig []White `json:"white_list"`
 }
 
 type DBConfig struct {
@@ -35,4 +39,17 @@ type SendCloudConfig struct {
 	Subject    string `json:"subject"`
 	RequestUrl string `json:"request_url"`
 	ActiveUrl  string `json:"active_url"`
+}
+
+type White struct {
+	Method string `json:"method"`
+	Path   string `json:"path"`
+}
+
+func (self *White) Match(method, path string) bool {
+	path = strings.TrimSuffix(path, "/")
+	if (strings.ToLower(self.Method) == strings.ToLower(method)) &&( self.Path == path) {
+		return true
+	}
+	return false
 }

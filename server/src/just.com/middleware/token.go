@@ -2,47 +2,52 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"strings"
-	"net/http"
-	"just.com/model/db/table"
 	"just.com/service/token"
 	"encoding/json"
+	"just.com/etc"
+	"net/http"
 )
 
-func TokenMiddleWare(c *gin.Context) {
-	contextInter, exists := c.Get(MLEARNING_CONTENT)
-	context := contextInter.(*Context)
-	if exists == false {
-		c.Abort()
+func TokenMiddleWare(whiteList []etc.White) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		context := c.MustGet(MLEARNING_CONTENT).(*Context)
+		whiteFlag := false
+		for _, white := range whiteList {
+			if white.Match(c.Request.Method, c.Request.URL.Path) {
+				whiteFlag = true
+				break
+			}
+		}
+		flag := false        // 验证成功的标志
+		// 验证白名单
+		if whiteFlag {
+			c.Next()
+		} else {
+			defer func() {
+				if !flag {
+					context.Response = NewResponse(http.StatusUnauthorized, nil, NO_AUTHORITATION_ERR)
+					c.Abort()
+				}
+			}()
+			// 权限验证
+			userTokenText := c.Request.Header.Get(MLEARNING_HEADER_AUTHORIZATION)
+			if strings.TrimSpace(userTokenText) == "" {
+				return
+			}
+			userToken := new(service.UserToken)
+			unmarshalErr := json.Unmarshal([]byte(userTokenText), userToken)
+			if unmarshalErr != nil {
+				return
+			}
+			tokenService := service.NewTokenService(context.Session, context.Log)
+			// 验证不成功
+			if !tokenService.Check(userToken) {
+				return
+			}
+			flag = true
+			context.UserId = userToken.UserId
+			c.Next()
+		}
 	}
-	// is login
-	// login
-	userId := c.Param("user_id")
-	if strings.TrimSpace(userId) != "" {
-		c.Next()
-	}else {
-		// other
-		xTokenStr := c.Request.Header.Get("X-Token")
-		if strings.TrimSpace(xTokenStr) == "" {
-			c.Abort()
-			return
-		}
-		userToken := new(service.UserToken)
-		unmarshalErr := json.Unmarshal([]byte(xTokenStr), userToken)
-		if unmarshalErr != nil {
-			c.Abort()
-			return
-		}
-		tokenService := service.TokenService{}
-		tokenService.Session = context.Ds.NewSession()
-		defer tokenService.Session.Close()
-		tokenService.Log = context.Log
-		if tokenService.Check(userToken) == false {
-			response := table.Response{}
-			response.Ok = 0
-			response.Err = ""
-			c.JSON(http.StatusOK, response)
-			c.Abort()
-		}
-	}
-	c.Next()
 }
+

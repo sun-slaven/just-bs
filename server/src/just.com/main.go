@@ -10,13 +10,9 @@ import (
 	"time"
 	"just.com/model/qiniu"
 	"just.com/model/db"
-	"just.com/action/course"
-	"just.com/action/user"
-	"just.com/action/token"
 	"just.com/middleware"
-	"just.com/action/college"
+	action_router "just.com/action/router"
 	"just.com/action/public"
-	"just.com/action/file"
 )
 
 func main() {
@@ -26,7 +22,7 @@ func main() {
 	if configErr != nil {
 		log.Println(configErr)
 	}
-	config := etc.Config{}
+	config := new(etc.Config)
 	configUnmarshal := json.Unmarshal(configByte, &config)
 	if configUnmarshal != nil {
 		log.Println(configUnmarshal)
@@ -39,40 +35,37 @@ func main() {
 	//	rds := db.NewRedisDataSource(config.RedisConfig)
 	// 3.qiniu fs
 	qiniuFileSystem := qiniu.NewQiniuFileSystem(config.QiniuConfig)
-	// email
-	sendConfig := config.SendCloudConfig
-	// interface
 	//	gin.SetMode("release")
 	router := gin.Default()
 	router.Static("/web", path + "/..")
 	router.Static("/res", path + "/res")
 	router.StaticFile("/favicon.ico", path + "/res/favicon.ico")
-	mLearingGroup := router.Group("/api/v1")
-	mLearingGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
-	//	justGroup.Use(middleware.LogMiddleware)
-	mLearingGroup.Use(middleware.FileSystemMiddlaware(qiniuFileSystem))
+	mainGroup := router.Group("/api/v1")
 
-	mLearingGroup.Use(middleware.TokenTest)
-	mLearingGroup.Use(middleware.EmailMiddleware(sendConfig))
-	//	mLearingGroup.Use(middleware.TokenMiddleWare)
-	college.BuildRouter(mLearingGroup.Group("/colleges"))
-	course.BuildRouter(mLearingGroup.Group("/courses"))
-	user.BuildRouter(mLearingGroup.Group("/users"))
-	token.BuildRouter(mLearingGroup.Group("/tokens"))
-	file.BuildRouter(mLearingGroup.Group("/files"))
+	// middleware
+	mainGroup.Use(middleware.ResponseMiddleware())
+	mainGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
+	//	justGroup.Use(middleware.LogMiddleware)
+	mainGroup.Use(middleware.FileSystemMiddlaware(qiniuFileSystem))
+	mainGroup.Use(middleware.EmailMiddleware(config.SendCloudConfig))
+	mainGroup.Use(middleware.ApiMiddleware())
+	mainGroup.Use(middleware.TokenMiddleWare(config.WhiteListConfig))
+//	mainGroup.Use(middleware.RoleMiddleware())
+	// router
+	action_router.BuildRouter(mainGroup)
 
 	// public
 	publicGroup := router.Group("/api/v1")
 	publicGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	public.BuildRouter(publicGroup.Group("/public"))
 
-	s := &http.Server{
+	server := &http.Server{
 		Addr: config.Port,
 		Handler:router,
 		ReadTimeout:60 * 60 * time.Second,
 		WriteTimeout:60 * 60 * time.Second,
 	}
 	log.Println("liesten at" + config.Port)
-	s.ListenAndServe()
+	server.ListenAndServe()
 }
 

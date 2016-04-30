@@ -15,6 +15,13 @@ type RbacService struct {
 	data    *Role
 }
 
+func NewRbacService(session *xorm.Session, log *log.Logger) *RbacService {
+	return &RbacService{
+		Session:session,
+		Log:log,
+	}
+}
+
 func (self *RbacService)GetData() *Role {
 	return self.data
 }
@@ -23,32 +30,29 @@ func (self *RbacService) Load(roleName string) error {
 	// role
 	role := NewRole()
 	// 1. find the role
-	rs := RoleService{}
-	rs.Session = self.Session
-	rs.Log = self.Log
+	rs := NewRoleService(self.Session, self.Log)
 	roleTable, roleErr := rs.FindByName(roleName)
 	if roleErr != nil {
 		self.Log.Println(roleErr)
 		return RBAC_LOAD_ERR
 	}
 	// 2. find the permission
-	sql := `SELECT * FROM "RBAC_ROLE_PERMISSION" WHERE "ROLE_ID" = ?`
 	rolePerList := make([]table.RolePermissionTable, 0, 0)
-	findErr := self.Session.Sql(sql, roleTable.UUID).Find(&rolePerList)
+	findErr := self.Session.Find(&rolePerList, &table.RolePermissionTable{RoleId:roleTable.UUID})
 	if findErr != nil {
 		self.Log.Println(findErr)
+		return findErr
 	}
-	for _, rp := range rolePerList {
-		sql := `SELECT * FROM "RBAC_PERMISSION" WHERE "UUID" = ?`
-		p := new(table.PermissionTable)
-		getFlag, getErr := self.Session.Sql(sql, rp.PermissionId).Get(p)
+	for _, mapping := range rolePerList {
+		permissionTable := new(table.PermissionTable)
+		getFlag, getErr := self.Session.Id(mapping.PermissionId).Get(permissionTable)
 		if getFlag == false {
 			if getErr != nil {
 				self.Log.Println(getErr)
 				return RBAC_LOAD_ERR
 			}
 		}
-		permission := NewPermission(p.Target, p.Action)
+		permission := NewPermission(permissionTable.Target, permissionTable.Action)
 		role.Assign(permission)
 	}
 	self.data = role
