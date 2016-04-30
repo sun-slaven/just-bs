@@ -620,7 +620,7 @@ definitions:
     properties:
       suffix:
         type: string
-        default: '.png'
+        default: 'png'
       type:
         type: string
         default: 'image/video/file'

@@ -6,6 +6,7 @@ import (
 	"just.com/query"
 )
 
+// 获取关注的课程列表
 func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, err error) {
 	courseVoList = make([]*CourseVo, 0)
 	err = query.QUERY_COURSE_LOAD_MARK_ERR
@@ -18,16 +19,9 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 
 	for _, markTable := range markTableList {
 		courseTable := &table.CourseTable{UUID:markTable.CourseId}
-		getFlag, getErr := session.Get(courseTable)
-		if !getFlag {
-			if getErr != nil {
-				log.Println(getErr)
-			}
-			return
-		}
-		courseVo, loadErr := LoadCourseVoFromTable(courseTable, session, log)
-		if loadErr != nil {
-			log.Println(loadErr)
+		courseVo, courseVoErr := LoadCourseVo(courseTable, session, log)
+		if courseVoErr != nil {
+			log.Println(courseVo)
 			return
 		}
 		courseVoList = append(courseVoList, courseVo)

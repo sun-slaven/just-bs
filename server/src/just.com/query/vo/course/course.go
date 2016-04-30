@@ -28,6 +28,7 @@ type CourseVo struct {
 	Teacher      *user.UserVo `json:"teacher"`
 }
 
+// 什么都没有用这个就行了
 func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
 	err = query.QUERY_COURSE_LOAD_ERR
 	getFlag, getErr := session.Get(courseTable)
@@ -40,7 +41,7 @@ func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *lo
 	return LoadCourseVoFromTable(courseTable, session, log)
 }
 
-
+// 已经有 courseTable用这个
 func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
 	err = query.QUERY_COURSE_LOAD_FROM_TABLE_ERR
 	cv = new(CourseVo)
@@ -71,7 +72,7 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 		}
 		log.Println(err)
 	}
-	cv.College = college.LoadCollegeVo(collegeTable)
+	cv.College = college.NewCollegeVo(collegeTable)
 
 	// major
 	majorTable := &table.MajorTable{UUID:courseTable.MajorId}
@@ -83,7 +84,7 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 		}
 		log.Println(err.Error())
 	}
-	cv.Major = college.LoadMajorVo(majorTable)
+	cv.Major = college.NewMajorVo(majorTable)
 
 	// teacher
 	cv.Teacher = user.LoadUserVo(courseTable.TeacherId, session, log)
