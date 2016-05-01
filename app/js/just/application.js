@@ -9,12 +9,22 @@ angular.module('just', GlobalModules.get([
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$httpProvider','$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
-    function($httpProvider,$routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
+])).config(['$httpProvider', '$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider',
+    function($httpProvider, $routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**'
         ]);
+        //使用过滤器将所有请求都加上token
+        $httpProvider.interceptors.push(function($cookies) {
+            return {
+                'request': function(config) {
+                    config.headers['token'] = $cookies.loginTokenCookie;
+                    return config;
+                }
+            };
+        });
+
         var all_configs = RouteConfigProvider.$get().get()
         angular.forEach(all_configs, function(conf) {
             $routeProvider.when(conf.path, {
@@ -46,7 +56,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', 'UserService',function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert,UserService) {
+]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', 'UserService', '$cookies', function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert, UserService, $cookies) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;
@@ -121,40 +131,29 @@ angular.module('just', GlobalModules.get([
         return $alert(modal_obj)
     }
 
+    // 防止页面刷新,从cookie里取出当前对象.cookie在页面刷新时并不会清空
+    if ($cookies.getObject('current_user')) {
+        $rootScope.current_user = $cookies.getObject('current_user');
+    }
+    //init college major info
+    if ($rootScope.college_major == undefined) {
+        $rootScope.all_colleges = []
+        $rootScope.all_majors = []
+        CollegeMajorService.get_college_major(function(response) {
+            for (var i = 0; i < response.length; i++) {
+                $rootScope.all_colleges.push(response[i])
+                for (index in response[i].major_list) {
+                    response[i].major_list[index].college_id = response[i].id;
+                    $rootScope.all_majors.push(response[i].major_list[index])
+                }
+            }
+        });
+    }
 
     $rootScope.$on('$routeChangeSuccess', function(evt, next, current) {
         //refuse change the url to /# then header show
         if ($location.path() == '/' || $location.path() == '/login') {
             $rootScope.current_user = null;
-            //     UserService.sign_out(function() {
-            //     })
-        }else{
-            if ($rootScope.get_storage('email') && $rootScope.get_storage('password')) {
-                UserService.sign_in({})
-            };
-        }
-        //init lessons index page data
-        if ($location.path().indexOf('/me') > -1) {
-            if ($rootScope.college_major == undefined) {
-                $rootScope.all_colleges = []
-                $rootScope.all_majors = []
-                CollegeMajorService.get_college_major(function(response) {
-                    for (var i = 0; i < response.length; i++) {
-                        $rootScope.all_colleges.push(response[i])
-                        for (index in response[i].major_list) {
-                            response[i].major_list[index].college_id = response[i].id;
-                            $rootScope.all_majors.push(response[i].major_list[index])
-                        }
-                    }
-                });
-            }
-
-            if ($rootScope.all_lessons == undefined) {
-                LessonsService.lessons_list(function(resp) {
-                    $rootScope.all_lessons = resp;
-                })
-            };
-
         }
     })
 

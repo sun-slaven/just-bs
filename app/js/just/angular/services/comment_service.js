@@ -11,6 +11,7 @@ factory('CommentsService', ['$rootScope', '$resource', '$http',
 
 
         function delete_comments(lesson_id,success) {
+
             commentsAPI.delete_comments({course_id:  lesson_id}, {}, function(resp) {
                 if (success) { success(resp) }
             })
@@ -25,7 +26,7 @@ factory('CommentsService', ['$rootScope', '$resource', '$http',
         function add_comments(obj,success) {
             commentsAPI.add_comments({}, {
                 course_id: obj.course_id,
-                comment: obj.comment
+                content: obj.content
             }, function(resp) {
                 if (success) { success(resp) }
             })

@@ -8,9 +8,9 @@ angular.module('just.controllers.header', [])
                     $rootScope.confirm_modal("确认退出吗?", $scope, function() {
                         $rootScope.current_user = null;//can delete , in service
                         $rootScope.go('/login');
-                    //     UserService.sign_out(function() {
-                    //         $rootScope.go('/login');
-                    //     })
+                        UserService.sign_out(function() {
+                            $rootScope.go('/login');
+                        })
                      })
                 }
                 //nav-head controller
