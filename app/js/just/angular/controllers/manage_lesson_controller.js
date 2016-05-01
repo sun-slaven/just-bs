@@ -1,6 +1,6 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$qupload', '$log', '$filter', 'LessonsService', 'CommonUtil', 'FileService', function($rootScope, $scope, $qupload, $log, $filter, LessonsService, CommonUtil, FileService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', 'LessonsService', 'CommonUtil', 'FileService', function($rootScope, $scope, $log, $filter, LessonsService, CommonUtil, FileService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -152,29 +152,6 @@ angular.module('just.controllers.manage_lesson', [])
 
         //upload to qiniu
         $scope.selectFiles = [];
-        $scope.start = function(file) {
-            file.progress = {
-                p: 0
-            };
-            file.upload = $qupload.upload({
-                file: file,
-                key: file.key,
-                token: file.token
-            });
-            console.log(file.upload)
-            file.upload.then(function(response) {
-                console.log(response)
-            }, function(response) {
-                console.log(response)
-            }, function(evt) {
-                console.log(evt)
-                file.progress.p = Math.floor(100 * evt.loaded / evt.totalSize);
-            });
-        };
-        $scope.abort = function(index) {
-            $scope.selectFiles[index].upload.abort();
-            $scope.selectFiles.splice(index, 1);
-        };
         $scope.onFileSelect = function($files) {
             for (var i = 0; i < $files.length; i++) {
                 var suffix = $files[i].name.substr($files[i].name.indexOf('.')).toLowerCase(); //文件后缀
