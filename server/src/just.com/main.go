@@ -13,9 +13,13 @@ import (
 	"just.com/middleware"
 	action_router "just.com/action/router"
 	"just.com/action/public"
+	"flag"
 )
 
 func main() {
+	logger := log.New(os.Stdout, "[MLearing]", log.Ltime | log.Llongfile)
+	flag.Parse()
+	deployment := flag.Arg(0)
 	// 1.config
 	path := os.Getenv("JUST_PATH")
 	configByte, configErr := ioutil.ReadFile(path + "/etc/config.json")
@@ -23,14 +27,12 @@ func main() {
 		log.Println(configErr)
 	}
 	config := new(etc.Config)
-	configUnmarshal := json.Unmarshal(configByte, &config)
+	configUnmarshal := json.Unmarshal(configByte, config)
 	if configUnmarshal != nil {
 		log.Println(configUnmarshal)
 	}
-	logger := log.New(os.Stdout, "[MLearing]", log.Ltime | log.Llongfile)
 	// 2.db
 	dataSource := db.NewDatSource(config.DBConfig)
-	logger.Println(dataSource)
 	// 3.redis
 	//	rds := db.NewRedisDataSource(config.RedisConfig)
 	// 3.qiniu fs
@@ -50,22 +52,29 @@ func main() {
 	mainGroup.Use(middleware.EmailMiddleware(config.SendCloudConfig))
 	mainGroup.Use(middleware.ApiMiddleware())
 	mainGroup.Use(middleware.TokenMiddleWare(config.WhiteListConfig))
-//	mainGroup.Use(middleware.RoleMiddleware())
+	//	mainGroup.Use(middleware.RoleMiddleware())
 	// router
 	action_router.BuildRouter(mainGroup)
 
 	// public
 	publicGroup := router.Group("/api/v1")
 	publicGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
-	public.BuildRouter(publicGroup.Group("/public"))
+	// deployment
+	var deploymentItem etc.DeploymentItemConfig
+	if deployment == "production" {
+		deploymentItem = config.DeploymentConfig.Production
+	}else {
+		deploymentItem = config.DeploymentConfig.Dev
+	}
+	public.BuildRouter(publicGroup.Group("/public"), path, deploymentItem.SwaggerHost)
 
 	server := &http.Server{
-		Addr: config.Port,
+		Addr: deploymentItem.Port,
 		Handler:router,
 		ReadTimeout:60 * 60 * time.Second,
 		WriteTimeout:60 * 60 * time.Second,
 	}
-	log.Println("liesten at" + config.Port)
+	log.Println("liesten at" + deploymentItem.Port)
 	server.ListenAndServe()
 }
 

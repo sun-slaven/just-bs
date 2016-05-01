@@ -7,7 +7,6 @@ import (
 )
 
 var (
-	COURSE_ADD_ERR = errors.New(service.SERVICE_COURSE_ADD_ERR)
 	COURSE_UPDATE_ERR = errors.New(service.SERVICE_COURSE_UPDATE_ERR)
 	COURSE_DELETE_ERR = errors.New(service.SERVICE_COURSE_DELETE_ERR)
 	COURSE_MARK_ERR = errors.New(service.SERVICE_COURSE_MARK_ERR)

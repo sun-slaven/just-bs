@@ -43,3 +43,7 @@ http://localhost:8086/res/dist/
 2. 加入`Authorization`控制,在`Header`的`Authorization`里面增加`token`(不知道前端是不是要序列化,反正我的后端是反序列化得到的`token`),白名单在`etc/config.json`的`while_list`控制.
 3. 在swagger里面测试API的时候需要在`api_key`那边加上已经注册的邮箱,我加了一层中间件会自动给这些request加header`Authorization`
 4. 接口 : 用户关注课程 `users/courses`
+
+## 5.1
+1. 还是改成`/users/:user__id/courses`(统一成复数会好一点)干脆把获取其他人关注的课程也一起暴露出来
+2. 增加部署时的环境变量,如则启动命令改成 `go run main.go dev(production)`,默认启动方式为`dev`

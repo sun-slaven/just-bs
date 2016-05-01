@@ -22,11 +22,12 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 		// course
 		courseRouter.GET("/", course.CourseListHandle)
 		courseRouter.POST("/", course.CourseAddHandle)
-		courseRouter.Any("/:course_id", course.CourseHandle)
+		courseRouter.GET("/:course_id", course.CourseGetHandle)
+		courseRouter.DELETE("/:course_id", course.CourseDeleteHandle)
 		// comment
 		courseRouter.GET("/:course_id/comments", comment.CommentList)
 		courseRouter.POST("/:course_id/comments", comment.CommentAdd)
-		courseRouter.Any("/:course_id/comments/:comment_id", comment.Comment)
+		courseRouter.DELETE("/:course_id/comments/:comment_id", comment.CommentDeleteHandle)
 		// mark
 		courseRouter.POST("/:course_id/marks", mark.MarkAdd)
 		courseRouter.DELETE("/:course_id/marks", mark.MarkCancel)
@@ -36,7 +37,7 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	userRouter := mainRouter.Group("/users")
 	{
 		userRouter.POST("/", user.RegisterHandle)
-		userRouter.GET("/courses", user.CourseListHandle)
+		userRouter.GET("/:user_id/courses", user.CourseListHandle)
 	}
 	tokenRouter := mainRouter.Group("/tokens")
 	{

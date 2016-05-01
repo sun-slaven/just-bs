@@ -15,7 +15,16 @@
   "redis": {
     "url": "redis://127.0.0.1:6379"
   },
-  "port": ":9090",
+  "deployment": {
+    "dev": {
+      "port": ":9090",
+      "swagger_host": "localhost:8086"
+    },
+    "production": {
+      "port": ":9090",
+      "swagger_host": "115.28.18.162"
+    }
+  },
   "send_cloud": {
     "api_user": "will19940412_test_TQpPHj",
     "api_key": "A0wbotFTuAZNz8dH",
@@ -23,7 +32,7 @@
     "from_name": "移动学习系统",
     "subject": "激活账户",
     "request_url": "http://sendcloud.sohu.com/webapi/mail.send_template.json",
-    "active_url": "http://the-world-wang.top/api/v1/public/user_active"
+    "active_url": "http://115.28.18.162/api/v1/public/user_active"
   },
   "white_list": [
     {

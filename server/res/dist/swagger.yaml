@@ -5,7 +5,7 @@ info:
   description: API在线测试 
   contact:
     email: 992444037@qq.com
-host: localhost:8086
+host: {{.host}}
 basePath: /api/v1
 schemes:
   - http
@@ -185,12 +185,12 @@ paths:
           default: '337c0a43-bdd8-480b-875b-a27668be23fd'
           schema: 
             type: string
-        - name: comment
+        - name: content
           in: body
-          description: Pet to add to the store
+          description: 包含cotent字段
           required: true
           schema:
-            type: string
+            $ref: '#/definitions/courseCommentRequest'
       responses:
         '200':
           description: course response
@@ -202,6 +202,8 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+
+  /courses/{course_id}/comments/{comment_id}:
     delete:
       description: 删除评论
       operationId: delete comment
@@ -219,6 +221,13 @@ paths:
           default: '337c0a43-bdd8-480b-875b-a27668be23fd'
           schema: 
             type: string
+        - name: comment_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+
       responses:
         '200':
           description: 成功
@@ -477,7 +486,7 @@ paths:
           schema:
             type: string
 
-  /users/courses:
+  /users/{user_id}courses:
     get:
       description: 获取用户关注课程
       operationId: user course mark
@@ -553,7 +562,14 @@ definitions:
         $ref: '#/definitions/user'
       create_time:
         type: string
-  
+
+
+    courseCommentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          default: '233'
   course:
     type: object
     required:

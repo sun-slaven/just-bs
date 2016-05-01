@@ -3,32 +3,33 @@ import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
 	"just.com/service/course"
+	"just.com/query/vo/course"
+	"just.com/dto"
 )
 
-type CourseAddRequest struct {
-	Name        string `json:"name"`
-	Description string  `json:"Description"`
-	Experiment  string `json:"experiment"`
-	MajorId     string `json:"major_id"`
-	CollegeId   string `json:"college_id"`
-}
+
 
 func CourseAddHandle(c *gin.Context) {
 	context, contextFlag := action.GetContext(c)
 	if contextFlag == false {
 		return
 	}
-	request := new(CourseAddRequest)
+	request := new(dto.CourseAddRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {
 		context.Log.Println(bindErr)
 		return
 	}
 	courseService := service.NewCourseService(context.Session, context.Log)
-	courseId, addErr := courseService.Add(nil, context.UserId)
+	courseTable, addErr := courseService.Add(request, context.UserId)
 	if addErr != nil {
+		context.Log.Println(addErr)
 		return
 	}
-	// TODO
-	context.Log.Println(courseId)
+	courseVo, couseVoErr := course.LoadCourseVoFromTable(courseTable, context.Session, context.Log)
+	if couseVoErr != nil {
+		context.Log.Println(couseVoErr)
+		return
+	}
+	context.Response.Data = courseVo
 }

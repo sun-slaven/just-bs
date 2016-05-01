@@ -11,7 +11,8 @@ func CourseListHandle(c *gin.Context) {
 	if !contextFlag {
 		return
 	}
-	courseVoList, err := course.LoadMarkedCourseVo(context.UserId, context.Session, context.Log)
+	userId := c.Param("user_id")
+	courseVoList, err := course.LoadMarkedCourseVo(userId, context.Session, context.Log)
 	if err != nil {
 		log.Println(err)
 		return

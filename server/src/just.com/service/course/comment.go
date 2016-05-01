@@ -3,9 +3,12 @@ import (
 	"just.com/model/db/table"
 	"code.google.com/p/go-uuid/uuid"
 	"time"
+	"just.com/query/vo/course"
 )
-/*return commentId and error*/
-func (self *CourseService)AddComment(content, courseId, userId string) (string, error) {
+/*return commentVo and error*/
+func (self *CourseService)AddComment(content, courseId, userId string) (commentVo *course.CourseCommentVo, err error) {
+	commentVo = new(course.CourseCommentVo)
+	err = COURSE_COMMENT_ADD_ERR
 	commentTable := new(table.CourseCommentTable)
 	commentTable.UUID = uuid.New()
 	commentTable.Content = content
@@ -18,10 +21,12 @@ func (self *CourseService)AddComment(content, courseId, userId string) (string, 
 		if insertErr != nil {
 			self.Log.Println(insertErr)
 		}
-		return "", COURSE_COMMENT_ADD_ERR
+		return
 	}
-	//	go self.flushCommentSum(courseId)
-	return commentTable.UUID, nil
+
+	commentVo = course.NewCommentVo(commentTable, self.Session, self.Log)
+	err = nil
+	return
 }
 
 func (self *CourseService) DeleteComment(courseId string, commentId string) error {

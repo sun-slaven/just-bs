@@ -6,10 +6,10 @@ import (
 type Config struct {
 	DBConfig `json:"db"`
 	QiniuConfig `json:"qiniu"`
-	Port            string `json:"port"`
+	DeploymentConfig DeploymentConfig `json:"deployment"`
 	RedisConfig `json:"redis"`
 	SendCloudConfig `json:"send_cloud"`
-	WhiteListConfig []White `json:"white_list"`
+	WhiteListConfig  []White `json:"white_list"`
 }
 
 type DBConfig struct {
@@ -29,6 +29,16 @@ type QiniuConfig struct {
 
 type RedisConfig  struct {
 	Url string `json:"url"`
+}
+
+type DeploymentConfig struct {
+	Dev        DeploymentItemConfig        `json:"dev"`
+	Production DeploymentItemConfig `json:"production"`
+}
+
+type DeploymentItemConfig struct {
+	Port        string `json:"port"`
+	SwaggerHost string `json:"swagger_host"`
 }
 
 type SendCloudConfig struct {

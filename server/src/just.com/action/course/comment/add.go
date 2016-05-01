@@ -2,14 +2,11 @@ package comment
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
-	"just.com/middleware"
-	"net/http"
 	"just.com/service/course"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type CommentAddRequest struct {
-	Content string `form:"content"`
+	Content string `json:"content"`
 }
 
 func CommentAdd(c *gin.Context) {
@@ -17,26 +14,20 @@ func CommentAdd(c *gin.Context) {
 	if contextFlag == false {
 		return
 	}
-	token, tokenFlag := action.GetToken(c)
-	if tokenFlag == false {
-		return
-	}
-	session := context.Session
-	log := context.Log
 	// request
 	courseId := c.Param("course_id")
 	request := new(CommentAddRequest)
-	bindErr := c.BindWith(request, binding.Form)
+	bindErr := c.BindJSON(request)
 	if bindErr != nil {
-		log.Println(bindErr)
-	}
-	//core
-	courseService := service.NewCourseService(session, log)
-	commentId, commentErr := courseService.AddComment(request.Content, courseId, token.UserId)
-	if commentErr != nil {
-		log.Println(commentErr)
+		context.Log.Println(bindErr)
 		return
 	}
-	context.Response = middleware.NewResponse(http.StatusOK, commentId, nil)
-	go service.FlushCommentSum(courseId, context.Ds, log)
+	courseService := service.NewCourseService(context.Session, context.Log)
+	commentVo, commentVoErr := courseService.AddComment(request.Content, courseId, context.UserId)
+	if commentVoErr != nil {
+		context.Log.Println(commentVoErr)
+		return
+	}
+	context.Response.Data = commentVo
+	go service.FlushCommentSum(courseId, context.Ds, context.Log)
 }
