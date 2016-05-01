@@ -1,7 +1,7 @@
 GlobalModules.add_directive('just_card')
 angular.module('just.directives.just_card', [])
     //directive的命名必须小写开头,使用为<just-card>
-    .directive('justCard', ['$rootScope', function($rootScope) {
+    .directive('justCard', ['$rootScope','$location', function($rootScope,$location) {
         // Runs during compile
         return {
             // name: '',
@@ -20,8 +20,11 @@ angular.module('just.directives.just_card', [])
             // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
             link: function($scope, iElm, iAttrs, controller) {
                 $scope.choose_lesson = function(lesson) {
-                    $rootScope.go('/users/'+$rootScope.current_user.id+ '/lessons/'+lesson.id+'/show')
-                    $rootScope.current_lesson = lesson;
+                    if ($location.path() == '/lessons/index') {{
+                        $rootScope.go('/lessons/'+lesson.id+'/show')
+                    }}else{
+                        $rootScope.go('/users/'+$rootScope.current_user.id+ '/lessons/'+lesson.id+'/show')
+                    }
                 }
             }
         };
