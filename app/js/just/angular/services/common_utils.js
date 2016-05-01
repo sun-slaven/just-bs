@@ -44,12 +44,25 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
             return created_lessons;
         }
 
+        var adjustFileType = function(fileSuffix){
+            image_array = ['.bmp','.png','.gif','.jpg','.jpeg']
+            video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4']
+            if (image_array.indexOf(fileSuffix) > -1) {
+                return 'image'
+            }
+            if (video_array.indexOf(fileSuffix) > -1) {
+                return 'video'
+            };
+            return 'file'
+        }
+
 
 
         return {
             getLessonsByCollege: getLessonsByCollege,
             getLessonsByMajor: getLessonsByMajor,
-            getMyCreatedLessons: getMyCreatedLessons
+            getMyCreatedLessons: getMyCreatedLessons,
+            adjustFileType: adjustFileType
         }
     }
 ])
