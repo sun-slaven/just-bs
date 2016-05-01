@@ -25,13 +25,7 @@ angular.module('just.controllers.lesson', [])
                     content: $scope.my_comment
                 }, function(resp) {
                     console.log(resp)
-                    $rootScope.alert_modal({
-                        title: "提示",
-                        content: "评论成功",
-                        placement: 'top-right',
-                        type: 'info',
-                        show: true
-                    })
+                    $rootScope.alert_modal("提示", "评论成功")
                     CommentsService.get_comments($rootScope.current_lesson.id, function(resp) {
                         $scope.comments = resp;
                     })
@@ -42,7 +36,7 @@ angular.module('just.controllers.lesson', [])
             $scope.zip_url = 'http://7xt49i.com2.z0.glb.clouddn.com/pack.zip'
             if (!$routeParams.user_id) {
                 $scope.need_learn = true;
-            }else{
+            } else {
                 $scope.need_learn = false;
             }
             if ($scope.need_learn) {
