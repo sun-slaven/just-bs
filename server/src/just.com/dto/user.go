@@ -1,8 +1,7 @@
 package dto
 
-type UserDto struct {
-	Email  string
-	Age    int64
-	Sex    int
-	Mobile string
+type UserUpdateRequest struct {
+	Name    string
+	Email   string
+	IconUrl string `json:"icon_url"`
 }

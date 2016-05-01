@@ -8,7 +8,6 @@ import (
 )
 
 
-
 func CourseAddHandle(c *gin.Context) {
 	context, contextFlag := action.GetContext(c)
 	if contextFlag == false {

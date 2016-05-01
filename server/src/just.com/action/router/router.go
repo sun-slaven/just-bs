@@ -13,6 +13,7 @@ import (
 )
 
 func BuildRouter(mainRouter *gin.RouterGroup) {
+	// TODO teacher list
 	collegeRouter := mainRouter.Group("/colleges")
 	{
 		collegeRouter.GET("/", college.CollegeList)
@@ -37,6 +38,8 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	userRouter := mainRouter.Group("/users")
 	{
 		userRouter.POST("/", user.RegisterHandle)
+		userRouter.GET("/:user_id", user.UserGetHandle)
+		userRouter.PATCH("/:user_id", user.UserUpdateHandle)
 		userRouter.GET("/:user_id/courses", user.CourseListHandle)
 	}
 	tokenRouter := mainRouter.Group("/tokens")

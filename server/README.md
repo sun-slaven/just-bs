@@ -47,3 +47,6 @@ http://localhost:8086/res/dist/
 ## 5.1
 1. 还是改成`/users/:user__id/courses`(统一成复数会好一点)干脆把获取其他人关注的课程也一起暴露出来
 2. 增加部署时的环境变量,如则启动命令改成 `go run main.go dev(production)`,默认启动方式为`dev`
+3. 用户更新接口
+4. 根据id获取用户信息(貌似感觉这个接口没什么用)
+5. files/tokens,token有限时间为20min,key由本地客户端生成(callback还没来得及写)

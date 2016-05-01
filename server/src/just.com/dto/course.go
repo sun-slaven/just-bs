@@ -10,5 +10,5 @@ type CourseAddRequest struct {
 	MajorId      string `json:"major_id"`   // required
 	CollegeId    string `json:"college_id"` // required
 	TeacherId    string `json:"teacher_id"` // required
-	ImageKey     string `json:"image_key"`  // required
+	ImageUrl     string `json:"image_url"`  // required
 }

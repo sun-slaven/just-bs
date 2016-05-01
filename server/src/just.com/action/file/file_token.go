@@ -7,8 +7,7 @@ import (
 )
 
 type FileTokenRequest struct {
-	Suffix string `json:"suffix"`
-	Type   string `json:"type"`
+	Type string `json:"type"`
 }
 
 func FileTokenHandle(c *gin.Context) {
@@ -23,5 +22,5 @@ func FileTokenHandle(c *gin.Context) {
 		return
 	}
 	fileSystem := c.MustGet(middleware.MIDDLEWARE_FILE_SYSTEM).(*qiniu.QiniuFileSystem)
-	context.Response.Data = fileSystem.MakeToken(request.Suffix, request.Type)
+	context.Response.Data = fileSystem.MakeToken(request.Type)
 }

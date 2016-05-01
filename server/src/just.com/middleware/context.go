@@ -12,6 +12,7 @@ type Context struct {
 	Log      *log.Logger
 	Session  *xorm.Session
 	UserId   string
+	Err      error
 	Response *Response
 }
 

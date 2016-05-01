@@ -43,7 +43,7 @@ paths:
 
   /courses:
     get:
-      description: 获取课程列表
+      description: 根据college_id或major_id获取课程列表
       summary: 课程列表
       operationId: course list
       produces:
@@ -69,12 +69,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/course'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/errorModel'
     post:
-      description: 新增课程
+      description: 新增课程,其中 name,college_id,major_id,teacher_id是required
       operationId: add course
       summary: 添加课程
       produces:
@@ -87,7 +83,7 @@ paths:
           description: 新增课程信息
           required: true
           schema:
-            $ref: '#/definitions/course'
+            $ref: '#/definitions/courseAddRequest'
       responses:
         '200':
           description: course id
@@ -336,7 +332,7 @@ paths:
     post:
       description: 增加文件
       operationId: file add
-      summary: 添加文件
+      summary: 添加文件(弃用)
       produces:
         - application/json
       consumes:
@@ -375,7 +371,7 @@ paths:
           - name: file
             in: body
             required: true
-            description: suffix为文件后缀,type为上传文件的类型
+            description: type为上传文件的业务类型
             schema:
               $ref: '#/definitions/fileTokenRequest'
         responses:
@@ -388,7 +384,7 @@ paths:
     get:
           description: 获取文件信息
           operationId: file get
-          summary: 获取文件信息
+          summary: 获取文件信息(弃用)
           produces:
             - application/json
           consumes:
@@ -485,6 +481,54 @@ paths:
           description: course response
           schema:
             type: string
+  /users/{user_id}:
+    patch:
+      description: 修改用户数据,其中有 icon_url则为更新头像,email暂时先不提供修改
+      operationId: user update
+      summary: 修改用户数据
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+        - name: udate_boyd
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/userUpdateRequest'
+      responses:
+        '200':
+          description: user
+          schema:
+            $ref: '#/definitions/user'
+    get:
+      description: 获取某个用户数据
+      operationId: user get
+      summary: 获取某个用户数据
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+      responses:
+        '200':
+          description: course response
+          schema:
+            $ref: '#/definitions/user'
 
   /users/{user_id}courses:
     get:
@@ -502,6 +546,7 @@ paths:
           description: course response
           schema:
             $ref: '#/definitions/course'
+
 
   
 definitions:
@@ -532,11 +577,27 @@ definitions:
         default: '小泡子仔'
       email:
         type: string
+        default: '992444037@qq.com'
       role_name:
         type: string
         default: 'STUDENT'
       icon:
         $ref: '#/definitions/image'
+
+  userUpdateRequest:
+    type: object
+    required:
+      - id
+    properties:
+      name:
+        type: string
+        default: '小泡子仔'
+      email:
+        type: string
+        default: '992444037@qq.com'
+      icon_url:
+        type: string
+
   role:
     type: object
     required:
@@ -564,12 +625,44 @@ definitions:
         type: string
 
 
-    courseCommentRequest:
+  courseCommentRequest:
+    type: object
+    properties:
+      content:
+        type: string
+        default: '233'
+
+  courseAddRequest:
       type: object
       properties:
-        content:
+        name:
           type: string
-          default: '233'
+          default: '数据库'
+        college_id:
+          type: string
+          default: 'b6a0808f-b87a-44ca-b850-9545a3f3f089'
+        major_id:
+          type: string
+          default: '0260bb7c-2e93-4a7d-895d-59fac58fdbc6'
+        teacher_id:
+          type: string
+          default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
+        image_url:
+          type: string
+          default: 'url'
+        description:
+          type: string
+          default: '简单的CRUD'
+        description:
+          type: string
+          default: '一两句话描述'
+        introduction:
+          type: string
+          default: '简单介绍一下这门课程'
+        wish:
+          type: string
+          default: '老师寄语'
+
   course:
     type: object
     required:
@@ -581,7 +674,7 @@ definitions:
         default: '017fa5fb-e1a1-4715-9b30-18d95e3150fc'
       name:
         type: string
-        defalut: '数据库'
+        default: '数据库'
       description:
         type: string
         default: '专业基础课程'
@@ -613,9 +706,12 @@ definitions:
         type: integer
         format: int64
       point_person:
-        type: string
+        type: ingeger
+        format: int64
+        default: 10
       point_status:
         type: string
+        default: 'Y/N'
       teacher:
         $ref: '#/definitions/user'
   
@@ -634,9 +730,6 @@ definitions:
   fileTokenRequest:
     type: object
     properties:
-      suffix:
-        type: string
-        default: 'png'
       type:
         type: string
         default: 'image/video/file'
@@ -644,9 +737,6 @@ definitions:
   fileToken:
     type: object
     properties:
-      key:
-        type: string
-        default: 'b195a07a-7c42-4cbe-af01-6882b5bc3a10'
       token:
         type: string
         default: '很长一段'

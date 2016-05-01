@@ -26,7 +26,9 @@ func ResponseMiddleware() gin.HandlerFunc {
 		if response.Status == http.StatusOK {
 			c.JSON(http.StatusOK, response.Data)
 		}else {
-			c.JSON(response.Status, response.Error.Error())
+			errMsg := make(map[string]string)
+			errMsg["msg"] = response.Error.Error()
+			c.JSON(response.Status, errMsg)
 		}
 	}
 }

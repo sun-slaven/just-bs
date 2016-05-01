@@ -3,6 +3,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
 	"just.com/service/course"
+	"just.com/err"
 )
 
 type CommentAddRequest struct {
@@ -26,6 +27,7 @@ func CommentAdd(c *gin.Context) {
 	commentVo, commentVoErr := courseService.AddComment(request.Content, courseId, context.UserId)
 	if commentVoErr != nil {
 		context.Log.Println(commentVoErr)
+		context.Err = err.COURSE_NOT_FOUND
 		return
 	}
 	context.Response.Data = commentVo
