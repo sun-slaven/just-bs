@@ -1,14 +1,16 @@
 <div id="setting_avatar" ng-show="active_type == 'setting_avatar'">
     <img ng-src="../../app/images/default_user_avatar.jpg" height="220" width="220" />
-    <div ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</div>
-    <div class="file-info" ng-if="upload.selectFile">
-        <h5>已选文件: {{upload.selectFile.name}}</h5>
-        <div class="progress progress-striped" ng-class="{active: upload.selectFile.progress.p < 100}">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: upload.selectFile.progress.p + '%'}">
+    <div class="operation">
+        <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</buttton>
+        <div class="file-info" ng-if="upload.selectFile">
+            <h5>已选文件: {{upload.selectFile.name}}</h5>
+            <div class="progress progress-striped" ng-class="{active: upload.selectFile.progress.p < 100}">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: upload.selectFile.progress.p + '%'}">
+                </div>
+                <strong ng-show="upload.selectFile.progress.p > 0">{{upload.selectFile.progress.p}}%</strong>
             </div>
-            <strong ng-show="upload.selectFile.progress.p > 0">{{upload.selectFile.progress.p}}%</strong>
         </div>
+        <button class="btn btn-info upload" ng-click="upload.do_upload()" ng-disabled="!upload.selectFile"><i class="fa fa-upload" aria-hidden="true"></i>确认上传</button>
+        <button class="btn btn-default cancel" ng-click="upload.abort()" ng-disabled="!upload.selectFile || upload.selectFile.progress.p == 100"><i class="fa fa-times" aria-hidden="true">取消</i></button>
     </div>
-    <button class="btn btn-info upload" ng-click="upload.do_upload()" ng-disabled="!upload.selectFile"><i class="fa fa-upload" aria-hidden="true"></i>确认上传</button>
-    <button class="btn btn-default cancel" ng-click="upload.abort()" ng-disabled="!upload.selectFile || upload.selectFile.progress.p == 100"><i class="fa fa-times" aria-hidden="true">取消</i></button>
 </div>
