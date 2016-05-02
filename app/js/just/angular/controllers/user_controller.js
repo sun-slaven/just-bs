@@ -38,7 +38,6 @@ angular.module('just.controllers.user', ['ngCookies'])
                             }
                             UserService.sign_in($scope.user, function(resp) {
                                 $rootScope.set_cache('token', resp.token)
-                                $rootScope.icon = resp.user.icon;
                                 $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
                             })
 

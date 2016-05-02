@@ -14,8 +14,19 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
             })
         }
 
-        function create_lesson(success) {
-            lessonsAPI.create_lesson({}, {}, function(resp) {
+        function create_lesson(new_lesson, success) {
+            lessonsAPI.create_lesson({}, {
+                name: new_lesson.name,
+                teacher_id: new_lesson.teacher_id,
+                image_url: new_lesson.icon_url,
+                description: new_lesson.description,
+                introduction: new_lesson.introduction,
+                wish: new_lesson.wish,
+                college_id: new_lesson.college_id,
+                major_id: new_lesson.major_id,
+                //outline: new_lesson.outline_list,
+                //attachment: new_lesson.attachment_list
+            }, function(resp) {
                 if (success) { success(resp) }
             })
         }

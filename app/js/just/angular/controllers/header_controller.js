@@ -6,12 +6,11 @@ angular.module('just.controllers.header', [])
             //log out
             $scope.sign_out = function() {
                     $rootScope.confirm_modal("确认退出吗?", $scope, function() {
-                        $rootScope.current_user = null;//can delete , in service
-                        $rootScope.go('/login');
-                        UserService.sign_out(function() {
+                        UserService.sign_out($rootScope.current_user,function() {
                             $rootScope.go('/login');
+                            $rootScope.current_user = null;
                         })
-                     })
+                    })
                 }
                 //nav-head controller
             $scope.header_search = {
@@ -44,11 +43,11 @@ angular.module('just.controllers.header', [])
 
             }
             $scope.go_me = function() {
-                $rootScope.go('/users/'+ $rootScope.current_user.id + '/me')
+                $rootScope.go('/users/' + $rootScope.current_user.id + '/me')
             }
 
             $scope.go_manager_lessons = function() {
-                $rootScope.go('/users/1/manage_lesson')
+                $rootScope.go('/users/' + $rootScope.current_user.id + '/manage_lesson')
             }
         }
     ])

@@ -27,12 +27,16 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
             return file.upload //返回一个promise
         };
 
-        var abort = function(file, files) {
-            for (index in files) {
-                if (files[index].name == file.name) {
-                    files.splice(index, 1);
-                    break;
-                };
+        var abort = function(file, files, indexAttr) {
+            if (indexAttr > -1) {
+                files.splice(index, 1)
+            } else {
+                for (index in files) {
+                    if (files[index].name == file.name) {
+                        files.splice(index, 1);
+                        break;
+                    };
+                }
             }
             file.upload.abort();
         };
