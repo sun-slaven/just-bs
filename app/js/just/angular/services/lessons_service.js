@@ -18,7 +18,7 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
             lessonsAPI.create_lesson({}, {
                 name: new_lesson.name,
                 teacher_id: new_lesson.teacher_id,
-                image_url: new_lesson.icon_url,
+                icon_url: new_lesson.icon_url,
                 description: new_lesson.description,
                 introduction: new_lesson.introduction,
                 wish: new_lesson.wish,
