@@ -1,5 +1,6 @@
 package file
-import "just.com/model/db/table"
+
+const BASE_URL = "http://7xnz7k.com1.z0.glb.clouddn.com/"
 
 type ImageVo struct {
 	Url    string `json:"url"`
@@ -7,15 +8,9 @@ type ImageVo struct {
 	Height int64 `json:"height"`
 }
 
-func (self *ImageVo) NewImageVo(t *table.ImageTable)  {
-	self.Url = t.Url
-	self.Width = t.Width
-	self.Height = t.Height
-}
-
-func NewImageVo(url string,width,height int64)  *ImageVo{
+func NewImageVo(url string, width, height int64) *ImageVo {
 	image := new(ImageVo)
-	image.Url = url
+	image.Url = BASE_URL + url
 	image.Width = width
 	image.Height = height
 	return image

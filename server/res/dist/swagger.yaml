@@ -667,7 +667,7 @@ definitions:
         teacher_id:
           type: string
           default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
-        image_icon:
+        icon_url:
           type: string
           default: 'url'
         description:

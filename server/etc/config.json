@@ -10,7 +10,7 @@
     "ak": "YZebTjnnoLzr0fGR7wD31WqcGE2KM1EKhs006S7L",
     "sk": "V3fZaFSgFOuX3GjNL0uouTyz9QWyKvxlA0zymCce",
     "domain": "http://7xnz7k.com1.z0.glb.clouddn.com",
-    "callbackUrl": "http://115.28.18.162/callback"
+    "callbackUrl": "http://115.28.18.162/api/v1/public/callback"
   },
   "redis": {
     "url": "redis://127.0.0.1:6379"

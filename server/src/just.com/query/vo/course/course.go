@@ -54,10 +54,7 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	cv.Experiment = courseTable.Experiment
 
 	// icon
-	icon := new(file.ImageVo)
-	icon.Url = courseTable.IconUrl
-	icon.Width = courseTable.IconWidth
-	icon.Height = courseTable.IconHeight
+	icon := file.NewImageVo(courseTable.IconUrl, courseTable.IconWidth, courseTable.IconHeight)
 	cv.Icon = icon
 	cv.MarkSum = courseTable.MarkSum
 	cv.CommentSum = courseTable.CommentSum
