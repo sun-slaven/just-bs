@@ -38,11 +38,11 @@ func (self *QiniuFileSystem) MakeToken(fileType string) *FileToken {
 	}
 	switch fileType {
 	case "image":
-		policy.CallbackUrl = "key=$(key)&w=$(imageInfo.width)&h=$(imageInfo.height)"
+		policy.CallbackBody = "key=$(key)&w=$(imageInfo.width)&h=$(imageInfo.height)"
 	case "file":
-		policy.CallbackUrl = "key=$(key)&fsize$(fsize)"
+		policy.CallbackBody = "key=$(key)&fsize$(fsize)"
 	case "video":
-		policy.CallbackUrl = "key=$(key)&fsize$(fsize)"
+		policy.CallbackBody = "key=$(key)&fsize$(fsize)"
 		policy.PersistentOps = "avthumb/mp4/s/640x360/vb/1.25m"
 	}
 	return &FileToken{Token:c.MakeUptoken(policy)}
