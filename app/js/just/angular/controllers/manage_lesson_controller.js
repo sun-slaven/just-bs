@@ -1,6 +1,6 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', 'LessonsService', 'CommonUtil', 'FileService', function($rootScope, $scope, $log, $filter, LessonsService, CommonUtil, FileService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -75,7 +75,8 @@ angular.module('just.controllers.manage_lesson', [])
 
         //新建lesson
         $scope.new_lesson = {
-            icon: null,
+            teacher_id: $rootScope.current_user.id,
+            icon_url: null,
             name: "",
             college_id: null,
             major_id: null,
@@ -89,7 +90,7 @@ angular.module('just.controllers.manage_lesson', [])
                 name: '',
                 introduction: '',
             },
-            uploaded_file: {},
+            attachment_list: [],
             open_outline_plus_modal: function() {
                 $scope.modal_title = "创建提纲";
                 $scope.form = $scope.modalForm
@@ -151,37 +152,91 @@ angular.module('just.controllers.manage_lesson', [])
 
 
         //upload to qiniu
-        $scope.selectFiles = [];
-        $scope.onFileSelect = function($files) {
-            for (var i = 0; i < $files.length; i++) {
-                var suffix = $files[i].name.substr($files[i].name.indexOf('.')).toLowerCase(); //文件后缀
-                var type = CommonUtil.adjustFileType(suffix);//image/video/file
-                var fileObj = {
-                    suffix: suffix,
-                    type: type
+        $scope.upload = {
+            start_flag: false,
+            get_token_promise_array: [],
+            //选择多个文件得到token并推入promise数组
+            onFileSelect: function($files) {
+                for (index in $files) {
+                    var suffix_info_obj = QiniuUpload.get_suffix_info_obj($files[index]);
+                    var get_token_promise_obj = {
+                        suffix_info_obj: suffix_info_obj,
+                        file: $files[index],
+                        file_name: $files[index].name,
+                        get_token_promise: QiniuUpload.get_token(suffix_info_obj).then(function(resp) {
+                            return {
+                                key: UuidService.newuuid(suffix_info_obj.suffix),
+                                token: resp.token
+                            };
+                        })
+                    }
+                    this.get_token_promise_array.push(get_token_promise_obj)
                 }
-                get_token_and_start( i ,$files[i], fileObj)
-            };
-        }
-        var get_token_and_start = function(i, file, fileObj) {
-            FileService.get_file_token(fileObj).$promise.then(function(resp) {
-                 var offsetx = $scope.selectFiles.length;
-                $scope.selectFiles[i + offsetx] = {
-                    file: file,
-                    key: resp.key,
-                    token: resp.token
-                };
-                $scope.start($scope.selectFiles[i + offsetx])
-            })
+            },
+            do_upload: function(callback1) {
+                this.start_flag = true;
+                var upload_fun = function(file, token_obj, callback2) {
+                    QiniuUpload.upload(file, token_obj).then(function(resp) {
+                        if (callback2) { callback2(resp) };
+                        $rootScope.alert_modal("", file.name + "上传成功!");
+                    }, function(error) {
+                        console.log(error)
+                    }, function(evt) {
+                        if (file) {
+                            file.progress.p = Math.floor(100 * evt.loaded / evt.totalSize);
+                        };
+                    })
+                }
+                var use_loop_upload_fun = function(resolve, reject) {
+                    for (index in $scope.upload.get_token_promise_array) {
+                        use_loop_upload_fun_by_index(index, resolve, reject);
+                    }
+
+                }
+                var use_loop_upload_fun_by_index = function(index, resolve, reject) {
+                    $scope.upload.get_token_promise_array[index].file.progress = {
+                        p: 0
+                    };
+                    //promise 使用上一个promise的返回结果
+                    $scope.upload.get_token_promise_array[index].get_token_promise.then(function(token_obj) {
+                        console.log(token_obj)
+                        upload_fun($scope.upload.get_token_promise_array[index].file, token_obj, function(resp) {
+                            switch ($scope.upload.get_token_promise_array[index].suffix_info_obj.type) {
+                                case 'image':
+                                    console.log(resp.key)
+                                    $scope.new_lesson.icon_url = resp.key
+                                    break;
+                                case 'video':
+                                    //$scope.new_lesson.icon = resp //icon url
+                                    break;
+                                case 'file':
+                                    var attachment = {
+                                        name: $scope.upload.get_token_promise_array[index].name,
+                                        file_url: resp
+                                    }
+                                    $scope.new_lesson.attachment_list.push(attachment)
+                                    break;
+                            }
+                            if (index == $scope.upload.get_token_promise_array.length - 1) { resolve(); }
+                        })
+                    })
+                }
+                $q(use_loop_upload_fun).then(function() {
+                    if (callback1) { callback1() };
+                })
+
+            },
+            abort: function(file, get_token_promise_array, indexInArray) {
+                QiniuUpload.abort(file, get_token_promise_array, indexInArray)
+            }
         }
 
-        $scope.create_lesson = function(resp) {
-            //1.上传文件
-            angular.forEach($scope.selectFiles, function(ready_file) {
-                $scope.start(ready_file);
-            })
-            LessonsService.create_lesson($scope.new_lesson, function(resp) {
-                console.log(resp)
+        $scope.create_lesson = function() {
+            $scope.upload.do_upload(function() {
+                console.log($scope.new_lesson)
+                LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                    console.log(resp)
+                })
             })
         }
 

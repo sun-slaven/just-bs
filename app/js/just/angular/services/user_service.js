@@ -29,7 +29,7 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             })
         }
 
-        function sign_out(success) {
+        function sign_out(user,success) {
             userAPI.sign_out({}, {
                 user: user
             }, function(resp) {
