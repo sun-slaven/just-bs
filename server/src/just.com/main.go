@@ -58,7 +58,7 @@ func main() {
 
 	// public
 	publicGroup := router.Group("/api/v1")
-	publicGroup.Use(middleware.ResponseMiddleware)
+	publicGroup.Use(middleware.ResponseMiddleware())
 	publicGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
 	// deployment
 	var deploymentItem etc.DeploymentItemConfig
