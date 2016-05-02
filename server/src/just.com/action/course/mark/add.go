@@ -6,10 +6,7 @@ import (
 )
 
 func MarkAdd(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if contextFlag == false {
-		return
-	}
+	context := action.GetContext(c)
 	// request
 	courseId := c.Param("course_id")
 	courseService := service.NewCourseService(context.Session, context.Log)

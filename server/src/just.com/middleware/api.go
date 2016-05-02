@@ -8,7 +8,7 @@ import (
 
 func ApiMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		context := c.MustGet(MLEARNING_CONTENT).(*Context)
+		context := c.MustGet(MLEARNING_CONTEXT).(*Context)
 		apiKey := c.Query("api_key")
 		userService := user.NewUserService(context.Session, context.Log)
 		userTable, getFlag := userService.GetByEmail(apiKey)

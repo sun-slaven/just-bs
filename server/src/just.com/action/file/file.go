@@ -8,7 +8,6 @@ func File(c *gin.Context)  {
 	switch c.Request.Method {
 	case action.METHOD_GET:
 	case action.METHOD_POST:
-		FileAdd(c)
 	case action.METHOD_PUT:
 		FileUpdate(c)
 	case action.METHOD_DELETE:

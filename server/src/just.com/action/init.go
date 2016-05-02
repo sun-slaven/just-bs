@@ -2,7 +2,8 @@ package action
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/middleware"
-	"just.com/service/token"
+	"just.com/err"
+	"just.com/common"
 )
 
 const (
@@ -12,26 +13,20 @@ const (
 	METHOD_DELETE = "DELETE"
 )
 
-func GetContext(c *gin.Context) (*middleware.Context, bool) {
-	contextTemp, contextTempFlag := c.Get(middleware.MLEARNING_CONTENT)
-	if contextTempFlag == false {
-		return nil, contextTempFlag
+func GetContext(c *gin.Context) (*middleware.Context) {
+	defer func() {
+		if e := recover(); e != nil {
+			c.Set(middleware.MLEARNING_CONTEXT, middleware.NewErrResponse(err.NO_CONTEXT))
+		}
+	}()
+	context := c.MustGet(middleware.MLEARNING_CONTEXT).(*middleware.Context)
+	if common.IsNil(context.Session, context.Log, context.Ds, context.Response) {
+		panic(err.NO_CONTEXT)
 	}
-	context, contextFlag := contextTemp.(*middleware.Context)
-	if contextFlag == false {
-		return nil, contextFlag
-	}
-	return context, true
+	return context
 }
 
-func GetToken(c *gin.Context) (*service.UserToken, bool) {
-	tokenTemp, tokenTempFlag := c.Get(middleware.MIDDLEWARE_TOKEN)
-	if tokenTempFlag == false {
-		return nil, tokenTempFlag
-	}
-	token, tokenFlag := tokenTemp.(*service.UserToken)
-	if tokenFlag == false {
-		return nil, tokenFlag
-	}
-	return token, true
+func BindErrHandle(context *middleware.Context, e error) {
+	context.Log.Println(e)
+	context.Response.Error = err.PARAM_ERR
 }

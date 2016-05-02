@@ -11,10 +11,7 @@ type FileTokenRequest struct {
 }
 
 func FileTokenHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if contextFlag == false {
-		return
-	}
+	context := action.GetContext(c)
 	request := new(FileTokenRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {

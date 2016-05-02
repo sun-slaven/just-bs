@@ -5,23 +5,25 @@ import (
 	"time"
 	"just.com/service/image"
 	"just.com/common"
-	"just.com/service"
 	"just.com/dto"
+	"just.com/err"
+	"strings"
 )
 
 /*return courseId*/
-func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, err error) {
-	err = service.SERVICE_COURSE_ADD_ERR
+func (self *CourseService) Save(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, error *err.HttpError) {
 	courseTable = new(table.CourseTable)
 	// 1. check
-	if common.IsEmpty(request.Name, request.CollegeId, request.MajorId, request.TeacherId, request.ImageUrl) {
+	if common.IsEmpty(request.Name, request.CollegeId, request.MajorId, request.TeacherId, request.IconUrl) {
+		error = err.NO_REQUIERED_PARAM_FOUND
 		return
 	}
 	// 2. icon college major teacher
 	imageService := image.NewImageService(self.Session, self.Log)
-	imageTable, imageTableErr := imageService.FindByUrl(request.ImageUrl)
+	imageTable, imageTableErr := imageService.FindByUrl(request.IconUrl)
 	if imageTableErr != nil {
 		self.Log.Println(imageTableErr)
+		error = err.NO_IMAGE_FOUND_BY_URL
 		return
 	}
 	getFlag, getErr := self.Session.Get(&table.CollegeTable{UUID:request.CollegeId})
@@ -29,6 +31,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		if getErr != nil {
 			self.Log.Println(getErr)
 		}
+		error = err.NO_COLLEGE_OR_MAJOR_FOUND
 		return
 	}
 	getFlag, getErr = self.Session.Get(&table.MajorTable{UUID:request.MajorId})
@@ -36,6 +39,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		if getErr != nil {
 			self.Log.Println(getErr)
 		}
+		error = err.NO_COLLEGE_OR_MAJOR_FOUND
 		return
 	}
 
@@ -45,6 +49,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		if getErr != nil {
 			self.Log.Println(getErr)
 		}
+		error = err.NO_TEACHER_ID_FOUND
 		return
 	}
 
@@ -72,13 +77,27 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.IconUrl = imageTable.Url
 	courseTable.TeacherId = request.TeacherId
 
-	insertNum, insertErr := self.Session.InsertOne(courseTable)
-	if insertNum == 0 {
-		if insertErr != nil {
-			self.Log.Println(insertErr)
+	// insert
+	courseId := strings.TrimSpace(request.Id)
+	if courseId == "" {
+		insertNum, insertErr := self.Session.InsertOne(courseTable)
+		if insertNum == 0 {
+			if insertErr != nil {
+				self.Log.Println(insertErr)
+			}
+			error = err.COURSE_INSERT_ERR
+			return
 		}
-		return
 	}
-	err = nil
+	if courseId != "" {
+		updateNum, updateErr := self.Session.Id(courseId).Update(courseTable)
+		if updateNum == 0 {
+			if updateErr != nil {
+				self.Log.Println(updateErr)
+			}
+		}
+		error = err.NO_COURSE_FOUND
+	}
+	error = nil
 	return
 }

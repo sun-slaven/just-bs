@@ -7,7 +7,7 @@ import (
 	"just.com/dto"
 )
 
-func CourseAddHandle(c *gin.Context) {
+func CourseUpdateHandle(c *gin.Context) {
 	context := action.GetContext(c)
 	request := new(dto.CourseAddRequest)
 	bindErr := c.BindJSON(request)

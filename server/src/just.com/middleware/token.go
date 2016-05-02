@@ -5,12 +5,12 @@ import (
 	"just.com/service/token"
 	"encoding/json"
 	"just.com/etc"
-	"net/http"
+	"just.com/err"
 )
 
 func TokenMiddleWare(whiteList []etc.White) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		context := c.MustGet(MLEARNING_CONTENT).(*Context)
+		context := c.MustGet(MLEARNING_CONTEXT).(*Context)
 		whiteFlag := false
 		for _, white := range whiteList {
 			if white.Match(c.Request.Method, c.Request.URL.Path) {
@@ -25,7 +25,7 @@ func TokenMiddleWare(whiteList []etc.White) gin.HandlerFunc {
 		} else {
 			defer func() {
 				if !flag {
-					context.Response = NewResponse(http.StatusUnauthorized, nil, NO_AUTHORITATION_ERR)
+					context.Response = NewErrResponse(err.STATUS_UNAUTHORIZED)
 					c.Abort()
 				}
 			}()

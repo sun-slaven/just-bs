@@ -24,6 +24,7 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 		courseRouter.GET("/", course.CourseListHandle)
 		courseRouter.POST("/", course.CourseAddHandle)
 		courseRouter.GET("/:course_id", course.CourseGetHandle)
+		courseRouter.PATCH("/:course_id", course.CourseUpdateHandle)
 		courseRouter.DELETE("/:course_id", course.CourseDeleteHandle)
 		// comment
 		courseRouter.GET("/:course_id/comments", comment.CommentList)
@@ -51,7 +52,6 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	{
 		fileRouter.GET("/", file.FileList)
 		fileRouter.POST("/tokens", file.FileTokenHandle)
-		fileRouter.POST("/", file.FileAdd)
 		fileRouter.GET("/:id", file.File)
 	}
 }

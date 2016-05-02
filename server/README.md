@@ -1,3 +1,5 @@
+# 目录结构
+
 ## bin
 可执行路径
 ## etc
@@ -33,6 +35,13 @@ nginx的端口可以随便改(我默认8086)
 2. /api 后端api路径,如`/api/v1/courses`
 3. /res 后端测试demo,映射`JUST_PATH/res`目录
 
+## 响应状态码说明
+1. 200 | ok:成功状态,对应GET/PUT/DELETE/PATCH,不能用于post
+2. 400 | Bad Request:请求格式错误
+3. 401 | Unauthorized:未授权,在本系统中就是没有携带有效的token
+4. 403 | Forbidden:授权成功,但是用户没有权限
+5. 500 | 服务器内部错误
+
 ## API page:
 http://localhost:8086/res/dist/
 
@@ -50,3 +59,6 @@ http://localhost:8086/res/dist/
 3. 用户更新接口
 4. 根据id获取用户信息(貌似感觉这个接口没什么用)
 5. files/tokens,token有限时间为20min,key由本地客户端生成(callback还没来得及写)
+
+## 5.2
+1. 更新课程 patch/courses

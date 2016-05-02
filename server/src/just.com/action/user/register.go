@@ -3,7 +3,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
 	"just.com/middleware"
-	"net/http"
 	"just.com/service/user"
 	"just.com/service/email"
 	token_service "just.com/service/token"
@@ -17,15 +16,7 @@ type RegisterRequest struct {
 }
 
 func RegisterHandle(c *gin.Context) {
-	response := middleware.NewResponse(http.StatusOK, nil, nil)
-	context, contextFlag := action.GetContext(c)
-	if contextFlag == false {
-		return
-	}
-	defer func() {
-		context.Response = response
-	}()
-
+	context := action.GetContext(c)
 	request := new(RegisterRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {
@@ -38,7 +29,7 @@ func RegisterHandle(c *gin.Context) {
 		context.Log.Println(err)
 		return
 	}
-	response = middleware.NewResponse(http.StatusOK, userLoginVo, nil)
+	context.Response.Data = userLoginVo
 	go sendEmail(c, request.Email, request.UserName, userLoginVo.Token)
 }
 

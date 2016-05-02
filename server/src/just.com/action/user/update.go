@@ -7,10 +7,7 @@ import (
 )
 
 func UserUpdateHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if !contextFlag {
-		return
-	}
+	context := action.GetContext(c)
 	userId := c.Param("user_id")
 	request := new(dto.UserUpdateRequest)
 	bindErr := c.BindJSON(request)

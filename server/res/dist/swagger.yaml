@@ -70,7 +70,7 @@ paths:
             items:
               $ref: '#/definitions/course'
     post:
-      description: 新增课程,其中 name,college_id,major_id,teacher_id是required
+      description: 新增课程,其中 name,college_id,major_id 是required,则teacher_id为当前用户
       operationId: add course
       summary: 添加课程
       produces:
@@ -89,10 +89,8 @@ paths:
           description: course id
           schema:
             type: string
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/errorModel'
+
+
   /courses/{course_id}:
     get:
       description: 根据id获取课程
@@ -118,6 +116,28 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+
+    patch:
+      description: 修改课程,其中 name,college_id,major_id 是required,则teacher_id为当前用户
+      operationId: 修改 课程信息
+      summary: 添加课程
+      produces:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course
+          in: body
+          description: 新增课程信息
+          required: true
+          schema:
+            $ref: '#/definitions/courseUpdateRequest'
+      responses:
+        '200':
+          description: course id
+          schema:
+            type: string
+
     delete:
       description: 删除指定课程
       operationId: delete course
@@ -647,7 +667,7 @@ definitions:
         teacher_id:
           type: string
           default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
-        image_url:
+        image_icon:
           type: string
           default: 'url'
         description:
@@ -662,6 +682,41 @@ definitions:
         wish:
           type: string
           default: '老师寄语'
+
+  courseUpdateRequest:
+        type: object
+        properties:
+          id:
+            type: string
+            default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
+          name:
+            type: string
+            default: '数据库'
+          college_id:
+            type: string
+            default: 'b6a0808f-b87a-44ca-b850-9545a3f3f089'
+          major_id:
+            type: string
+            default: '0260bb7c-2e93-4a7d-895d-59fac58fdbc6'
+          teacher_id:
+            type: string
+            default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
+          icon_url:
+            type: string
+            default: 'url'
+          description:
+            type: string
+            default: '简单的CRUD'
+          description:
+            type: string
+            default: '一两句话描述'
+          introduction:
+            type: string
+            default: '简单介绍一下这门课程'
+          wish:
+            type: string
+            default: '老师寄语'
+
 
   course:
     type: object

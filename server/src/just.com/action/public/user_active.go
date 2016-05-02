@@ -7,10 +7,7 @@ import (
 )
 
 func UserActiveHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if contextFlag == false {
-		return
-	}
+	context := action.GetContext(c)
 	userId := c.Query("user_id")
 	id := c.Query("id")
 	// 1. check token

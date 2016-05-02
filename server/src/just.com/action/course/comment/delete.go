@@ -6,10 +6,7 @@ import (
 )
 
 func CommentDeleteHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if !contextFlag {
-		return
-	}
+	context := action.GetContext(c)
 	courseId := c.Param("course_id")
 	commentId := c.Param("comment_id")
 	courseService := service.NewCourseService(context.Session, context.Log)

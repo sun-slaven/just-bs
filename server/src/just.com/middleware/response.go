@@ -2,33 +2,42 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"just.com/err"
 )
 
 
 type Response  struct {
-	Status int
-	Data   interface{}
-	Error  error
+	Data  interface{}
+	Error *err.HttpError
 }
 
-func NewResponse(status int, data interface{}, err error) *Response {
-	response := new(Response)
-	response.Status = status
-	response.Data = data
-	response.Error = err
-	return response
+func NewResponse(data interface{}, err *err.HttpError) *Response {
+	return &Response{
+		Data:data,
+		Error:err,
+	}
+}
+
+//返回错误代码的response
+func NewErrResponse(err *err.HttpError) *Response {
+	return NewResponse(nil, err)
+}
+
+//返回data的response
+func NewDataResponse(data interface{}) *Response {
+	return NewResponse(data, nil)
 }
 
 func ResponseMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 		response := c.MustGet(MLEARNING_RESPONSE).(*Response)
-		if response.Status == http.StatusOK {
+		if response.Error == nil {
 			c.JSON(http.StatusOK, response.Data)
 		}else {
-			errMsg := make(map[string]string)
-			errMsg["msg"] = response.Error.Error()
-			c.JSON(response.Status, errMsg)
+			errorMessage := make(map[string]string)
+			errorMessage["message"] = response.Error.Error.Error()
+			c.JSON(response.Error.Status, errorMessage)
 		}
 	}
 }

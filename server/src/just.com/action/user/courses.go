@@ -7,10 +7,7 @@ import (
 )
 
 func CourseListHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if !contextFlag {
-		return
-	}
+	context := action.GetContext(c)
 	userId := c.Param("user_id")
 	courseVoList, err := course.LoadMarkedCourseVo(userId, context.Session, context.Log)
 	if err != nil {

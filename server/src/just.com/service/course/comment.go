@@ -23,7 +23,6 @@ func (self *CourseService)AddComment(content, courseId, userId string) (commentV
 		}
 		return
 	}
-
 	commentVo = course.NewCommentVo(commentTable, self.Session, self.Log)
 	err = nil
 	return

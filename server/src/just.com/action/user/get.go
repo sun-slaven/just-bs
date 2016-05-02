@@ -6,10 +6,7 @@ import (
 )
 
 func UserGetHandle(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if !contextFlag {
-		return
-	}
+	context := action.GetContext(c)
 	userId := c.Param("user_id")
 	context.Response.Data = user.LoadUserVo(userId, context.Session, context.Log)
 	return

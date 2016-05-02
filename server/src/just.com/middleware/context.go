@@ -3,8 +3,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"just.com/model/db"
-	"net/http"
 	"github.com/go-xorm/xorm"
+	"just.com/err"
 )
 
 type Context struct {
@@ -12,7 +12,6 @@ type Context struct {
 	Log      *log.Logger
 	Session  *xorm.Session
 	UserId   string
-	Err      error
 	Response *Response
 }
 
@@ -22,20 +21,20 @@ func ContextMiddleWare(ds *db.DataSource, log *log.Logger) gin.HandlerFunc {
 		context.Log = log
 		context.Ds = ds
 		context.Session = ds.NewSession()
-		response := NewResponse(http.StatusOK, nil, nil)
-		context.Response = response
+		context.Response = NewResponse(nil, nil)
 		defer context.Session.Close()
 		beginErr := context.Session.Begin()
 		if beginErr != nil {
 			log.Println(beginErr)
+			c.Set(MLEARNING_RESPONSE, NewErrResponse(err.NO_CONTEXT))
+			c.Abort()
 			return
 		}
-		c.Set(MLEARNING_CONTENT, context)
+		c.Set(MLEARNING_CONTEXT, context)
 		c.Next()
-		// session rollback or commit
-		response = context.Response
 		c.Set(MLEARNING_RESPONSE, context.Response)
-		if response.Status == http.StatusOK {
+		// session rollback or commit
+		if context.Response.Error != nil {
 			// commit
 			commitErr := context.Session.Commit()
 			if commitErr != nil {

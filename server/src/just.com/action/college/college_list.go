@@ -6,14 +6,7 @@ import (
 )
 
 func CollegeList(c *gin.Context) {
-	context, contextFlag := action.GetContext(c)
-	if contextFlag == false {
-		return
-	}
-	response := context.Response
-	defer func() {
-		context.Response = response
-	}()
+	context := action.GetContext(c)
 	collegeVoList := college.LoadCollegeVoList(context.Session, context.Log)
-	response.Data = collegeVoList
+	context.Response.Data = collegeVoList
 }
