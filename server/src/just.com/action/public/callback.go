@@ -11,17 +11,16 @@ import (
 func UploadCallbackHandle(c *gin.Context) {
 	context := action.GetContext(c)
 	request := new(dto.UploadCallbackRequest)
-	context.Log.Println(request)
 	bindErr := c.Bind(request)
 	if bindErr != nil {
 		context.Log.Println(bindErr)
 		return
 	}
+	context.Log.Println(request)
 	if common.IsEmpty(request.Key) {
 		c.JSON(http.StatusOK, nil)
 		return
 	}
 	imageService := new(image.ImageService)
 	imageService.Add("", request.Key, "", request.W, request.H)
-	c.JSON(http.StatusOK, nil)
 }
