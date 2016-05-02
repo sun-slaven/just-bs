@@ -21,11 +21,9 @@ func UploadCallbackHandle(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 		return
 	}
-	session := context.Ds.NewSession()
-	imageService := image.NewImageService(session, context.Log)
+	imageService := image.NewImageService(context.Session, context.Log)
 	addErr := imageService.Add("", request.Key, "", request.W, request.H)
 	if addErr != nil {
 		context.Log.Println(addErr)
 	}
-	session.Commit()
 }

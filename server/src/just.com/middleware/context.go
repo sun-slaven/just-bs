@@ -34,7 +34,7 @@ func ContextMiddleWare(ds *db.DataSource, log *log.Logger) gin.HandlerFunc {
 		c.Next()
 		c.Set(MLEARNING_RESPONSE, context.Response)
 		// session rollback or commit
-		if context.Response.Error != nil {
+		if context.Response.Error == nil {
 			// commit
 			commitErr := context.Session.Commit()
 			if commitErr != nil {
