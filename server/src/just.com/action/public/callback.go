@@ -26,10 +26,9 @@ func UploadCallbackHandle(c *gin.Context) {
 	if addErr != nil {
 		context.Log.Println(addErr)
 	}
-	context.Response.Data = &UploadReturn{Key:request.Key, Hash:request.Hash}
+	context.Response.Data = &UploadReturn{Key:request.Key}
 }
 
 type UploadReturn struct {
-	Key  string `json:"key"`
-	Hash string `json:"hash"`
+	Key string `json:"key"`
 }

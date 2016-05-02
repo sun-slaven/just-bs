@@ -38,7 +38,7 @@ func (self *QiniuFileSystem) MakeToken(fileType string) *FileToken {
 	}
 	switch fileType {
 	case "image":
-		policy.CallbackBody = "key=$(key)&hash=$(etag)&w=$(imageInfo.width)&h=$(imageInfo.height)"
+		policy.CallbackBody = "key=$(key)&w=$(imageInfo.width)&h=$(imageInfo.height)"
 	case "file":
 		policy.CallbackBody = "key=$(key)&fsize$(fsize)"
 	case "video":
