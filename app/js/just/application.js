@@ -128,8 +128,14 @@ angular.module('just', GlobalModules.get([
             });
         }
         //alert
-    $rootScope.alert_modal = function(modal_obj) {
-        return $alert(modal_obj)
+    $rootScope.alert_modal = function(title, content) {
+        return $alert({
+            title: title.concat(' <i class="fa fa-info-circle" aria-hidden="true"></i>'),
+            content: content,
+            placement: 'top-right',
+            type: 'info',
+            show: true
+        })
     }
 
     // 防止页面刷新,从cookie里取出当前对象.cookie在页面刷新时并不会清空

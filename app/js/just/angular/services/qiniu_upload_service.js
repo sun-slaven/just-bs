@@ -1,6 +1,6 @@
 GlobalModules.add_service('qiniu_upload')
 angular.module('just.services.qiniu_upload', []).
-factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileService', 'CommonUtil'
+factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileService', 'CommonUtil',
 
     function($rootScope, $resource, $http, $qupload, FileService, CommonUtil) {
 
@@ -15,13 +15,7 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
         }
 
         var get_token = function(fileObj) {
-            FileService.get_file_token(fileObj).$promise.then(function(resp) {
-                var token_obj = {
-                    key: resp.key,
-                    token: resp.token
-                };
-                return token_obj;
-            })
+            return FileService.get_file_token(fileObj).$promise
         }
 
         var upload = function(file, token_obj) {
@@ -33,13 +27,17 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
             return file.upload //返回一个promise
         };
 
-        var abort = function(file, index_in_files) {
-            fileupload.abort();
-            $scope.selectFiles.splice(index_in_files, 1);
+        var abort = function(file, files) {
+            for (index in files) {
+                if (files[index].name == file.name) {
+                    files.splice(index, 1);
+                    break;
+                };
+            }
+            file.upload.abort();
         };
 
-        var save_file_to_db = function(){
-        }
+        var save_file_to_db = function() {}
 
         return {
             get_suffix_info_obj: get_suffix_info_obj,

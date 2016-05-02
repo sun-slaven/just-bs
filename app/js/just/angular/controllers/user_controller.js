@@ -63,15 +63,10 @@ angular.module('just.controllers.user', ['ngCookies'])
             $scope.register_ok = function() {
                 if ($scope.can_register()) {
                     UserService.register($scope.register, function(resp) {
-                            $rootScope.alert_modal({
-                                title: "提示",
-                                content: "邮件已经发送到邮箱,请登陆邮箱确认后登陆",
-                                placement: 'top-right', 
-                                type: 'info', 
-                                show: true
-                            })  
+                        $rootScope.alert_modal("提示", "邮件已经发送到邮箱,请登陆邮箱确认后登陆")
                     })
+                }
             };
-        }
 
-    }])
+        }
+    ])
