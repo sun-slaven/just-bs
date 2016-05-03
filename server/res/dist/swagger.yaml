@@ -286,8 +286,6 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
-  
-  /courses/{course_id}/marks:
     delete:
       description: 取消关注课程
       operationId: mark cancel
