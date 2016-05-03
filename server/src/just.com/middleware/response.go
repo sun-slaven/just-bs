@@ -32,6 +32,8 @@ func ResponseMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Headers", "X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
 		response := c.MustGet(MLEARNING_RESPONSE).(*Response)
 		if response.Error == nil {
 			c.JSON(http.StatusOK, response.Data)

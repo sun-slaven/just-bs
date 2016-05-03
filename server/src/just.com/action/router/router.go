@@ -46,6 +46,7 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	tokenRouter := mainRouter.Group("/tokens")
 	{
 		tokenRouter.POST("/", token.LoginHandle)    //sign in
+		tokenRouter.OPTIONS("/", token.TokenOptionHandle)    //sign in
 		tokenRouter.DELETE("/")    //sign out
 	}
 	fileRouter := mainRouter.Group("/files")

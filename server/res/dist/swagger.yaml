@@ -478,6 +478,24 @@ paths:
           schema:
             $ref: '#/definitions/errorModel'
 
+    options:
+      description: 跨域
+      operationId: token options
+      summary: 跨域
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - tokens
+      parameters:
+      responses:
+        '200':
+          description: course response
+          schema:
+            description: file
+            type: string
+            
   /users:
     post:
       description: 注册
