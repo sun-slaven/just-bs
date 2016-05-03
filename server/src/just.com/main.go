@@ -14,6 +14,7 @@ import (
 	action_router "just.com/action/router"
 	"just.com/action/public"
 	"flag"
+	"just.com/action/token"
 )
 
 func main() {
@@ -60,6 +61,11 @@ func main() {
 	publicGroup := router.Group("/api/v1")
 	publicGroup.Use(middleware.ResponseMiddleware())
 	publicGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
+
+	tokenGroup := router.Group("/api/v1")
+	tokenGroup.Use(middleware.ResponseMiddleware())
+	tokenGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
+	tokenGroup.OPTIONS("/tokens", token.TokenOptionHandle)
 	// deployment
 	var deploymentItem etc.DeploymentItemConfig
 	if deployment == "production" {

@@ -31,9 +31,12 @@ func NewDataResponse(data interface{}) *Response {
 func ResponseMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "X-Requested-With")
-		c.Header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		response := c.MustGet(MLEARNING_RESPONSE).(*Response)
 		if response.Error == nil {
 			c.JSON(http.StatusOK, response.Data)
