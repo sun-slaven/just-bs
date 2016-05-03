@@ -5,6 +5,8 @@ import (
 	"just.com/service/course"
 	"just.com/query/vo/course"
 	"just.com/dto"
+	"just.com/common"
+	"just.com/err"
 )
 
 func CourseUpdateHandle(c *gin.Context) {
@@ -15,8 +17,13 @@ func CourseUpdateHandle(c *gin.Context) {
 		action.BindErrHandle(context, bindErr)
 		return
 	}
+	request.Id = c.Param("course_id")
+	if common.IsEmpty(request.Id) {
+		context.Response.Error = err.NO_COURSE_ID_FOUND
+		return
+	}
 	courseService := service.NewCourseService(context.Session, context.Log)
-	courseTable, addErr := courseService.Save(request, context.UserId)
+	courseTable, addErr := courseService.Update(request, context.UserId)
 	if addErr != nil {
 		context.Log.Println(addErr)
 		context.Response.Error = addErr

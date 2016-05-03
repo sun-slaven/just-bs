@@ -3,22 +3,24 @@ import (
 	"github.com/go-xorm/xorm"
 	"log"
 	"just.com/model/db/table"
-	"just.com/query"
+	"just.com/err"
 )
 
-func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, err error) {
-	err = query.QUERY_COURSE_LOAD_LIST_ERR
+func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
 	courseVoList = make([]*CourseVo, 0)
 	courseTableList := make([]*table.CourseTable, 0)
 	findErr := session.Find(&courseTableList, condition)
 	if findErr != nil {
 		log.Println(findErr)
-		return nil, err
+		error = err.COURSE_LIST_FIND_ERR
+		return
 	}
 	for _, courseTable := range courseTableList {
-		courseVo, err := LoadCourseVoFromTable(courseTable, session, log)
-		if err != nil {
-			log.Println(err)
+		courseVo, courseVoErr := LoadCourseVoFromTable(courseTable, session, log)
+		if courseVoErr != nil {
+			log.Println(courseVoErr)
+			error = courseVoErr
+			return
 		}
 		courseVoList = append(courseVoList, courseVo)
 	}

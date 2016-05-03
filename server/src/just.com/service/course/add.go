@@ -7,15 +7,14 @@ import (
 	"just.com/common"
 	"just.com/dto"
 	"just.com/err"
-	"strings"
 )
 
 /*return courseId*/
-func (self *CourseService) Save(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, error *err.HttpError) {
+func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, error *err.HttpError) {
 	courseTable = new(table.CourseTable)
 	// 1. check
 	if common.IsEmpty(request.Name, request.CollegeId, request.MajorId, request.TeacherId, request.IconUrl) {
-		error = err.NO_REQUIERED_PARAM_FOUND
+		error = err.NO_REQUIRED_PARAM_FOUND
 		return
 	}
 	// 2. icon college major teacher
@@ -77,26 +76,13 @@ func (self *CourseService) Save(request *dto.CourseAddRequest, userId string) (c
 	courseTable.IconUrl = imageTable.Url
 	courseTable.TeacherId = request.TeacherId
 
-	// insert
-	courseId := strings.TrimSpace(request.Id)
-	if courseId == "" {
-		insertNum, insertErr := self.Session.InsertOne(courseTable)
-		if insertNum == 0 {
-			if insertErr != nil {
-				self.Log.Println(insertErr)
-			}
-			error = err.COURSE_INSERT_ERR
-			return
+	insertNum, insertErr := self.Session.InsertOne(courseTable)
+	if insertNum == 0 {
+		if insertErr != nil {
+			self.Log.Println(insertErr)
 		}
-	}
-	if courseId != "" {
-		updateNum, updateErr := self.Session.Id(courseId).Update(courseTable)
-		if updateNum == 0 {
-			if updateErr != nil {
-				self.Log.Println(updateErr)
-			}
-		}
-		error = err.NO_COURSE_FOUND
+		error = err.COURSE_INSERT_ERR
+		return
 	}
 	error = nil
 	return

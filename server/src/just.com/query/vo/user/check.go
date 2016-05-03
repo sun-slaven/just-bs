@@ -6,6 +6,7 @@ import (
 	"just.com/common"
 	"just.com/service/token"
 	"strings"
+	"just.com/err"
 )
 
 type UserLoginVo struct {
@@ -14,24 +15,26 @@ type UserLoginVo struct {
 }
 
 // CheckUser 验证用户
-func CheckUser(email string, password string, session *xorm.Session, log *log.Logger) (userLoginVo *UserLoginVo, flag bool) {
+func CheckUser(email string, password string, session *xorm.Session, log *log.Logger) (userLoginVo *UserLoginVo, error *err.HttpError) {
+	error = err.USER_PASSWORD_OR_EMAIL_ERR
 	userTable := new(table.UserTable)
 	userTable.Email = email
 	getFlag, getErr := session.Get(userTable)
-	if getFlag == false {
+	if !getFlag {
 		log.Println(getErr)
-		return userLoginVo, false
+		return
 	}
 	if common.Md5(password) != strings.ToLower(userTable.Password) {
-		return userLoginVo, false
+		return
 	}
 	// token
-	token, err := service.NewTokenService(session, log).Make(userTable.UUID)
-	if err != nil {
-		log.Println(err)
-		return userLoginVo, false
+	token, tokenErr := service.NewTokenService(session, log).Make(userTable.UUID)
+	if tokenErr != nil {
+		log.Println(tokenErr)
+		error = err.TOKEN_CREATE_ERR
+		return
 	}
 	// uv
 	userVo := LoadUserVoByTable(userTable)
-	return &UserLoginVo{UserVo:userVo, Token:token}, true
+	return &UserLoginVo{UserVo:userVo, Token:token}, nil
 }

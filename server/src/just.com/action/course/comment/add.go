@@ -22,13 +22,14 @@ func CommentAdd(c *gin.Context) {
 		return
 	}
 	if common.IsEmpty(courseId, request.Content) {
-		context.Response.Error = err.NO_REQUIERED_PARAM_FOUND
+		context.Response.Error = err.NO_REQUIRED_PARAM_FOUND
 		return
 	}
 	courseService := service.NewCourseService(context.Session, context.Log)
 	commentVo, commentVoErr := courseService.AddComment(request.Content, courseId, context.UserId)
 	if commentVoErr != nil {
 		context.Log.Println(commentVoErr)
+		context.Response.Error = commentVoErr
 		return
 	}
 	context.Response.Data = commentVo

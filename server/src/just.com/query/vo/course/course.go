@@ -6,7 +6,7 @@ import (
 	"log"
 	"just.com/query/vo/college"
 	"just.com/query/vo/user"
-	"just.com/query"
+	"just.com/err"
 )
 
 type CourseVo struct {
@@ -29,21 +29,19 @@ type CourseVo struct {
 }
 
 // 什么都没有用这个就行了
-func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
-	err = query.QUERY_COURSE_LOAD_ERR
+func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
 	getFlag, getErr := session.Get(courseTable)
 	if getFlag == false {
 		if getErr != nil {
 			log.Println(getErr)
 		}
-		return nil, err
+		return
 	}
 	return LoadCourseVoFromTable(courseTable, session, log)
 }
 
 // 已经有 courseTable用这个
-func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, err error) {
-	err = query.QUERY_COURSE_LOAD_FROM_TABLE_ERR
+func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
 	cv = new(CourseVo)
 	cv.UUID = courseTable.UUID
 	cv.Name = courseTable.Name
@@ -65,9 +63,8 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	if getFlag == false {
 		if getErr != nil {
 			log.Println(getErr)
-			return nil, err
 		}
-		log.Println(err)
+		error = err.NO_COLLEGE_OR_MAJOR_FOUND
 	}
 	cv.College = college.NewCollegeVo(collegeTable)
 
@@ -77,9 +74,8 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	if getFlag == false {
 		if getErr != nil {
 			log.Println(getErr)
-			return nil, err
 		}
-		log.Println(err.Error())
+		error = err.NO_COLLEGE_OR_MAJOR_FOUND
 	}
 	cv.Major = college.NewMajorVo(majorTable)
 

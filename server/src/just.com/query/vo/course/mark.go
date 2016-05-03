@@ -3,13 +3,13 @@ import (
 	"github.com/go-xorm/xorm"
 	"log"
 	"just.com/model/db/table"
-	"just.com/query"
+	"just.com/err"
 )
 
 // 获取关注的课程列表
-func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, err error) {
+func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
 	courseVoList = make([]*CourseVo, 0)
-	err = query.QUERY_COURSE_LOAD_MARK_ERR
+	error = err.COURSE_MARKED_LIST_FIND_ERR
 	markTableList := make([]table.CourseMarkTable, 0)
 	findErr := session.Find(&markTableList, &table.CourseMarkTable{UserId:userId})
 	if findErr != nil {
@@ -26,6 +26,6 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 		}
 		courseVoList = append(courseVoList, courseVo)
 	}
-	err = nil
+	error = nil
 	return
 }

@@ -126,12 +126,18 @@ paths:
       tags:
         - courses
       parameters:
+        - name: course_id
+          in: path
+          description: 课程id
+          required: true
+          type: string
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
         - name: course
           in: body
           description: 新增课程信息
           required: true
           schema:
-            $ref: '#/definitions/courseUpdateRequest'
+            $ref: '#/definitions/courseAddRequest'
       responses:
         '200':
           description: course id
@@ -281,7 +287,7 @@ paths:
           schema:
             $ref: '#/definitions/errorModel'
   
-  /courses/{course_id}/marks/{mark_id}:
+  /courses/{course_id}/marks:
     delete:
       description: 取消关注课程
       operationId: mark cancel
@@ -298,11 +304,6 @@ paths:
           required: true
           default: '337c0a43-bdd8-480b-875b-a27668be23fd'
           schema: 
-            type: string
-        - name: mark_id
-          in: path
-          required: true
-          schema:
             type: string
       responses:
         '200':
@@ -682,41 +683,6 @@ definitions:
         wish:
           type: string
           default: '老师寄语'
-
-  courseUpdateRequest:
-        type: object
-        properties:
-          id:
-            type: string
-            default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
-          name:
-            type: string
-            default: '数据库'
-          college_id:
-            type: string
-            default: 'b6a0808f-b87a-44ca-b850-9545a3f3f089'
-          major_id:
-            type: string
-            default: '0260bb7c-2e93-4a7d-895d-59fac58fdbc6'
-          teacher_id:
-            type: string
-            default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
-          icon_url:
-            type: string
-            default: 'url'
-          description:
-            type: string
-            default: '简单的CRUD'
-          description:
-            type: string
-            default: '一两句话描述'
-          introduction:
-            type: string
-            default: '简单介绍一下这门课程'
-          wish:
-            type: string
-            default: '老师寄语'
-
 
   course:
     type: object

@@ -10,6 +10,7 @@ import (
 	"time"
 	token_service "just.com/service/token"
 	user_vo "just.com/query/vo/user"
+	"just.com/err"
 )
 
 
@@ -63,16 +64,17 @@ func (self *UserService) Add(mobile, name, iconId, roleName string) (userId stri
 
 
 
-func (self *UserService) Register(email, name, password, roleName string) (userLoginVo *user_vo.UserLoginVo, err error) {
+func (self *UserService) Register(email, name, password, roleName string) (userLoginVo *user_vo.UserLoginVo, error *err.HttpError) {
 	// 1.check
-	err = service.SERVICE_USER_REGISTER_ERR
+	error = err.USER_REGISTER_ERR
 	if common.IsEmpty(email, name, roleName) == true {
+		error = err.NO_REQUIRED_PARAM_FOUND
 		return
 	}
 	// 2.check the email
 	_, getFlag := self.GetByEmail(email)
 	if getFlag {
-		err = service.SERVICE_USER_REGISTER_EMAIL_EXISTS_ERR
+		error = err.USER_REGISTER_EMIAL_ERR
 		return
 	}
 	// 2.insert
@@ -92,7 +94,6 @@ func (self *UserService) Register(email, name, password, roleName string) (userL
 	user.ActiveStatus = "N"
 	insertNum, insertErr := self.Session.InsertOne(user)
 	if insertNum == 0 {
-		err = service.SERVICE_USER_REGISTER_ERR
 		if insertErr != nil {
 			self.Log.Println(insertErr)
 		}
@@ -101,6 +102,6 @@ func (self *UserService) Register(email, name, password, roleName string) (userL
 	tokenService := token_service.NewTokenService(self.Session, self.Log)
 	token, _ := tokenService.Make(user.UUID)
 	userLoginVo = &user_vo.UserLoginVo{UserVo:user_vo.LoadUserVoByTable(user), Token:token}
-	err = nil
+	error = nil
 	return
 }

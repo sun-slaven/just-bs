@@ -31,6 +31,7 @@ func NewDataResponse(data interface{}) *Response {
 func ResponseMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
+		c.Header("Access-Control-Allow-Origin", "*")
 		response := c.MustGet(MLEARNING_RESPONSE).(*Response)
 		if response.Error == nil {
 			c.JSON(http.StatusOK, response.Data)

@@ -20,13 +20,14 @@ func RegisterHandle(c *gin.Context) {
 	request := new(RegisterRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {
-		context.Log.Println(bindErr)
+		action.BindErrHandle(context, bindErr)
 		return
 	}
 	userService := user.NewUserService(context.Session, context.Log)
-	userLoginVo, err := userService.Register(request.Email, request.UserName, request.Password, "STUDENT")
-	if err != nil {
-		context.Log.Println(err)
+	userLoginVo, userLoginVoErr := userService.Register(request.Email, request.UserName, request.Password, "STUDENT")
+	if userLoginVoErr != nil {
+		context.Log.Println(userLoginVoErr)
+		context.Response.Error = userLoginVoErr
 		return
 	}
 	context.Response.Data = userLoginVo

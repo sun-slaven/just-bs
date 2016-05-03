@@ -4,11 +4,11 @@ import (
 	"code.google.com/p/go-uuid/uuid"
 	"time"
 	"just.com/query/vo/course"
+	"just.com/err"
 )
 /*return commentVo and error*/
-func (self *CourseService)AddComment(content, courseId, userId string) (commentVo *course.CourseCommentVo, err error) {
+func (self *CourseService)AddComment(content, courseId, userId string) (commentVo *course.CourseCommentVo, error *err.HttpError) {
 	commentVo = new(course.CourseCommentVo)
-	err = COURSE_COMMENT_ADD_ERR
 	commentTable := new(table.CourseCommentTable)
 	commentTable.UUID = uuid.New()
 	commentTable.Content = content
@@ -21,14 +21,15 @@ func (self *CourseService)AddComment(content, courseId, userId string) (commentV
 		if insertErr != nil {
 			self.Log.Println(insertErr)
 		}
+		error = err.COURSE_COMMENT_INSERT_ERR
 		return
 	}
 	commentVo = course.NewCommentVo(commentTable, self.Session, self.Log)
-	err = nil
+	error = nil
 	return
 }
 
-func (self *CourseService) DeleteComment(courseId string, commentId string) error {
+func (self *CourseService) DeleteComment(courseId string, commentId string) (error *err.HttpError) {
 	condiComment := new(table.CourseCommentTable)
 	condiComment.UUID = commentId
 	condiComment.CourseId = courseId
@@ -40,8 +41,7 @@ func (self *CourseService) DeleteComment(courseId string, commentId string) erro
 		if updateErr != nil {
 			self.Log.Println(updateErr)
 		}
-		return COURSE_COMMENT_DELETE_ERR
+		return err.COURSE_COMMENT_DELETE_ERR
 	}
-	//	go self.flushCommentSum(comment.CourseId)
 	return nil
 }

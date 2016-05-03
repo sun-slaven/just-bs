@@ -2,7 +2,6 @@ package course
 import (
 	"github.com/gin-gonic/gin"
 	"just.com/action"
-	"log"
 	"just.com/query/vo/course"
 	"just.com/model/db/table"
 	"just.com/err"
@@ -21,7 +20,7 @@ func CourseListHandle(c *gin.Context) {
 	request := &CourseListRequest{Page:1, PageSize:10}
 	bindErr := c.Bind(request)
 	if bindErr != nil {
-		log.Println(bindErr)
+		action.BindErrHandle(context, bindErr)
 		return
 	}
 	if request.Page <= 0 || request.PageSize <= 0 {

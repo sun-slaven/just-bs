@@ -3,11 +3,11 @@ import (
 	"just.com/model/db/table"
 	"code.google.com/p/go-uuid/uuid"
 	"time"
+	"just.com/err"
 )
 
 /*mark the course*/
-func (self *CourseService) Mark(courseId string, userId string) error {
-
+func (self *CourseService) Mark(courseId string, userId string) (error *err.HttpError) {
 	courseMarkTable := new(table.CourseMarkTable)
 	courseMarkTable.CourseId = courseId
 	courseMarkTable.UserId = userId
@@ -15,23 +15,21 @@ func (self *CourseService) Mark(courseId string, userId string) error {
 	_, deleteErr := self.Session.Delete(courseMarkTable)
 	if deleteErr != nil {
 		self.Log.Println(deleteErr)
-		return COURSE_MARK_ERR
+		return err.COURSE_MARK_ERR
 	}
 	courseMarkTable.UUID = uuid.New()
 	courseMarkTable.CreateTime = time.Now()
 	insertNum, updateErr := self.Session.InsertOne(courseMarkTable)
 	if insertNum == 0 {
-		self.Log.Println("insert num == 0")
 		if updateErr != nil {
 			self.Log.Println(updateErr)
 		}
-		return COURSE_MARK_ERR
+		return err.COURSE_MARK_ERR
 	}
 	return nil
 }
 /*cancel mark*/
-func (self *CourseService) MarkCancel(courseId string, userId string) error {
-	// 1.get the mark
+func (self *CourseService) MarkCancel(courseId string, userId string) (error *err.HttpError) {
 	cm := new(table.CourseMarkTable)
 	cm.CourseId = courseId
 	cm.UserId = userId
@@ -40,7 +38,7 @@ func (self *CourseService) MarkCancel(courseId string, userId string) error {
 		if deleteErr != nil {
 			self.Log.Println(deleteErr)
 		}
-		return COURSE_MARK_CANCEL_ERR
+		return err.COURSE_MARK_CANCEL_ERR
 	}
 	return nil
 }

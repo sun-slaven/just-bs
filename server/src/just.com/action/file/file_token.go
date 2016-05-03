@@ -15,7 +15,7 @@ func FileTokenHandle(c *gin.Context) {
 	request := new(FileTokenRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {
-		context.Log.Println(bindErr)
+		action.BindErrHandle(context, bindErr)
 		return
 	}
 	fileSystem := c.MustGet(middleware.MIDDLEWARE_FILE_SYSTEM).(*qiniu.QiniuFileSystem)

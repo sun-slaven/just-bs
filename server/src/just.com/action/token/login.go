@@ -16,11 +16,13 @@ func LoginHandle(c *gin.Context) {
 	request := new(LoginRequest)
 	bindErr := c.BindJSON(request)
 	if bindErr != nil {
+		action.BindErrHandle(context, bindErr)
 		return
 	}
-	userVo, flag := user.CheckUser(request.Email, request.Password, context.Session, context.Log)
-	if flag == false {
-		context.Log.Println("用户名或密码错误")
+	userVo, userVoErr := user.CheckUser(request.Email, request.Password, context.Session, context.Log)
+	if userVoErr != nil {
+		context.Log.Println(userVoErr)
+		context.Response.Error = userVoErr
 		return
 	}
 	context.Response.Data = userVo
