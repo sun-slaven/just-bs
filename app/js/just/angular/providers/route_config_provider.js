@@ -41,10 +41,17 @@ provider('RouteConfig', function() {
             controller: 'ManageLessonController'
         }]
 
+        var admin_config = [{
+            path: '/admin/show',
+            templateUrl: partial_url('admin/show'),
+            controller: 'AdminController'
+        }]
+
         add_config(base_config);
         add_config(me_config);
         add_config(lessons_config);
         add_config(manager_lesson_config)
+        add_config(admin_config)
 
         function add_config(config) {
             all_configs = all_configs.concat(config);
