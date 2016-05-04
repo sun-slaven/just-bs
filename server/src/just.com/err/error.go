@@ -45,10 +45,12 @@ var (
 	COURSE_MARK_ERR = NewDefaultHttpError(errors.New("关注课程失败,用户id或课程id无效"))
 	COURSE_MARK_CANCEL_ERR = NewDefaultHttpError(errors.New("取消课程关注,用户id或课程id无效"))
 
-	USER_PASSWORD_OR_EMAIL_ERR = NewDefaultHttpError(errors.New("用户名或密码错误"))
+	USER_PASSWORD_OR_EMAIL_ERR = NewDefaultHttpError(errors.New("邮箱或密码错误"))
 	USER_REGISTER_ERR = NewDefaultHttpError(errors.New("用户注册失败"))
 	USER_REGISTER_EMIAL_ERR = NewDefaultHttpError(errors.New("该邮箱已被注册"))
 	NOT_USER_ID_FOUND = NewDefaultHttpError(errors.New("缺少用户id"))
 	USER_ID_ERR = NewDefaultHttpError(errors.New("用户id有误,找不到该用户"))
+	USER_RESET_PASSWORD_ERR = NewDefaultHttpError(errors.New("用户重置密码错误"))
+	USER_FROZEN_ERR = NewDefaultHttpError(errors.New("用户禁用失败"))
 	TOKEN_CREATE_ERR = NewDefaultHttpError(errors.New("登录token创建失败"))
 )

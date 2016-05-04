@@ -18,10 +18,17 @@ type UserLoginVo struct {
 func CheckUser(email string, password string, session *xorm.Session, log *log.Logger) (userLoginVo *UserLoginVo, error *err.HttpError) {
 	error = err.USER_PASSWORD_OR_EMAIL_ERR
 	userTable := new(table.UserTable)
+	if common.IsEmpty(email) {
+		return
+	}
 	userTable.Email = email
+	userTable.ActiveStatus = "Y"
+	userTable.FrozenStatus = "N"
 	getFlag, getErr := session.Get(userTable)
 	if !getFlag {
-		log.Println(getErr)
+		if getErr != nil {
+			log.Println(getErr)
+		}
 		return
 	}
 	if common.Md5(password) != strings.ToLower(userTable.Password) {

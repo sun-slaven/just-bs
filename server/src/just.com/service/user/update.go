@@ -4,9 +4,10 @@ import (
 	"just.com/service/image"
 	"just.com/query/vo/user"
 	"just.com/err"
+	"just.com/common"
 )
 
-func (self *UserService)Update(userId, name, email, iconUrl string) (userVo *user.UserVo, error *err.HttpError) {
+func (self *UserService)Update(userId, name, email, iconUrl, password string) (userVo *user.UserVo, error *err.HttpError) {
 	error = err.NO_IMAGE_FOUND_BY_URL
 	userVo = new(user.UserVo)
 	userTable := new(table.UserTable)
@@ -36,6 +37,10 @@ func (self *UserService)Update(userId, name, email, iconUrl string) (userVo *use
 		userTable.IconUrl = imageTable.Url
 		userTable.IconWidth = imageTable.Width
 		userTable.IconHeight = imageTable.Height
+	}
+	// 重置密码
+	if password != "" {
+		userTable.Password = common.Md5(password)
 	}
 	updateNum, updateErr := self.Session.Id(userId).Update(userTable)
 	if updateNum == 0 {

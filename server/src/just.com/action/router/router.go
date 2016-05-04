@@ -40,8 +40,10 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	{
 		userRouter.POST("/", user.RegisterHandle)
 		userRouter.GET("/:user_id", user.UserGetHandle)
+		userRouter.DELETE("/:user_id", user.UserDelete)
 		userRouter.PATCH("/:user_id", user.UserUpdateHandle)
 		userRouter.GET("/:user_id/courses", user.CourseListHandle)
+		userRouter.PUT("/:user_id/passwords", user.RestPassword)
 	}
 	tokenRouter := mainRouter.Group("/tokens")
 	{

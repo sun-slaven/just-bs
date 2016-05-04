@@ -535,7 +535,7 @@ paths:
           required: true
           type: string
           default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
-        - name: udate_boyd
+        - name: udate_body
           in: body
           required: true
           schema:
@@ -566,6 +566,46 @@ paths:
           description: course response
           schema:
             $ref: '#/definitions/user'
+    delete:
+      description: 删除用户,管理员才有此权限
+      operationId: user_delte
+      summary: 删除用户
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+      responses:
+        '200':
+          description: success
+
+  /users/{user_id}/passwords:
+    put:
+      description: 重置用户密码,只有管理员才能这么做
+      operationId: user reset password
+      summary: 重置用户密码
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+      responses:
+        '200':
+          description: success
 
   /users/{user_id}/courses:
     get:
@@ -589,8 +629,6 @@ paths:
           description: course response
           schema:
             $ref: '#/definitions/course'
-
-
   
 definitions:
   image:
@@ -641,6 +679,9 @@ definitions:
       icon_url:
         type: string
         default: 'eb55966f-414d-4c96-8147-e3702c0f490a.jpg'
+      password:
+        type: string
+        default: '123456'
 
   role:
     type: object

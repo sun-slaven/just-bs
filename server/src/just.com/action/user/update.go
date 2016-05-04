@@ -16,7 +16,7 @@ func UserUpdateHandle(c *gin.Context) {
 		return
 	}
 	userService := user.NewUserService(context.Session, context.Log)
-	userVo, updateErr := userService.Update(userId, request.Name, request.Email, request.IconUrl)
+	userVo, updateErr := userService.Update(userId, request.Name, request.Email, request.IconUrl, request.Password)
 	if updateErr != nil {
 		context.Log.Println(updateErr)
 		context.Response.Error = updateErr
