@@ -8,3 +8,4 @@ server/.idea/
 npm-debug.log
 bower_component/
 node_modules/
+dest/
