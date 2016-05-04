@@ -8,6 +8,7 @@ angular.module('just.controllers.me', [])
             }
 
             UserService.myLessons($rootScope.current_user, function(resp) {
+                console.log(resp)
                 $scope.chosen_lessons = resp
             })
 

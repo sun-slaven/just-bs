@@ -13,6 +13,11 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
         var myLessonsAPI = $resource('/api/v1/users/:user_id/courses', { user_id: '@user_id' }, {
                 myLessons: { method: 'get', isArray: true }
             })
+
+        var UserInfoApi = $resource('/api/v1/users/:user_id/', {}, {
+            updateUser: {method: 'patch'},
+            getUser: {method: 'get'}    //暂时无用
+        })
             //992444037@qq.com  123456   STUDENT
             //158274194@qq.com   123456  TEACHER
             //893196569@qq.com  123456   ADMIN
@@ -29,7 +34,7 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             })
         }
 
-        function sign_out(user,success) {
+        function sign_out(user, success) {
             userAPI.sign_out({}, {
                 user: user
             }, function(resp) {
@@ -54,7 +59,7 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
 
         function set_user(new_user) {
             $rootScope.current_user = new_user
-            $cookies.putObject('current_user',new_user)
+            $cookies.putObject('current_user', new_user)
         }
 
         function set_token(token) {
@@ -63,9 +68,20 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
 
         function myLessons(user, callback) {
             myLessonsAPI.myLessons({}, { user_id: user.id }, function(resp) {
-                if (callback) { callback(resp) };
+                if (callback) {
+                    callback(resp)
+                };
             })
         }
+
+        function updateUser(user,callback){
+            UserInfoApi.updateUser({},{
+                user_id: user.id
+            },function(resp){
+                console.log(resp)
+            })
+        }
+
 
         return {
             sign_in: sign_in,
