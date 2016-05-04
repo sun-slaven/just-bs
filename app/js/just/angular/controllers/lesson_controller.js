@@ -1,7 +1,7 @@
 GlobalModules.add_controller('lesson')
 angular.module('just.controllers.lesson', [])
-    .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService',
-        function($rootScope, $scope, $routeParams, LessonService, CommentsService) {
+    .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService',
+        function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService) {
 
             $scope.active_type = 'show_outline'
             $scope.change_active = function(type) {
@@ -31,7 +31,7 @@ angular.module('just.controllers.lesson', [])
                     })
                 })
             }
-            $scope.video_url = 'http://7xt49i.com2.z0.glb.clouddn.com/%E5%8D%8A%E7%B3%96%E4%B8%BB%E4%B9%89.mp4'
+            $scope.video_url = 'http://7xnz7k.com1.z0.glb.clouddn.com/cxrs.MP4'
             $scope.pdf_url = 'http://7xt49i.com2.z0.glb.clouddn.com/AngularJS%E6%9D%83%E5%A8%81%E6%95%99%E7%A8%8B%28www.Linuxidc.com%E6%95%B4%E7%90%86%29.pdf'
             $scope.zip_url = 'http://7xt49i.com2.z0.glb.clouddn.com/pack.zip'
             if (!$routeParams.user_id) {
@@ -50,15 +50,24 @@ angular.module('just.controllers.lesson', [])
 
             $scope.start_or_continue = function() {
                 if ($scope.need_learn) {
-                    $scope.need_learn = false;
-                    $scope.btn_content = "继续学习";
-                    $scope.progress_info_percent = 10;
-                    $scope.progress_info_hour = 1;
-                    $scope.progress_info_minute = 10;
+                    mark_and_learn();
                 } else {
-                    $scope.show_resource = true;
+                    continue_learn()
                 }
             }
+            var mark_and_learn = function() {
+                $scope.need_learn = false;
+                $scope.btn_content = "继续学习";
+                $scope.progress_info_percent = 10;
+                $scope.progress_info_hour = 1;
+                $scope.progress_info_minute = 10;
+                MarkService.add_mark($rootScope.current_lesson.id, function(resp) {
+                    console.log(resp)
+                })
+            }
+            var continue_learn = function() {
+                $scope.show_resource = true;
 
+            }
         }
     ])

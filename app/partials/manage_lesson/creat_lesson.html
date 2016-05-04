@@ -3,13 +3,12 @@
         <h4>已选文件: </h4>
         <div class="file-info col-xs-12" ng-repeat="get_token_promise_obj in upload.get_token_promise_array">
             <div class="file-name col-xs-10"><strong>{{$index + 1}}</strong> {{get_token_promise_obj.file.name}}</div>
-            <i class="fa fa-times col-xs-2" aria-hidden="true" ng-click="upload.abort(get_token_promise_obj.file,upload.get_token_promise_array,$index)" ng-disabled="get_token_promise_obj.file.progress.p == 100"data-placement="top" data-title="取消上传" data-trigger="hover" data-type="info" bs-tooltip></i>
+            <i class="fa fa-times col-xs-2" aria-hidden="true" ng-click="upload.abort(get_token_promise_obj.file,upload.get_token_promise_array,$index)" ng-disabled="get_token_promise_obj.file.progress.p == 100" data-placement="top" data-title="取消上传" data-trigger="hover" data-type="info" bs-tooltip></i>
             <div class="progress progress-striped col-xs-12" ng-class="{active: get_token_promise_obj.file.progress.p < 100}">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: get_token_promise_obj.file.progress.p + '%'}">
                 </div>
                 <strong ng-show="get_token_promise_obj.file.progress.p > 0">{{get_token_promise_obj.file.progress.p}}%</strong>
             </div>
-            
         </div>
     </div>
     <div class="form-horizontal">
@@ -54,6 +53,14 @@
             <label class="col-sm-2 control-label">教师寄语:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" placeholder="请输入教师寄语" ng-model="new_lesson.wish"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">上传视频:</label>
+            <div class="col-sm-10">
+                <div class="icon">
+                    <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传附件,可多文件选取"  data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
+                </div>
             </div>
         </div>
         <div class="form-group">

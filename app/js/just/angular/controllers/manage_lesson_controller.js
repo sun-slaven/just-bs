@@ -1,6 +1,6 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -82,7 +82,8 @@ angular.module('just.controllers.manage_lesson', [])
             major_id: null,
             introduction: '',
             description: '',
-            outline_list: [],
+            video_url: '',
+            //outline_list: [],
             temp_outline_list: [],
             wish: '',
             temp_outline: {
@@ -188,10 +189,10 @@ angular.module('just.controllers.manage_lesson', [])
                     })
                 }
                 var use_loop_upload_fun = function(resolve, reject) {
+                    $scope.index_flag = 0; //等待标志,解决所有请求还没结束但是index == length执行callback的问题
                     for (index in $scope.upload.get_token_promise_array) {
                         use_loop_upload_fun_by_index(index, resolve, reject);
                     }
-
                 }
                 var use_loop_upload_fun_by_index = function(index, resolve, reject) {
                     $scope.upload.get_token_promise_array[index].file.progress = {
@@ -203,21 +204,31 @@ angular.module('just.controllers.manage_lesson', [])
                         upload_fun($scope.upload.get_token_promise_array[index].file, token_obj, function(resp) {
                             switch ($scope.upload.get_token_promise_array[index].suffix_info_obj.type) {
                                 case 'image':
-                                    console.log(resp.key)
                                     $scope.new_lesson.icon_url = resp.key
                                     break;
                                 case 'video':
-                                    //$scope.new_lesson.icon = resp //icon url
+                                    $scope.new_lesson.video_url = resp.key //icon url
                                     break;
                                 case 'file':
                                     var attachment = {
-                                        name: $scope.upload.get_token_promise_array[index].name,
-                                        file_url: resp
+                                        name: $scope.upload.get_token_promise_array[index].file_name,
+                                        file_url: resp.key
                                     }
                                     $scope.new_lesson.attachment_list.push(attachment)
                                     break;
                             }
-                            if (index == $scope.upload.get_token_promise_array.length - 1) { resolve(); }
+                            $scope.index_flag += 1;
+                            if (index == $scope.upload.get_token_promise_array.length - 1) {
+                                var tm = $interval(function() {
+                                    if (index == $scope.index_flag - 1) {
+                                        //do the last things
+                                        $interval.cancel(tm);
+                                        $scope.upload.get_token_promise_array = []
+                                        resolve();
+                                    }
+                                }, 500)
+                            }
+
                         })
                     })
                 }
@@ -232,15 +243,23 @@ angular.module('just.controllers.manage_lesson', [])
         }
 
         $scope.create_lesson = function() {
-            $scope.upload.do_upload(function() {
-                console.log($scope.new_lesson)
+            if ($scope.upload.get_token_promise_array.length) {
+                $scope.upload.do_upload(function() {
+                    LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                        console.log("callback")
+                        console.log(resp)
+                    })
+                })
+            } else {
                 LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                    console.log("callback")
                     console.log(resp)
                 })
-            })
+            }
         }
 
-
+        // 18052769341 
+        // 231691
 
 
     }])

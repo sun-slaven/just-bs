@@ -7,7 +7,7 @@ angular.module('just.directives.just_video', [])
             // priority: 1,
             // terminal: true,
             scope: {
-                video_url: '=videoUrl'//directive中的属性必须在此处''内是驼峰式写法
+                video_url: '=videoUrl' //directive中的属性必须在此处''内是驼峰式写法
             },
             // controller: function($scope, $element, $attrs, $transclude) {},
             // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
@@ -18,7 +18,9 @@ angular.module('just.directives.just_video', [])
             // transclude: true,
             // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
             link: function($scope, iElm, iAttrs, controller) {
-            	
+                // $('video#test-vid').bind("progress", function(e) {
+                //     console.log(e.total + ' ' + e.loaded + ' ' + e.lengthComputable);
+                // });
             }
         };
     }]);
