@@ -19,6 +19,7 @@ func UserUpdateHandle(c *gin.Context) {
 	userVo, updateErr := userService.Update(userId, request.Name, request.Email, request.IconUrl)
 	if updateErr != nil {
 		context.Log.Println(updateErr)
+		context.Response.Error = updateErr
 		return
 	}
 	context.Response.Data = userVo

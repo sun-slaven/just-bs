@@ -6,15 +6,15 @@ import (
 )
 
 type LoginRequest struct {
-	Email    string
-	Password string
+	Email    string `form:"email" json:"email"`
+	Password string        `form:"password" json:"password"`
 }
 
 
 func LoginHandle(c *gin.Context) {
 	context := action.GetContext(c)
 	request := new(LoginRequest)
-	bindErr := c.BindJSON(request)
+	bindErr := c.Bind(request)
 	if bindErr != nil {
 		action.BindErrHandle(context, bindErr)
 		return

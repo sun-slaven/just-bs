@@ -520,7 +520,7 @@ paths:
             type: string
   /users/{user_id}:
     patch:
-      description: 修改用户数据,其中有 icon_url则为更新头像,email暂时先不提供修改
+      description: 修改用户数据,所有的都不是required的,其中有 icon_url则为更新头像,email暂时先不提供修改
       operationId: user update
       summary: 修改用户数据
       produces:
@@ -567,7 +567,7 @@ paths:
           schema:
             $ref: '#/definitions/user'
 
-  /users/{user_id}courses:
+  /users/{user_id}/courses:
     get:
       description: 获取用户关注课程
       operationId: user course mark
@@ -578,6 +578,12 @@ paths:
         - application/json
       tags:
         - users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: string
+          default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
       responses:
         '200':
           description: course response
@@ -634,6 +640,7 @@ definitions:
         default: '992444037@qq.com'
       icon_url:
         type: string
+        default: 'eb55966f-414d-4c96-8147-e3702c0f490a.jpg'
 
   role:
     type: object

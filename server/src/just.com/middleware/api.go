@@ -4,12 +4,18 @@ import (
 	"just.com/service/user"
 	"encoding/json"
 	"just.com/service/token"
+	"strings"
 )
 
 func ApiMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		defer c.Next()
 		context := c.MustGet(MLEARNING_CONTEXT).(*Context)
 		apiKey := c.Query("api_key")
+		if strings.TrimSpace(apiKey) == "" {
+			c.Next()
+			return
+		}
 		userService := user.NewUserService(context.Session, context.Log)
 		userTable, getFlag := userService.GetByEmail(apiKey)
 		if getFlag == false {
