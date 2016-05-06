@@ -1,0 +1,12 @@
+<div id="admin-page">
+    <div class="setting-left">
+        <ul>
+            <li ng-click="change_active('manager_user')" ng-class="{active: active_type == 'manager_user'}">用户管理</li>
+            <li ng-click="change_active('manager_lesson')" ng-class="{active: active_type == 'manager_lesson'}">课程管理</li>
+        </ul>
+    </div>
+    <div class="setting-right">
+        <div ng-include="partial('/admin/manager_user')" include-replace></div>
+        <div ng-include="partial('/admin/manager_lesson')" include-replace></div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div id="manager_user" ng-show="active_type == 'manager_user'">
+    <table st-table="all_users" class="table table-hover">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>用户名</th>
+                <th >邮箱</th>
+                <th st-sort="role_name">角色</th>
+                <th st-sort="created_time">创建时间</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <th colspan="7">
+                    <input st-search="name" class="form-control" placeholder="搜索用户名" type="text" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr st-select-row="row" ng-repeat="user in all_users" ng-class="{active: $index % 4 == 0 , success: $index % 4 == 1 , warning: $index % 4 == 2, danger: $index % 4 == 3}">
+                <td>{{$index}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role_name}}</td>
+                <td>{{user.created_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="edit(user)" data-placement="left" data-title="编辑该用户" data-trigger="hover" data-type="info" bs-tooltip></i>
+                    <i class="fa fa-trash" aria-hidden="true" ng-click="delete(user)" data-placement="right" data-title="删除该用户" data-trigger="hover" bs-tooltip></i>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="2"></div>
+                </td>
+                <td colspan="2" class="text-center">
+                  <input type="number" class="form-control" placeholder="请输入数字" ng-model="itemsByPage"></input>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

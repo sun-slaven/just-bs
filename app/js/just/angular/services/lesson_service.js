@@ -17,8 +17,10 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
 
 
 
-        function delete_lesson(success) {
-            lessonAPI.delete_lesson({}, {}, function(resp) {
+        function delete_lesson(course_id,success) {
+            lessonAPI.delete_lesson({}, {
+                course_id: course_id
+            }, function(resp) {
                 if (success) { success(resp) }
             })
         }
