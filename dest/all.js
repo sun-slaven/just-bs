@@ -1424,7 +1424,7 @@ angular.module('just', GlobalModules.get([
         $httpProvider.interceptors.push(function($cookies) {
             return {
                 'request': function(config) {
-                    config.headers['token'] = $cookies.loginTokenCookie;
+                    config.headers['Authorization'] = JSON.stringify($cookies.loginTokenCookie);
                     return config;
                 }
             };
@@ -1546,26 +1546,30 @@ angular.module('just', GlobalModules.get([
     if ($cookies.getObject('current_user')) {
         $rootScope.current_user = $cookies.getObject('current_user');
     }
-    //init college major info
-    if ($rootScope.college_major == undefined) {
-        $rootScope.all_colleges = []
-        $rootScope.all_majors = []
-        CollegeMajorService.get_college_major(function(response) {
-            for (var i = 0; i < response.length; i++) {
-                $rootScope.all_colleges.push(response[i])
-                for (index in response[i].major_list) {
-                    response[i].major_list[index].college_id = response[i].id;
-                    $rootScope.all_majors.push(response[i].major_list[index])
-                }
-            }
-        });
-    }
 
     $rootScope.$on('$routeChangeSuccess', function(evt, next, current) {
         //refuse change the url to /# then header show
         if ($location.path() == '/' || $location.path() == '/login') {
             $rootScope.current_user = null;
+        } else {
+            //init college major info
+            if ($rootScope.college_major == undefined) {
+                $rootScope.all_colleges = []
+                $rootScope.all_majors = []
+                CollegeMajorService.get_college_major(function(response) {
+                    for (var i = 0; i < response.length; i++) {
+                        $rootScope.all_colleges.push(response[i])
+                        for (index in response[i].major_list) {
+                            response[i].major_list[index].college_id = response[i].id;
+                            $rootScope.all_majors.push(response[i].major_list[index])
+                        }
+                    }
+                });
+            }
+
         }
+
+
     })
 
 
