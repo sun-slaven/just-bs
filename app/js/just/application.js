@@ -16,11 +16,14 @@ angular.module('just', GlobalModules.get([
             'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**',
             'http://7xnz7k.com1.z0.glb.clouddn.com/**'
         ]);
-        //使用过滤器将所有请求都加上token
+        //使用过滤器将所有请求都加上token和时间戳
         $httpProvider.interceptors.push(function($cookies) {
             return {
                 'request': function(config) {
-                    config.headers['Authorization'] = JSON.stringify($cookies.loginTokenCookie);
+                    if(config.url.indexOf('/api/v1/') > -1){
+                        config.headers['Authorization'] = JSON.stringify($cookies.getObject('token'));
+                    }
+                    config.requestTimestamp = new Date().getTime();
                     return config;
                 }
             };
@@ -36,15 +39,7 @@ angular.module('just', GlobalModules.get([
         $routeProvider.otherwise({
             redirectTo: '/login'
         });
-        //disable get method cache globally
-        //initialize get if not there
-        if (!$httpProvider.defaults.headers.get) {
-            $httpProvider.defaults.headers.get = {};
-        }
-        //disable IE ajax request caching
-        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
-        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
-        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
 
 
         // $locationProvider.html5Mode(true); // remove # in the url
@@ -57,7 +52,7 @@ angular.module('just', GlobalModules.get([
             show: true
         });
     }
-]).run(['$rootScope', '$location', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', 'UserService', '$cookies', function($rootScope, $location, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert, UserService, $cookies) {
+]).run(['$rootScope', '$location', '$route', '$routeParams', '$modal', '$cacheFactory', 'AnchorSmoothScrollService', 'storage', 'CollegeMajorService', 'LessonsService', '$alert', 'UserService', '$cookies', function($rootScope, $location, $route, $routeParams, $modal, $cacheFactory, AnchorSmoothScrollService, storage, CollegeMajorService, LessonsService, $alert, UserService, $cookies) {
     //路由以及$location
     $rootScope.partial = function(partial_name) {
         return "app/partials/" + partial_name + ".html" + version_timestamp;

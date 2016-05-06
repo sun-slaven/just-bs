@@ -23,9 +23,21 @@ body {
     p {
         color: #b4bbbf
     }
+    .cancel-mark {
+        display: none;
+        float: right;
+        z-index: 1000;
+        color: red;
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+    }
     &:hover {
         cursor: pointer;
-        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5)
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+        .cancel-mark {
+            display: block;
+        }
     }
 }
 

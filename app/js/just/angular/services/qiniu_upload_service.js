@@ -19,6 +19,7 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
         }
 
         var upload = function(file, token_obj) {
+            console.log(token_obj)
             file.upload = $qupload.upload({
                 file: file,
                 key: token_obj.key,
@@ -41,14 +42,12 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
             file.upload.abort();
         };
 
-        var save_file_to_db = function() {}
 
         return {
             get_suffix_info_obj: get_suffix_info_obj,
             get_token: get_token,
             upload: upload,
             abort: abort,
-            save_file_to_db: save_file_to_db
         }
     }
 ])

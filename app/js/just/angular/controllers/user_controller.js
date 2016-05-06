@@ -37,14 +37,14 @@ angular.module('just.controllers.user', ['ngCookies'])
                                 $rootScope.set_storage('password', null)
                             }
                             UserService.sign_in($scope.user, function(resp) {
-                                $rootScope.set_cache('token', resp.token)
                                 //管理员账户单独一个界面
-                                $rootScope.go("/admin/show");
+                                //$rootScope.go("/admin/show");
                                 // if (resp.user.role_name == 'ADMIN') {
                                 //     $rootScope.go("/admin/show");
                                 // }else{
                                 //     $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
                                 // }
+                                $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
                             })
 
                         }
