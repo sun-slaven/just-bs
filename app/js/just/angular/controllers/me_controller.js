@@ -1,16 +1,35 @@
 GlobalModules.add_controller('me')
 angular.module('just.controllers.me', [])
-    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'CommonUtil', 'FileService',
-        function($rootScope, $scope, UserService, QiniuUpload, CommonUtil, FileService) {
+    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'CommonUtil', 'FileService', 'UuidService',
+        function($rootScope, $scope, UserService, QiniuUpload, CommonUtil, FileService, UuidService) {
             $scope.active_type = 'chosen_lessons'
             $scope.change_active = function(type) {
                 $scope.active_type = type;
             }
 
             UserService.myLessons($rootScope.current_user, function(resp) {
-                console.log(resp)
                 $scope.chosen_lessons = resp
             })
+
+            var updateUser = function(updateUserObj) {
+                UserService.updateUser($rootScope.current_user, updateUserObj, function(resp) {
+                })
+            }
+
+
+            $scope.updatePassword = {
+                new_password: null,
+                new_password_again: null,
+                update: function() {
+                    if (this.new_password == this.new_password_again) {
+                        updateUser({
+                            password: this.new_password
+                        })
+                        $rootScope.alert_modal("", "密码修改成功,请重新登陆!");
+                        $rootScope.go('/login')
+                    }
+                }
+            }
 
             //upload avatar
             $scope.upload = {
@@ -23,7 +42,7 @@ angular.module('just.controllers.me', [])
                     var suffix_info_obj = QiniuUpload.get_suffix_info_obj(this.selectFile);
                     this.get_token_promise = QiniuUpload.get_token(suffix_info_obj).then(function(resp) {
                         return {
-                            key: resp.key,
+                            key: UuidService.newuuid(suffix_info_obj.suffix),
                             token: resp.token
                         };
                     })
@@ -33,12 +52,11 @@ angular.module('just.controllers.me', [])
                         p: 0
                     };
                     var upload_fun = function(token_obj) {
-                            console.log(token_obj)
                             QiniuUpload.upload($scope.upload.selectFile, token_obj).then(function(resp) {
-                                console.log(resp)
-                                    //QiniuUpload.save_file_to_db()
-                                    //TODO
-                                $rootScope.alert_modal("成功", "上传文件成功");
+                                updateUser({
+                                    icon_url: resp.key
+                                })
+                                $rootScope.alert_modal("", "头像修改成功");
                             }, function(error) {
                                 console.log(error)
                             }, function(evt) {

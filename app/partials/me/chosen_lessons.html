@@ -1,7 +1,10 @@
 <div id="chosen_lessons" ng-show="active_type == 'chosen_lessons'">
     <div class="lessons-list">
         <div ng-repeat="lesson in chosen_lessons" class="just-card">
-            <just-card lesson='lesson'></just-card>
+            <just-card lesson='lesson' getMyLessons='getMyLessons()'></just-card>
         </div>
+    </div>
+    <div ng-hide="chosen_lessons.length">
+    	<h4 style="color: red;">快去添加喜欢的课程吧</h4>
     </div>
 </div>
