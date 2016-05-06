@@ -53,4 +53,8 @@ var (
 	USER_RESET_PASSWORD_ERR = NewDefaultHttpError(errors.New("用户重置密码错误"))
 	USER_FROZEN_ERR = NewDefaultHttpError(errors.New("用户禁用失败"))
 	TOKEN_CREATE_ERR = NewDefaultHttpError(errors.New("登录token创建失败"))
+
+	NO_CHAPTER_FOUND = NewDefaultHttpError(errors.New("章节获取失败"))
+	CHAPTER_ADD_ERR = NewDefaultHttpError(errors.New("章节新增失败"))
+	CHAPTER_UPDATE_ERR = NewDefaultHttpError(errors.New("章节更新失败,可能是章节id无效"))
 )

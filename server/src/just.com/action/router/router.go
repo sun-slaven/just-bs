@@ -10,6 +10,7 @@ import (
 	"just.com/action/course/point"
 	"just.com/action/user"
 	"just.com/action/token"
+	"just.com/action/course/chapter"
 )
 
 func BuildRouter(mainRouter *gin.RouterGroup) {
@@ -30,6 +31,10 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 		courseRouter.GET("/:course_id/comments", comment.CommentList)
 		courseRouter.POST("/:course_id/comments", comment.CommentAdd)
 		courseRouter.DELETE("/:course_id/comments/:comment_id", comment.CommentDeleteHandle)
+		// chapter
+		courseRouter.GET("/:course_id/chapters", chapter.ChapterListHandle)
+		courseRouter.POST("/:course_id/chapters", chapter.ChapterAddHandle)
+		courseRouter.PATCH("/:course_id/chapters/:chapter_id", chapter.ChapterUpdateHandle)
 		// mark
 		courseRouter.POST("/:course_id/marks", mark.MarkAdd)
 		courseRouter.DELETE("/:course_id/marks", mark.MarkCancel)

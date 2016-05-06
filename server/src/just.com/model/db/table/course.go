@@ -26,10 +26,27 @@ type CourseTable struct {
 	TeacherId    string `xorm:"'TEACHER_ID'"`
 	Points       int64    `xorm:"'POINTS'"`
 	PointPerson  int64 `xorm:"'POINT_PERSON'"`
+	VideoUrl     string `xorm:"'VIDEO_URL'"`
 }
 
 func (self *CourseTable)TableName() string {
 	return "COURSE"
+}
+
+type CourseChapterTable struct {
+	UUID       string `xorm:"pk 'UUID'"`
+	CourseId   string `xorm:"'COURSE_ID'"`
+	Name       string `xorm:"'NAME'"`
+	Content    string `xorm:"'CONTENT'"`
+	Order      int64       `xorm:"'ORDER'"`
+	CreateUser string `xorm:"'CREATE_USER'"`
+	CreateTime time.Time `xorm:"'CREATE_TIME'"`
+	UpdateTime time.Time `xorm:"'UPDATE_TIME'"`
+	UpdateUser string `xorm:"'UPDATE_USER'"`
+}
+
+func (self *CourseChapterTable)TableName() string {
+	return "COURSE_CHAPTER"
 }
 
 type CourseMarkTable struct {

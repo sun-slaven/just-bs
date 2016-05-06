@@ -7,6 +7,7 @@ import (
 	"just.com/query/vo/college"
 	"just.com/query/vo/user"
 	"just.com/err"
+	"just.com/common"
 )
 
 type CourseVo struct {
@@ -22,10 +23,13 @@ type CourseVo struct {
 	CommentSum   int64 `json:"comment_sum"`
 	Major        *college.MajorVo    `json:"major"`
 	College      *college.CollegeVo    `json:"college"`
-	Point        int64 `json:"point"`
-	PointPerson  int64 `json:"point_person"`
-	PointStatus  string `json:"point_status"`
+	//	Point        int64 `json:"point"`
+	//	PointPerson  int64 `json:"point_person"`
+	//	PointStatus  string `json:"point_status"`
 	Teacher      *user.UserVo `json:"teacher"`
+	VideoUrl     string `json:"video_url"`
+	CreateTime   string `json:"create_time"`
+	UpdateTime   string `json:"update_time"`
 }
 
 // 什么都没有用这个就行了
@@ -82,13 +86,17 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	// teacher
 	cv.Teacher = user.LoadUserVo(courseTable.TeacherId, session, log)
 
-	if courseTable.PointPerson > 0 {
-		cv.Point = courseTable.Points / courseTable.PointPerson
-	}else {
-		cv.Point = 0
-	}
-	cv.PointPerson = courseTable.PointPerson
-	cv.PointStatus = "N"
+	cv.VideoUrl = courseTable.VideoUrl
+	cv.CreateTime = common.TimeFormat(courseTable.CreateTime)
+	cv.UpdateTime = common.TimeFormat(courseTable.UpdateTime)
+
+	//	if courseTable.PointPerson > 0 {
+	//		cv.Point = courseTable.Points / courseTable.PointPerson
+	//	}else {
+	//		cv.Point = 0
+	//	}
+	//	cv.PointPerson = courseTable.PointPerson
+	//	cv.PointStatus = "N"
 	return cv, nil
 }
 
@@ -100,13 +108,13 @@ func (self *CourseVo) LoadPointStatus(userId string, session *xorm.Session, log 
 	pointTable := new(table.CoursePointTable)
 	pointTable.CourseId = self.UUID
 	pointTable.UserID = userId
-	count, countErr := session.Count(pointTable)
-	if count == 0 {
-		if countErr != nil {
-			log.Println(countErr)
-		}
-		self.PointStatus = "N"
-		return
-	}
-	self.PointStatus = "Y"
+	//	count, countErr := session.Count(pointTable)
+	//	if count == 0 {
+	//		if countErr != nil {
+	//			log.Println(countErr)
+	//		}
+	//		self.PointStatus = "N"
+	//		return
+	//	}
+	//	self.PointStatus = "Y"
 }

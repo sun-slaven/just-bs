@@ -120,7 +120,7 @@ paths:
     patch:
       description: 修改课程,其中 name,college_id,major_id 是required,则teacher_id为当前用户
       operationId: 修改 课程信息
-      summary: 添加课程
+      summary: 修改课程
       produces:
         - application/json
       tags:
@@ -134,7 +134,7 @@ paths:
           default: '337c0a43-bdd8-480b-875b-a27668be23fd'
         - name: course
           in: body
-          description: 新增课程信息
+          description: 修改信息
           required: true
           schema:
             $ref: '#/definitions/courseAddRequest'
@@ -257,7 +257,93 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
-    
+
+  /courses/{course_id}/chapters:
+    get:
+      description: 获取章节列表
+      operationId: get chapter
+      summary: 获取章节列表
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/courseChapterResponse'
+    post:
+      description: 增加章节
+      operationId: add chapter
+      summary: 增加章节
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+        - name: chapter
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/courseChapterRequest'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/courseChapterResponse'
+
+  /courses/{course_id}/chapters/{chapter_id}:
+    patch:
+      description: 修改章节
+      operationId: add chapter
+      summary: 修改章节
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+        - name: chapter_id
+          in: path
+          required: true
+          default: '1c3aeb34-3b35-466a-8ba9-e19f111fe725'
+          schema:
+            type: string
+        - name: chapter
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/courseChapterRequest'
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/courseChapterResponse'
+
   /courses/{course_id}/marks:
     post:
       description: 关注课程
@@ -708,6 +794,41 @@ definitions:
         $ref: '#/definitions/user'
       create_time:
         type: string
+
+  courseChapterRequest:
+    type: object
+    properties:
+      name:
+        type: string
+        default: '概述'
+      content:
+        type: string
+        default: '你应该这样这样...'
+      order:
+        type: integer
+        format: int64
+
+
+  courseChapterResponse:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+        default: '概述'
+      content:
+        type: string
+        default: '你应该这样这样...'
+      order:
+        type: integer
+        format: int64
+      create_time:
+        type: string
+        default: '2016-01-12 05:20:11'
+
 
 
   courseCommentRequest:
