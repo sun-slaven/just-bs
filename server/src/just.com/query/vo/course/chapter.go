@@ -27,7 +27,7 @@ func LoadChapterVoList(courseId string, session *xorm.Session, log  *log.Logger)
 		return nil, err.NO_COURSE_FOUND
 	}
 	chapterTableList := make([]*table.CourseChapterTable, 0)
-	findErr := session.Asc("ORDER").Find(&chapterTableList, &table.CourseChapterTable{CourseId:courseId})
+	findErr := session.Asc("ORDER").Find(&chapterTableList, &table.CourseChapterTable{CourseId:courseId, FrozenStatus:"N"})
 	if findErr != nil {
 		log.Println(findErr)
 		return nil, err.NO_CHAPTER_FOUND

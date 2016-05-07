@@ -35,6 +35,7 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 		courseRouter.GET("/:course_id/chapters", chapter.ChapterListHandle)
 		courseRouter.POST("/:course_id/chapters", chapter.ChapterAddHandle)
 		courseRouter.PATCH("/:course_id/chapters/:chapter_id", chapter.ChapterUpdateHandle)
+		courseRouter.DELETE("/:course_id/chapters/:chapter_id", chapter.ChapterDeleteHandle)
 		// mark
 		courseRouter.POST("/:course_id/marks", mark.MarkAdd)
 		courseRouter.DELETE("/:course_id/marks", mark.MarkCancel)
@@ -58,8 +59,6 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	}
 	fileRouter := mainRouter.Group("/files")
 	{
-		fileRouter.GET("/", file.FileList)
 		fileRouter.POST("/tokens", file.FileTokenHandle)
-		fileRouter.GET("/:id", file.File)
 	}
 }

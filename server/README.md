@@ -76,3 +76,5 @@ http://localhost:8086/res/dist/
 ## 5.7
 1. user list(`get /users`接口),其中返回的对象为UserDetailView,比普通的UserView增加了2个对象
 2. 判断icon,空则返回default.png
+
+3. chapter delete 接口

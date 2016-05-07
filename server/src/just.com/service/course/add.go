@@ -76,16 +76,6 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.TeacherId = request.TeacherId
 	courseTable.VideoUrl = request.VideoUrl
 
-	// chapter
-	for _, chapter := range request.ChapterList {
-		if common.IsEmpty(chapter.Name, chapter.Content){
-			error = err.CHAPTER_ADD_ERR
-		}
-	}
-	self.Add()
-
-	// attachment
-
 	insertNum, insertErr := self.Session.InsertOne(courseTable)
 	if insertNum == 0 {
 		if insertErr != nil {
@@ -94,6 +84,19 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		error = err.COURSE_INSERT_ERR
 		return
 	}
+	// chapter
+	for _, chapterRequest := range request.ChapterList {
+		if common.IsEmpty(chapterRequest.Name, chapterRequest.Content) {
+			error = err.CHAPTER_FORMAT_ERR
+		}
+		_, addChapterErr := self.AddChapter(courseTable.UUID, userId, chapterRequest)
+		if addChapterErr != nil {
+			self.Log.Println(addChapterErr)
+			error = addChapterErr
+			return
+		}
+	}
+	// attachment
 	error = nil
 	return
 }

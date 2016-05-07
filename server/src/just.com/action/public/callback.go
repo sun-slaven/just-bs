@@ -30,6 +30,7 @@ func UploadCallbackHandle(c *gin.Context) {
 			context.Log.Println(addErr)
 		}
 	case qiniu.UPLOAD_TYPE_ATTACHMENT:
+
 		
 	case qiniu.UPLOAD_TYPE_VIDEO:
 

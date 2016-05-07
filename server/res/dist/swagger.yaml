@@ -16,6 +16,8 @@ produces:
 tags:
   - name: courses
     description: 课程信息
+  - name: course_chapter
+    description: 课程章节
   - name: files
     description: 文件信息
   - name: users
@@ -268,7 +270,7 @@ paths:
       consumes:
         - application/json
       tags:
-        - courses
+        - courses_chapter
       parameters:
         - name: course_id
           in: path
@@ -290,7 +292,7 @@ paths:
       consumes:
         - application/json
       tags:
-        - courses
+        - courses_chapter
       parameters:
         - name: course_id
           in: path
@@ -319,7 +321,7 @@ paths:
       consumes:
         - application/json
       tags:
-        - courses
+        - courses_chapter
       parameters:
         - name: course_id
           in: path
@@ -338,11 +340,32 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/courseChapterRequest'
+    delete:
+      description: 删除章节
+      operationId: delete chapter
+      summary: 删除章节
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses_chapter
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+        - name: chapter_id
+          in: path
+          required: true
+          default: '1c3aeb34-3b35-466a-8ba9-e19f111fe725'
+          schema:
+            type: string
       responses:
         '200':
           description: success
-          schema:
-            $ref: '#/definitions/courseChapterResponse'
 
   /courses/{course_id}/marks:
     post:

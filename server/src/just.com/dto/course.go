@@ -14,8 +14,8 @@ type CourseAddRequest struct {
 	TeacherId      string `json:"teacher_id"` // required
 	IconUrl        string `json:"icon_url"`   // required
 	VideoUrl       string `json:"video_url"`
-	ChapterList    []CourseChapterRequest `json:"chapter_list"`
-	AttachmentList []AttachmentRequest `json:"attachment_list"`
+	ChapterList    []*CourseChapterRequest `json:"chapter_list"`
+	AttachmentList []*AttachmentRequest `json:"attachment_list"`
 }
 
 type AttachmentRequest struct {

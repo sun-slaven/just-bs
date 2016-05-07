@@ -34,15 +34,17 @@ func (self *CourseTable)TableName() string {
 }
 
 type CourseChapterTable struct {
-	UUID       string `xorm:"pk 'UUID'"`
-	CourseId   string `xorm:"'COURSE_ID'"`
-	Name       string `xorm:"'NAME'"`
-	Content    string `xorm:"'CONTENT'"`
-	Order      int64       `xorm:"'ORDER'"`
-	CreateUser string `xorm:"'CREATE_USER'"`
-	CreateTime time.Time `xorm:"'CREATE_TIME'"`
-	UpdateTime time.Time `xorm:"'UPDATE_TIME'"`
-	UpdateUser string `xorm:"'UPDATE_USER'"`
+	UUID         string `xorm:"pk 'UUID'"`
+	CourseId     string `xorm:"'COURSE_ID'"`
+	Name         string `xorm:"'NAME'"`
+	Content      string `xorm:"'CONTENT'"`
+	Order        int64       `xorm:"'ORDER'"`
+	CreateUser   string `xorm:"'CREATE_USER'"`
+	CreateTime   time.Time `xorm:"'CREATE_TIME'"`
+	UpdateTime   time.Time `xorm:"'UPDATE_TIME'"`
+	UpdateUser   string `xorm:"'UPDATE_USER'"`
+	FrozenTime   time.Time `xorm:"'FROZEN_TIME'"`
+	FrozenStatus string `xorm:"'FROZEN_STATUS'"`
 }
 
 func (self *CourseChapterTable)TableName() string {
@@ -86,4 +88,19 @@ type CoursePointTable struct {
 
 func (self *CoursePointTable) TableName() string {
 	return "COURSE_POINT"
+}
+
+type CourseAttachment struct {
+	UUID         string        `xorm:"pk 'UUID'"`
+	Name         string        `xorm:"'NAME'"`
+	FileId       string        `xorm:"'FILE_ID'"`
+	FileUrl      string        `xorm:"'FILE_URL'"`
+	CreateTime   time.Time        `xorm:"'CREATE_TIME'"`
+	CreateUser   string        `xorm:"'CREATE_USER'"`
+	FrozenTime   time.Time        `xorm:"'FROZEN_TIME'"`
+	FrozenStatus string        `xorm:"FROZEN_STATUS"`
+}
+
+func (self *CourseAttachment) TableName() string {
+	return "COURSE_ATTACHMENT"
 }

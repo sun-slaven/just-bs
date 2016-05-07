@@ -15,20 +15,17 @@ func (self *ImageTable)TableName() string {
 	return "IMAGE"
 }
 
-type CourseFileTable struct {
-	UUID         string `xorm:"pk 'UUID'"`
-	Name         string `xorm:"'NAME'"`
-	Url          string `xorm:"'URL'"`
-	Type         string `xorm:"'TYPE'"`
-	CourseID     string `xorm:"'COURSE_ID'"`
-	CreateTime   time.Time `xorm:"created 'CREATE_TIME'"`
-	CreateUser   string `xorm:"'CREATE_USER'"`
-	UpdateTime   time.Time `xorm:"updated 'UPDATE_TIME'"`
-	UpdateUser   string `xorm:"'UPDATE_USER'"`
-	FrozenStatus string `xorm:"'FROZEN_STATUS'"`
-	FrozenTime   time.Time `xorm:"'FROZEN_TIME'"`
+/**
+用来存储资源的表
+ */
+type FileTable struct {
+	UUID       string `xorm:"pk 'UUID'"`
+	Name       string `xorm:"'NAME'"`
+	Url        string `xorm:"'URL'"`
+	Type       string `xorm:"'TYPE'"`
+	CreateTime time.Time `xorm:"created 'CREATE_TIME'"`
 }
 
-func (self *CourseFileTable) TableName() string {
-	return "COURSE_FILE"
+func (self *FileTable) TableName() string {
+	return "FILE"
 }

@@ -28,6 +28,7 @@ func (self *CourseService) AddChapter(courseId, userId string, request *dto.Cour
 		CreateTime:time.Now(),
 		UpdateTime:time.Now(),
 		UpdateUser:userId,
+		FrozenStatus:"N",
 	}
 	insertNum, insertErr := self.Session.Insert(table)
 	if insertNum == 0 {
@@ -77,4 +78,23 @@ func (self *CourseService) UpdateChapter(chapterId, userId string, request *dto.
 		return
 	}
 	return course.NewChapterVo(chapter), nil
+}
+
+func (self *CourseService) DeleteChapter(courseId, chapterId, userId string) (error *err.HttpError) {
+	if common.IsEmpty(courseId, chapterId) {
+		return err.NO_REQUIRED_PARAM_FOUND
+	}
+	chapterTable := new(table.CourseChapterTable)
+	chapterTable.FrozenStatus = "Y"
+	chapterTable.FrozenTime = time.Now()
+	chapterTable.UpdateUser = userId
+	chapterTable.UpdateTime = time.Now()
+	updateNum, updateErr := self.Session.Update(chapterTable, &table.CourseChapterTable{UUID:chapterId, CourseId:courseId})
+	if updateNum == 0 {
+		if updateErr != nil {
+			self.Log.Println(updateErr)
+		}
+		return err.NO_CHAPTER_FOUND
+	}
+	return nil
 }
