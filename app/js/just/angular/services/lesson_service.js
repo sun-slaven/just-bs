@@ -5,7 +5,6 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
         var lessonAPI = $resource('/api/v1/courses/:course_id', {course_id : '@course_id'}, {
             delete_lesson: {method: 'delete' , isArray: false},
             get_lesson: {method: 'get' , isArray: false},
-            delete_lesson: {method: 'delete' , isArray: false},
         })
 
 
@@ -21,6 +20,7 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
             lessonAPI.delete_lesson({}, {
                 course_id: course_id
             }, function(resp) {
+                console.log(resp)
                 if (success) { success(resp) }
             })
         }

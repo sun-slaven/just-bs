@@ -1,12 +1,31 @@
 GlobalModules.add_controller('admin')
 angular.module('just.controllers.admin', [])
-    .controller('AdminController', ['$rootScope', '$scope', 'LessonService',
-        function($rootScope, $scope, LessonService) {
+    .controller('AdminController', ['$rootScope', '$scope', '$timeout', 'LessonService', 'UserService', 'LessonsService',
+        function($rootScope, $scope, $timeout, LessonService, UserService, LessonsService) {
             $scope.active_type = 'manager_user';
             $scope.change_active = function(attr) {
                 $scope.active_type = attr;
             }
+
             $scope.itemsByPage = 10;
+            $scope.filterGetters = {
+                college_name: function(value) {
+                    return value.college.name
+                },
+                major_name: function(value) {
+                    return value.major.name
+                },
+                college_name: function(value) {
+                    return value.college.name
+                },
+                teacher_name: function(value) {
+                    if (value.teacher == null) {
+                        return null;
+                    };
+                    return value.teacher.name
+                }
+            }
+
             //manager user
             $scope.all_users = [{
                 "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
@@ -23,43 +42,30 @@ angular.module('just.controllers.admin', [])
             }]
 
 
-            $scope.delete_user = function(user) {
-
+            $scope.initPassword = function(user) {
+                UserService.initPassword(user, function(resp) {
+                    $rootScope.alert_modal('', '密码重置成功,已将重置密码发送到用户邮箱')
+                })
             }
-
-
-
-            //manager lessons
-            $scope.all_lessons = [{
-                "name": "数据库",
-                created_time: new Date(),
-                updated_time: new Date(),
-                "major": {
-                    "id": "0260bb7c-2e93-4a7d-895d-59fac58fdbc6",
-                    "name": "物联网工程"
-                },
-                "college": {
-                    "id": "b6a0808f-b87a-44ca-b850-9545a3f3f089",
-                    "name": "计算机学院",
-                    "major_list": {
-                        "id": "0260bb7c-2e93-4a7d-895d-59fac58fdbc6",
-                        "name": "物联网工程"
-                    }
-                },
-                "teacher": {
-                    "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
-                    "name": "小泡子仔",
-                    "email": "992444037@qq.com",
-                    "role_name": "STUDENT",
-                }
-            }]
-
-            $scope.delete_lesson = function(lesson) {
-                LessonService.delete_lesson(lesson.id,function(resp){
-                    $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
+            $scope.delete_user = function(user) {
+                UserService.deleteUser(user, function(resp) {
+                    $rootScope.alert_modal('', '该用户已被删除')
                 })
             }
 
+
+            //manager courses
+            $scope.all_displayed_lessons = [] //st-table needs to show existed values
+            LessonsService.lessons_list(function(resp) {
+                //st-safe-src needs to show ajax values
+                $scope.all_asy_lessons = [].concat(resp)
+            })
+
+            $scope.delete_lesson = function(lesson) {
+                LessonService.delete_lesson(lesson.id, function(resp) {
+                    $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
+                })
+            }
 
         }
     ])

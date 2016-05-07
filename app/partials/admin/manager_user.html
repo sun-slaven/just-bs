@@ -1,5 +1,5 @@
 <div id="manager_user" ng-show="active_type == 'manager_user'">
-    <table st-table="all_users" class="table table-hover">
+    <table st-table="$parent.all_users" class="table table-hover">
         <thead>
             <tr>
                 <th>序号</th>
@@ -16,14 +16,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr st-select-row="row" ng-repeat="user in all_users" ng-class="{active: $index % 4 == 0 , success: $index % 4 == 1 , warning: $index % 4 == 2, danger: $index % 4 == 3}">
+            <tr st-select-row="row" ng-repeat="user in $parent.all_users" ng-class="{active: $index % 4 == 0 , success: $index % 4 == 1 , warning: $index % 4 == 2, danger: $index % 4 == 3}">
                 <td>{{$index}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role_name}}</td>
                 <td>{{user.created_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
-                    <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="edit(user)" data-placement="left" data-title="编辑该用户" data-trigger="hover" data-type="info" bs-tooltip></i>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="initPassword(user)" data-placement="left" data-title="重置该用户密码" data-trigger="hover" data-type="info" bs-tooltip></i>
                     <i class="fa fa-trash" aria-hidden="true" ng-click="delete(user)" data-placement="right" data-title="删除该用户" data-trigger="hover" bs-tooltip></i>
                 </td>
             </tr>
