@@ -8,9 +8,10 @@
         </button>
         <a class="navbar-brand">在线教学系统</a>
     </div>
-    <div class="collapse navbar-collapse" id="nav-content">
+    <div class="collapse navbar-collapse" id="nav-content" >
         <ul class="nav navbar-nav">
-            <li><a ng-click="go('lessons/index')">课程</a></li>
+            <li ng-hide="is_admin()"><a ng-click="go('lessons/index')">课程</a></li>
+            <li ng-show="is_admin()"><a>管理员界面</a></li>
         </ul>
     </div>
     <div id="log-out">
@@ -22,7 +23,7 @@
             </li>
         </ul>
     </div>
-    <div id="login-area">
+    <div id="login-area" ng-hide="is_admin()">
         <ul class="list-inline">
             <li class="search_info">
                 <input class="search-input" placeholder="请输入搜索内容..." type="text" autocomplete="off" ng-if="header_search.input_show" ng-model="header_search.search_info">

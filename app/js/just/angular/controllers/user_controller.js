@@ -38,13 +38,11 @@ angular.module('just.controllers.user', ['ngCookies'])
                             }
                             UserService.sign_in($scope.user, function(resp) {
                                 //管理员账户单独一个界面
-                                //$rootScope.go("/admin/show");
-                                // if (resp.user.role_name == 'ADMIN') {
-                                //     $rootScope.go("/admin/show");
-                                // }else{
-                                //     $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
-                                // }
-                                $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
+                                if (resp.user.role_name == 'ADMIN') {
+                                    $rootScope.go("/admin/show");
+                                }else{
+                                    $rootScope.go("/users/" + $rootScope.current_user.id + "/me");
+                                }
                             })
 
                         }
