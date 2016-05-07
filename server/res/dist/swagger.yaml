@@ -570,22 +570,9 @@ paths:
         - application/json
       tags:
         - tokens
-      parameters:
-        - name: file
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/file'
       responses:
         '200':
-          description: course response
-          schema:
-            description: file
-            type: string
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/errorModel'
+          description: success
 
     options:
       description: 跨域

@@ -63,4 +63,5 @@ var (
 	USER_LIST_ERR = NewDefaultHttpError(errors.New("用户列表获取失败"))
 // file
 	FILE_ADD_ERR = NewDefaultHttpError(errors.New("文件添加失败"))
+	TOKEN_DELETE_ERR = NewDefaultHttpError(errors.New("登出失败"))
 )
