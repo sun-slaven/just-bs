@@ -15,12 +15,12 @@ type CourseAddRequest struct {
 	IconUrl        string `json:"icon_url"`   // required
 	VideoUrl       string `json:"video_url"`
 	ChapterList    []*CourseChapterRequest `json:"chapter_list"`
-	AttachmentList []*AttachmentRequest `json:"attachment_list"`
+	AttachmentList []*CourseAttachmentRequest `json:"attachment_list"`
 }
 
-type AttachmentRequest struct {
-	Name    string `json:"name"`
-	Content string `json:"content"`
+type CourseAttachmentRequest struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
 type CourseChapterRequest struct {

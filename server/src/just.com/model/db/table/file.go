@@ -20,9 +20,8 @@ func (self *ImageTable)TableName() string {
  */
 type FileTable struct {
 	UUID       string `xorm:"pk 'UUID'"`
-	Name       string `xorm:"'NAME'"`
 	Url        string `xorm:"'URL'"`
-	Type       string `xorm:"'TYPE'"`
+	Type       string `xorm:"'TYPE'"` // video or attachment
 	CreateTime time.Time `xorm:"created 'CREATE_TIME'"`
 }
 

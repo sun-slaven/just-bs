@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"just.com/common"
 	"just.com/model/qiniu"
+	"just.com/service/file"
 )
 
 func UploadCallbackHandle(c *gin.Context) {
@@ -29,11 +30,18 @@ func UploadCallbackHandle(c *gin.Context) {
 		if addErr != nil {
 			context.Log.Println(addErr)
 		}
-	case qiniu.UPLOAD_TYPE_ATTACHMENT:
-
-		
+	case qiniu.UPLOAD_TYPE_ATTACHMENT :
+		fileService := file.NewFileService(context.Session, context.Log)
+		addErr := fileService.Add(request.Type, request.Key)
+		if addErr != nil {
+			context.Log.Println(addErr)
+		}
 	case qiniu.UPLOAD_TYPE_VIDEO:
-
+		fileService := file.NewFileService(context.Session, context.Log)
+		addErr := fileService.Add(request.Type, request.Key)
+		if addErr != nil {
+			context.Log.Println(addErr)
+		}
 	}
 	context.Response.Data = &UploadReturn{Key:request.Key}
 }

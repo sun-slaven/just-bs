@@ -11,25 +11,26 @@ import (
 )
 
 type CourseVo struct {
-	UUID         string `json:"id"`
-	Name         string    `json:"name"`
-	Description  string `json:"description"`
-	Introduction string    `json:"introduction"`
-	Syllabus     string    `json:"syllabus"`
-	Wish         string        `json:"wish"`
-	Experiment   string        `json:"experiment"`
-	Icon         *file.ImageVo    `json:"icon"`
-	MarkSum      int64    `json:"mark_sum"`
-	CommentSum   int64 `json:"comment_sum"`
-	Major        *college.MajorVo    `json:"major"`
-	College      *college.CollegeVo    `json:"college"`
+	UUID           string `json:"id"`
+	Name           string    `json:"name"`
+	Description    string `json:"description"`
+	Introduction   string    `json:"introduction"`
+	Syllabus       string    `json:"syllabus"`
+	Wish           string        `json:"wish"`
+	Experiment     string        `json:"experiment"`
+	Icon           *file.ImageVo    `json:"icon"`
+	MarkSum        int64    `json:"mark_sum"`
+	CommentSum     int64 `json:"comment_sum"`
+	Major          *college.MajorVo    `json:"major"`
+	College        *college.CollegeVo    `json:"college"`
 	//	Point        int64 `json:"point"`
 	//	PointPerson  int64 `json:"point_person"`
 	//	PointStatus  string `json:"point_status"`
-	Teacher      *user.UserVo `json:"teacher"`
-	VideoUrl     string `json:"video_url"`
-	CreateTime   string `json:"create_time"`
-	UpdateTime   string `json:"update_time"`
+	Teacher        *user.UserVo `json:"teacher"`
+	VideoUrl       string `json:"video_url"`
+	CreateTime     string `json:"create_time"`
+	UpdateTime     string `json:"update_time"`
+	AttachmentList []*CourseAttachmentVo `json:"attachment_list"`
 }
 
 // 什么都没有用这个就行了
@@ -86,10 +87,15 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	// teacher
 	cv.Teacher = user.LoadUserVo(courseTable.TeacherId, session, log)
 
-	cv.VideoUrl = courseTable.VideoUrl
+	cv.VideoUrl = file.BASE_URL + courseTable.VideoUrl
 	cv.CreateTime = common.TimeFormat(courseTable.CreateTime)
 	cv.UpdateTime = common.TimeFormat(courseTable.UpdateTime)
 
+	attachVoList, attachErr := LoadAttachmentVoList(courseTable.UUID, session, log)
+	if attachErr != nil {
+		return nil, err.NO_ATTACHMENT_FOUND
+	}
+	cv.AttachmentList = attachVoList
 	//	if courseTable.PointPerson > 0 {
 	//		cv.Point = courseTable.Points / courseTable.PointPerson
 	//	}else {

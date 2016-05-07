@@ -7,11 +7,12 @@ import (
 	"just.com/common"
 	"just.com/dto"
 	"just.com/err"
+	query "just.com/query/vo/course"
 )
 
 /*return courseId*/
-func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, error *err.HttpError) {
-	courseTable = new(table.CourseTable)
+func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (courseVo *query.CourseVo, error *err.HttpError) {
+	courseTable := new(table.CourseTable)
 	// 1. check
 	if common.IsEmpty(request.Name, request.CollegeId, request.MajorId, request.TeacherId, request.IconUrl) {
 		error = err.NO_REQUIRED_PARAM_FOUND
@@ -53,6 +54,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 
 	courseTable.UUID = uuid.New()
 	courseTable.Name = request.Name
+	courseTable.Description = request.Description
 	courseTable.Introduction = request.Introduction
 	courseTable.Syllabus = request.Syllabus
 	courseTable.Experiment = request.Experiment
@@ -74,6 +76,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.IconHeight = imageTable.Height
 	courseTable.IconUrl = imageTable.Url
 	courseTable.TeacherId = request.TeacherId
+	// TODO video url 的 判断
 	courseTable.VideoUrl = request.VideoUrl
 
 	insertNum, insertErr := self.Session.InsertOne(courseTable)
@@ -85,18 +88,22 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		return
 	}
 	// chapter
-	for _, chapterRequest := range request.ChapterList {
-		if common.IsEmpty(chapterRequest.Name, chapterRequest.Content) {
-			error = err.CHAPTER_FORMAT_ERR
-		}
-		_, addChapterErr := self.AddChapter(courseTable.UUID, userId, chapterRequest)
-		if addChapterErr != nil {
-			self.Log.Println(addChapterErr)
-			error = addChapterErr
-			return
-		}
+	_, chapterErr := self.AddChapterList(courseTable.UUID, userId, request.ChapterList)
+	if chapterErr != nil {
+		self.Log.Println(chapterErr)
+		return nil, chapterErr
 	}
 	// attachment
-	error = nil
-	return
+	_, attachErr := self.AddAttachmentList(courseTable.UUID, userId, request.AttachmentList)
+	if attachErr != nil {
+		self.Log.Println(attachErr)
+		return nil, attachErr
+	}
+
+	courseVo, courseVoErr := query.LoadCourseVoFromTable(courseTable, self.Session, self.Log)
+	if courseVoErr != nil {
+		self.Log.Println(courseVoErr)
+		return nil, courseVoErr
+	}
+	return courseVo, nil
 }

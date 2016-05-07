@@ -41,6 +41,19 @@ func (self *CourseService) AddChapter(courseId, userId string, request *dto.Cour
 	return course.NewChapterVo(table), nil
 }
 
+func (self *CourseService)AddChapterList(courseId, userId string, requestList []*dto.CourseChapterRequest) ([]*course.CourseChapterVo, *err.HttpError) {
+	chapterVoList := make([]*course.CourseChapterVo, 0)
+	for _, request := range requestList {
+		vo, addErr := self.AddChapter(courseId, userId, request)
+		if addErr != nil {
+			self.Log.Println(addErr)
+			return nil, addErr
+		}
+		chapterVoList = append(chapterVoList, vo)
+	}
+	return chapterVoList, nil
+}
+
 /**
 更新章节,没有required
  */
