@@ -1,38 +1,92 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonService', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonService, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
         }
-        $scope.itemsByPage = 2;
+        $scope.itemsByPage = 5;
 
 
         //TODO
         //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
+        // show all created lessons
+        $scope.useful_lessons = [{
+            name: 'haha',
+            major: {
+                id: "fc71592a-0ba7-11e6-b512-3e1d05defe78",
+                name: "空军"
+            },
+            college: {
+                id: "5b18f62d-b360-4f1a-9899-5d69a71325a1",
+                name: "国防学院"
+            },
+            comment_sum: 1,
+            create_time: "2016-05-02 23:55:23",
+            description: "",
+            experiment: "string",
+            icon: {
+                url: "http://7xnz7k.com1.z0.glb.clouddn.com/"
+            },
+            id: "e541bf8c-178a-4568-b0d7-a910b77c10ff",
+            introduction: "学习基本数据库操作知识",
+            mark_sum: 2,
+            name: "计算机基础",
+            syllabus: "",
+            update_time: "2016-05-06 23:13:34",
+            video_url: "",
+            wish: "希望你们好好学"
+        }]
 
 
-        $scope.show_modal = function() {
-            // var myOtherModal = $rootScope.custom_modal($scope,'')
-            // myOtherModal.$promise.then(myOtherModal.show);
-            $rootScope.strap_modal({
-                title: 'title',
-                content: '..',
-                show: true
-            });
-        };
-
+        //update lessons
         $scope.edit = function(lesson) {
+            $scope.modal_title = "更新课程";
+            $scope.modal_content_url = '/manage_lesson/_update_lesson_modal';
+            $scope.edit_lesson = lesson;
+            $scope.update_lesson_modal_style = {
+                width: '70%'
+            };
+            $scope.modal_ok = function() {
+                if ($scope.upload.get_token_promise_array.length) {
+                    $scope.upload.do_upload(function() {
+                        LessonService.update_lesson($scope.edit_lesson, function(resp) {
+                            $scope.upload.get_token_promise_array = [];
+                            $rootScope.reload()
+                            console.log(resp)
+                        })
+                    })
+                } else {
+                    LessonService.create_lesson($scope.edit_lesson, function(resp) {
+                        $rootScope.reload()
+                        console.log(resp)
+                    })
+                }
+            }
+            $scope.modal_cancel = function() {
+                $scope.update_lesson_modal_style = null;
+            }
             $rootScope.strap_modal({
-                title: 'title',
-                content: '..',
-                show: true
+                scope: $scope
             });
         }
 
+
+        //update lesson outline ,isolate  controller
+        $scope.outlineEdit = {
+            open_outline_partial: function(lesson) {
+                $scope.open_outline_partial = true;
+                $scope.outline_edit_lesson = lesson;
+                $scope.active_type = 'lesson_outline';
+            }
+        }
+
+        //delete lessons
         $scope.delete = function(lesson) {
             $scope.modal_ok = function() {
-                console.log('ok')
+                LessonService.delete_lesson(lesson.id, function(resp) {
+                    $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
+                })
             }
             $rootScope.strap_modal({
                 scope: $scope,
@@ -41,7 +95,7 @@ angular.module('just.controllers.manage_lesson', [])
             });
         }
 
-
+        //create lessons
         //学院专业联动 由于使用ng-include 产生子scope,所以使用#$watch无法达到效果
         $scope.colleges = $rootScope.all_colleges;
         $scope.majors = $rootScope.all_majors;
@@ -71,9 +125,6 @@ angular.module('just.controllers.manage_lesson', [])
             }
             $scope.new_lesson.major_id = major.id;
         }
-
-
-        //新建lesson
         $scope.new_lesson = {
             teacher_id: $rootScope.current_user.id,
             icon_url: null,
@@ -87,18 +138,18 @@ angular.module('just.controllers.manage_lesson', [])
             temp_outline_list: [],
             wish: '',
             temp_outline: {
-                chapter: '',
+                order: null,
                 name: '',
-                introduction: '',
+                content: '',
             },
             attachment_list: [],
             open_outline_plus_modal: function() {
                 $scope.modal_title = "创建提纲";
                 $scope.form = $scope.modalForm
-                $scope.modal_content_url = '/manage_lesson/_new_lesson_modal_content';
+                $scope.modal_content_url = '/manage_lesson/_new_lesson_chapter_modal';
                 $scope.modal_type = 'open_outline_plus_modal';
                 $scope.new_lesson.temp_outline = {
-                        chapter: '',
+                        order: null,
                         name: '',
                         introduction: '',
                     },
@@ -107,9 +158,9 @@ angular.module('just.controllers.manage_lesson', [])
                             //如果直接将$scope.new_lesson.temp_outline则放进去的值依然会根据watch改变,和"="一样,故用copy API,=本质是引用复制,后者是新创建一个对象然后进行深度值复制
                             $scope.new_lesson.temp_outline_list.push($scope.new_lesson.temp_outline);
                             $scope.new_lesson.temp_outline = {
-                                chapter: '',
+                                order: null,
                                 name: '',
-                                introduction: '',
+                                content: '',
                             }
                         } else {
                             var keepGoing = true;
@@ -128,7 +179,7 @@ angular.module('just.controllers.manage_lesson', [])
             },
             open_outline_edit_modal: function(temp_outline) {
                 $scope.modal_title = "修改提纲";
-                $scope.modal_content_url = '/manage_lesson/_new_lesson_modal_content';
+                $scope.modal_content_url = '/manage_lesson/_new_lesson_chapter_modal';
                 $scope.modal_type = 'open_outline_edit_modal';
                 $scope.new_lesson.temp_outline = angular.copy(temp_outline);
                 $rootScope.strap_modal({
@@ -246,7 +297,7 @@ angular.module('just.controllers.manage_lesson', [])
             if ($scope.upload.get_token_promise_array.length) {
                 $scope.upload.do_upload(function() {
                     LessonsService.create_lesson($scope.new_lesson, function(resp) {
-                        console.log("callback")
+                        $scope.upload.get_token_promise_array = [];
                         console.log(resp)
                     })
                 })

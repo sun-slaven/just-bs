@@ -1,8 +1,8 @@
 <div id="created_lessons" ng-show="active_type == 'created_lessons'">
     <!-- Smart-Table plugin-->
     <table st-table="useful_lessons" class="table table-hover">
-        <thead>
-            <tr>
+        <thead >
+            <tr >
                 <th>序号</th>
                 <th>课程名称</th>
                 <th st-sort="major">所属专业</th>
@@ -22,11 +22,12 @@
                 <td>{{$index}}</td>
                 <td>{{lesson.name}}</td>
                 <td>{{lesson.major.name}}</td>
-                <td>{{lesson.subscribe_amount}}</td>
-                <td>{{lesson.created_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{lesson.updated_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{lesson.mark_sum}}</td>
+                <td>{{lesson.create_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{lesson.update_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
-                    <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="edit(lesson)" data-placement="left" data-title="编辑" data-trigger="hover" data-type="info" bs-tooltip></i>
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="edit(lesson)" data-placement="left" data-title="编辑基本信息" data-trigger="hover" data-type="info" bs-tooltip></i>
+                    <i class="fa fa-list-ol" aria-hidden="true" ng-click="outlineEdit.open_outline_partial(lesson)" data-placement="left" data-title="编辑章节信息" data-trigger="hover" data-type="info" bs-tooltip></i>
                     <i class="fa fa-trash" aria-hidden="true" ng-click="delete(lesson)" data-placement="right" data-title="删除" data-trigger="hover" bs-tooltip></i>
                 </td>
             </tr>
