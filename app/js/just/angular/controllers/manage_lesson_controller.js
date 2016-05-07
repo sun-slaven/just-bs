@@ -258,8 +258,5 @@ angular.module('just.controllers.manage_lesson', [])
             }
         }
 
-        // 18052769341 
-        // 231691
-
 
     }])

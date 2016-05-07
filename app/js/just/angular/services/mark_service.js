@@ -7,8 +7,8 @@ factory('MarkService', ['$rootScope', '$resource', '$http',
             add_mark: { method: 'post', isArray: false },
         })
 
-        var markAPI = $resource('/api/v1/courses/:course_id/marks/', {}, {
-            cancel_mark: { method: 'post', isArray: false },
+        var markAPI = $resource('/api/v1/courses/:course_id/marks/', {course_id: '@course_id'}, {
+            cancel_mark: { method: 'delete', isArray: false },
         })
 
         function add_mark(course_id, success) {

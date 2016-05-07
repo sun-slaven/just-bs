@@ -11,14 +11,14 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
         })
 
         var myLessonsAPI = $resource('/api/v1/users/:user_id/courses', { user_id: '@user_id' }, {
-                myLessons: { method: 'get', isArray: true }
-            })
-
-        var UserInfoApi = $resource('/api/v1/users/:user_id/', {}, {
-            updateUser: {method: 'patch'},
-            getUser: {method: 'get'}    //暂时无用
+            myLessons: { method: 'get', isArray: true }
         })
-            //992444037@qq.com  123456   STUDENT
+
+        var UserInfoApi = $resource('/api/v1/users/:user_id/', { user_id: '@user_id' }, {
+                updateUser: { method: 'patch' },
+                getUser: { method: 'get' } //暂时无用
+            })
+            //992444037@qq.com  1   STUDENT
             //158274194@qq.com   123456  TEACHER
             //893196569@qq.com  123456   ADMIN
         function sign_in(user, success) {
@@ -61,9 +61,9 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             $rootScope.current_user = new_user
             $cookies.putObject('current_user', new_user)
         }
-
+        //token should set in cookies
         function set_token(token) {
-            $cookies.loginTokenCookie = token;
+            $cookies.putObject('token',token)
         }
 
         function myLessons(user, callback) {
@@ -74,12 +74,13 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             })
         }
 
-        function updateUser(user,callback){
-            UserInfoApi.updateUser({},{
-                user_id: user.id
-            },function(resp){
-                console.log(resp)
-            })
+        function updateUser(user, updateUserObj, callback) {
+            UserInfoApi.updateUser({},
+                angular.extend({ user_id: user.id }, updateUserObj),
+                function(resp) {
+                    set_user(resp)
+                    if (callback) { callback(resp) };
+                })
         }
 
 
@@ -87,7 +88,8 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             sign_in: sign_in,
             sign_out: sign_out,
             register: register,
-            myLessons: myLessons
+            myLessons: myLessons,
+            updateUser: updateUser
         }
     }
 ])
