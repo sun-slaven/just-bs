@@ -16,11 +16,15 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
 
         var UserInfoApi = $resource('/api/v1/users/:user_id/', { user_id: '@user_id' }, {
                 updateUser: { method: 'patch' },
-                getUser: { method: 'get' } //暂时无用
+                getUser: { method: 'get' },//暂时无用
+                deleteUser: {method: 'delete'}
             })
+        var InitPasswordApi = $resource('/api/v1/users/:user_id/passwords', { user_id: '@user_id' }, {
+            initPassword: {method:'put'}
+        })
             //992444037@qq.com  1   STUDENT
             //158274194@qq.com   123456  TEACHER
-            //893196569@qq.com  123456   ADMIN
+            //619169034@qq.com 123456   ADMIN
         function sign_in(user, success) {
             userAPI.sign_in({}, {
                 email: user.email || $rootScope.get_storage('email'),
@@ -83,13 +87,30 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
                 })
         }
 
+        function deleteUser(user,callback){
+            UserInfoApi/deleteUser({},{
+                user_id: user.id
+            },function(resp){
+                if (callback) { callback(resp) };
+            })
+        }
+
+        function initPassword(user,callback){
+            InitPasswordApi.initPassword({},{
+                user_id: user.id
+            },function(resp){
+                if (callback) { callback(resp) };
+            })
+        }
 
         return {
             sign_in: sign_in,
             sign_out: sign_out,
             register: register,
             myLessons: myLessons,
-            updateUser: updateUser
+            updateUser: updateUser,
+            deleteUser: deleteUser,
+            initPassword: initPassword
         }
     }
 ])
