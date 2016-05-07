@@ -42,7 +42,6 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		return
 	}
 
-	// TODO role name
 	getFlag, getErr = self.Session.Get(&table.UserTable{UUID:request.TeacherId})
 	if !getFlag {
 		if getErr != nil {
@@ -55,7 +54,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.UUID = uuid.New()
 	courseTable.Name = request.Name
 	courseTable.Introduction = request.Introduction
-	courseTable.Syllabus = ""
+	courseTable.Syllabus = request.Syllabus
 	courseTable.Experiment = request.Experiment
 	courseTable.Wish = request.Wish
 	courseTable.MajorId = request.MajorId
@@ -75,6 +74,17 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.IconHeight = imageTable.Height
 	courseTable.IconUrl = imageTable.Url
 	courseTable.TeacherId = request.TeacherId
+	courseTable.VideoUrl = request.VideoUrl
+
+	// chapter
+	for _, chapter := range request.ChapterList {
+		if common.IsEmpty(chapter.Name, chapter.Content){
+			error = err.CHAPTER_ADD_ERR
+		}
+	}
+	self.Add()
+
+	// attachment
 
 	insertNum, insertErr := self.Session.InsertOne(courseTable)
 	if insertNum == 0 {

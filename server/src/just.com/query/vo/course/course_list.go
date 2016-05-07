@@ -7,6 +7,7 @@ import (
 )
 
 func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
+	condition.FrozenStatus = "N"
 	courseVoList = make([]*CourseVo, 0)
 	courseTableList := make([]*table.CourseTable, 0)
 	findErr := session.Find(&courseTableList, condition)

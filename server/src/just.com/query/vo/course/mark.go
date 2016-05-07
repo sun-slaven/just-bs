@@ -18,7 +18,7 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 	}
 
 	for _, markTable := range markTableList {
-		courseTable := &table.CourseTable{UUID:markTable.CourseId}
+		courseTable := &table.CourseTable{UUID:markTable.CourseId, FrozenStatus:"N"}
 		courseVo, courseVoErr := LoadCourseVo(courseTable, session, log)
 		if courseVoErr != nil {
 			log.Println(courseVo)

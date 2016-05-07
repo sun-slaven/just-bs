@@ -7,7 +7,7 @@ import (
 
 func (self *CourseService) Delete(courseId string) *err.HttpError {
 	courseTable := &table.CourseTable{FrozenStatus:"Y", FrozenTime:time.Now()}
-	updateNum, updateErr := self.Session.Id(courseId).Update(&courseTable)
+	updateNum, updateErr := self.Session.Id(courseId).Update(courseTable)
 	if updateNum == 0 {
 		if updateErr != nil {
 			self.Log.Println(updateErr)

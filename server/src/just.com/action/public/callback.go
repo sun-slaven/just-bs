@@ -6,6 +6,7 @@ import (
 	"just.com/service/image"
 	"net/http"
 	"just.com/common"
+	"just.com/model/qiniu"
 )
 
 func UploadCallbackHandle(c *gin.Context) {
@@ -21,10 +22,17 @@ func UploadCallbackHandle(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 		return
 	}
-	imageService := image.NewImageService(context.Session, context.Log)
-	addErr := imageService.Add("", request.Key, "", request.W, request.H)
-	if addErr != nil {
-		context.Log.Println(addErr)
+	switch request.Type {
+	case qiniu.UPLOAD_TYPE_ICON:
+		imageService := image.NewImageService(context.Session, context.Log)
+		addErr := imageService.Add("", request.Key, "", request.W, request.H)
+		if addErr != nil {
+			context.Log.Println(addErr)
+		}
+	case qiniu.UPLOAD_TYPE_ATTACHMENT:
+		
+	case qiniu.UPLOAD_TYPE_VIDEO:
+
 	}
 	context.Response.Data = &UploadReturn{Key:request.Key}
 }

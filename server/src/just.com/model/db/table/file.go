@@ -15,10 +15,11 @@ func (self *ImageTable)TableName() string {
 	return "IMAGE"
 }
 
-type FileTable struct {
+type CourseFileTable struct {
 	UUID         string `xorm:"pk 'UUID'"`
 	Name         string `xorm:"'NAME'"`
 	Url          string `xorm:"'URL'"`
+	Type         string `xorm:"'TYPE'"`
 	CourseID     string `xorm:"'COURSE_ID'"`
 	CreateTime   time.Time `xorm:"created 'CREATE_TIME'"`
 	CreateUser   string `xorm:"'CREATE_USER'"`
@@ -28,6 +29,6 @@ type FileTable struct {
 	FrozenTime   time.Time `xorm:"'FROZEN_TIME'"`
 }
 
-func (self *FileTable) TableName() string {
-	return "FILE"
+func (self *CourseFileTable) TableName() string {
+	return "COURSE_FILE"
 }

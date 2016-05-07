@@ -10,7 +10,7 @@ import (
 func MarkAdd(c *gin.Context) {
 	context := action.GetContext(c)
 	courseId := c.Param("course_id")
-	if common.IsEmpty(courseId) {
+	if common.IsEmpty(courseId, context.UserId) {
 		context.Response.Error = err.NO_COURSE_ID_FOUND
 	}
 	courseService := service.NewCourseService(context.Session, context.Log)

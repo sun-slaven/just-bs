@@ -44,6 +44,7 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 	userRouter := mainRouter.Group("/users")
 	{
 		userRouter.POST("/", user.RegisterHandle)
+		userRouter.GET("/", user.UserListHandle)
 		userRouter.GET("/:user_id", user.UserGetHandle)
 		userRouter.DELETE("/:user_id", user.UserDelete)
 		userRouter.PATCH("/:user_id", user.UserUpdateHandle)

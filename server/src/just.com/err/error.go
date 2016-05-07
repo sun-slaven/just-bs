@@ -56,5 +56,8 @@ var (
 
 	NO_CHAPTER_FOUND = NewDefaultHttpError(errors.New("章节获取失败"))
 	CHAPTER_ADD_ERR = NewDefaultHttpError(errors.New("章节新增失败"))
+	CHAPTER_FORMAT_ERR = NewDefaultHttpError(errors.New("章节请求格式错误"))
 	CHAPTER_UPDATE_ERR = NewDefaultHttpError(errors.New("章节更新失败,可能是章节id无效"))
+
+	USER_LIST_ERR = NewDefaultHttpError(errors.New("用户列表获取失败"))
 )

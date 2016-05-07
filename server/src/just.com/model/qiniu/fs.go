@@ -16,6 +16,10 @@ type FileToken struct {
 	Token string        `json:"token"`
 }
 
+const UPLOAD_TYPE_ICON = "icon"
+const UPLOAD_TYPE_ATTACHMENT = "attachment"
+const UPLOAD_TYPE_VIDEO = "video"
+
 func NewQiniuFileSystem(config etc.QiniuConfig) *QiniuFileSystem {
 	q := new(QiniuFileSystem)
 	q.ak = config.AK
@@ -37,12 +41,12 @@ func (self *QiniuFileSystem) MakeToken(fileType string) *FileToken {
 		CallbackUrl: self.callBackUrl,
 	}
 	switch fileType {
-	case "image":
-		policy.CallbackBody = "key=$(key)&w=$(imageInfo.width)&h=$(imageInfo.height)"
-	case "file":
-		policy.CallbackBody = "key=$(key)&fsize$(fsize)"
-	case "video":
-		policy.CallbackBody = "key=$(key)&fsize$(fsize)"
+	case UPLOAD_TYPE_ICON:
+		policy.CallbackBody = "key=$(key)&w=$(imageInfo.width)&h=$(imageInfo.height)&type=icon"
+	case UPLOAD_TYPE_ATTACHMENT:
+		policy.CallbackBody = "key=$(key)&type=attachment"
+	case UPLOAD_TYPE_VIDEO:
+		policy.CallbackBody = "key=$(key)&type=video"
 		policy.PersistentOps = "avthumb/mp4/s/640x360/vb/1.25m"
 	}
 	return &FileToken{Token:c.MakeUptoken(policy)}

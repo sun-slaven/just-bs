@@ -72,3 +72,7 @@ http://localhost:8086/res/dist/
 1. chapter的增加/列表和修改,其中order字段只是简单的起排序的作用
 2. 课程的返回值也做了一定的修改
 > 课程的增加和修改需要改表结构,我这边估计还有点问题
+
+## 5.7
+1. user list(`get /users`接口),其中返回的对象为UserDetailView,比普通的UserView增加了2个对象
+2. 判断icon,空则返回default.png

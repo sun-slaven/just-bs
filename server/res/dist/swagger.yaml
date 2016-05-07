@@ -583,6 +583,21 @@ paths:
             type: string
             
   /users:
+    get:
+      description: 获取用户列表,only admin can do it
+      operationId: user list
+      summary: 获取用户列表
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - users
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
     post:
       description: 注册
       operationId: user register
@@ -938,7 +953,7 @@ definitions:
     properties:
       type:
         type: string
-        default: 'image/video/file'
+        default: 'icon/attachment/video'
 
   fileToken:
     type: object
