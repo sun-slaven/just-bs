@@ -74,6 +74,7 @@ module.exports = function(grunt) {
                     'app/lib/grunt_bower/angular-strap/angular-strap.tpl.js',
                     'app/lib/grunt_bower/angular-smart-table/smart-table.js',
                     'app/lib/grunt_bower/angular-local-storage/angular-local-storage.js',
+                    'app/lib/grunt_bower/angular-loading-bar/loading-bar.js',
                     'app/lib/grunt_bower/angular-qiniu-upload/qupload.js',//dependends on angular-local-storage
                     'app/lib/grunt_bower/jquery/jquery.js',
                     'app/lib/grunt_bower/bootstrap/bootstrap.js'
