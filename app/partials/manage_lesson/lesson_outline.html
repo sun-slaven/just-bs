@@ -1,0 +1,48 @@
+<div id="lesson_outline" ng-show="active_type == 'lesson_outline'" ng-controller="LessonOutlineController">
+    <!-- Smart-Table plugin-->
+    <div ng-show="!outline_edit_lesson">
+        当前未选择课程,请先到课程管理中点击某个课程的章节管理
+    </div>
+    <div ng-show="outline_edit_lesson">
+        当前选择的课程为: {{outline_edit_lesson.name}}
+        <div class="chapter_plus">
+            <i class="fa fa-plus" aria-hidden="true" ng-click="chapter_plus()"></i>
+        </div>
+        <table st-table="useful_lessons" class="table table-hover" ng-show="outline_edit_lesson">
+            <thead>
+                <tr>
+                    <th st-sort="order">章节次序</th>
+                    <th st-sort="name">章节名称</th>
+                    <th st-sort="create_time">创建时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <th colspan="7">
+                        <input st-search="name" class="form-control" placeholder="搜索章节名称" type="text" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr st-select-row="row" ng-repeat="chapter in lesson_outline_list | orderBy: order:true" ng-class="{active: $index % 4 == 0 , success: $index % 4 == 1 , warning: $index % 4 == 2, danger: $index % 4 == 3}">
+                    <td>{{chapter.order}}</td>
+                    <td>{{chapter.name}}</td>
+                    <td>{{chapter.create_time | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                    <td>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="chapter_edit(chapter)" data-placement="left" data-title="编辑" data-trigger="hover" data-type="info" bs-tooltip></i>
+                        <i class="fa fa-trash" aria-hidden="true" ng-click="chapter_delete(chapter)" data-placement="right" data-title="删除" data-trigger="hover" bs-tooltip></i>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="2"></div>
+                    </td>
+                    <td colspan="2" class="text-center">
+                        <input type="number" class="form-control" placeholder="请输入数字" ng-model="itemsByPage"></input>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

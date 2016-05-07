@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" ng-style="update_lesson_modal_style">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" ng-disabled="forms.createChapterForm.$invalid" ng-click="modal_ok();$hide()">确定</button>
-                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                <button type="button" class="btn btn-default" ng-click="modal_cancel();$hide()">Close</button>
             </div>
         </div>
     </div>
