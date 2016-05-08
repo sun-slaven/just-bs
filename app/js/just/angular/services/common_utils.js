@@ -45,15 +45,15 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
         }
 
         var adjustFileType = function(fileSuffix){
-            image_array = ['.bmp','.png','.gif','.jpg','.jpeg']
+            icon_array = ['.bmp','.png','.gif','.jpg','.jpeg','.ico']
             video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4']
-            if (image_array.indexOf(fileSuffix) > -1) {
-                return 'image'
+            if (icon_array.indexOf(fileSuffix) > -1) {
+                return 'icon'
             }
             if (video_array.indexOf(fileSuffix) > -1) {
                 return 'video'
             };
-            return 'file'
+            return 'attachment'
         }
 
 

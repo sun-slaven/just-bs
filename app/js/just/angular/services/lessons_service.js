@@ -26,13 +26,13 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
                 wish: new_lesson.wish,
                 college_id: new_lesson.college_id,
                 major_id: new_lesson.major_id,
-                outline: new_lesson.temp_outline_list,
-                attachment: new_lesson.attachment_list
+                chapter_list: new_lesson.temp_outline_list,
+                attachment_list: new_lesson.attachment_list
             }
             console.log(lesson_obj)
-            // lessonsAPI.create_lesson({}, lesson_obj, function(resp) {
-            //     if (success) { success(resp) }
-            // })
+            lessonsAPI.create_lesson({}, lesson_obj, function(resp) {
+                if (success) { success(resp) }
+            })
         }
 
 

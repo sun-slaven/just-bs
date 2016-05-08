@@ -7,8 +7,7 @@ angular.module('just.controllers.header', [])
             $scope.sign_out = function() {
                     $rootScope.confirm_modal("确认退出吗?", $scope, function() {
                         UserService.sign_out($rootScope.current_user,function() {
-                            $rootScope.go('/login');
-                            $rootScope.current_user = null;
+                            $rootScope.go('/');
                         })
                     })
                 }

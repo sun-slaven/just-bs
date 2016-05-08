@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="lessons-index">
-    	<div class="just-card" ng-repeat="lesson in lessons">
+    	<div class="just-card" ng-repeat="lesson in lessons | orderBy:create_time:false">
     		<just-card lesson='lesson'></just-card>
     	</div>
     </div>
