@@ -19,7 +19,7 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 
 	for _, markTable := range markTableList {
 		courseTable := &table.CourseTable{UUID:markTable.CourseId, FrozenStatus:"N"}
-		courseVo, courseVoErr := LoadCourseVo(courseTable, session, log)
+		courseVo, courseVoErr := LoadCourseVo(courseTable, userId, session, log)
 		if courseVoErr != nil {
 			log.Println(courseVo)
 			return
@@ -28,4 +28,12 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 	}
 	error = nil
 	return
+}
+
+func LoadMarkStatus(courseId string, userId string, session *xorm.Session, log *log.Logger) bool {
+	getFlag, getErr := session.Get(&table.CourseMarkTable{CourseId:courseId, UserId:userId})
+	if getErr != nil {
+		log.Println(getErr)
+	}
+	return getFlag
 }

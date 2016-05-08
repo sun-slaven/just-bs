@@ -9,7 +9,7 @@ import (
 func CourseGetHandle(c *gin.Context) {
 	context := action.GetContext(c)
 	courseId := c.Param("course_id")
-	courseVo, courseVoErr := course.LoadCourseVo(&table.CourseTable{UUID:courseId}, context.Session, context.Log)
+	courseVo, courseVoErr := course.LoadCourseVo(&table.CourseTable{UUID:courseId}, context.UserId, context.Session, context.Log)
 	if courseVoErr != nil {
 		context.Log.Println(courseVoErr)
 		return

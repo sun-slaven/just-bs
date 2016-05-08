@@ -33,7 +33,7 @@ func CourseListHandle(c *gin.Context) {
 	if request.CollegeId != "" {
 		table.CollegeId = request.CollegeId
 	}
-	courseVoList, e := course.LoadCourseVoList(table, context.Session, context.Log)
+	courseVoList, e := course.LoadCourseVoList(table, context.UserId, context.Session, context.Log)
 	if e != nil {
 		context.Log.Println(e)
 		context.Response.Error = err.NO_COURSE_LIST_FOUND

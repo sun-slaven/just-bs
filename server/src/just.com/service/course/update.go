@@ -101,5 +101,5 @@ func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) 
 		error = attachErr
 		return
 	}
-	return course.LoadCourseVoFromTable(courseTable, self.Session, self.Log)
+	return course.LoadCourseVoFromTable(courseTable, userId, self.Session, self.Log)
 }

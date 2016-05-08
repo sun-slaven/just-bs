@@ -4,6 +4,7 @@ import (
 	"just.com/service/rbac"
 )
 
+// TODO ROLE
 func RoleMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		context := c.MustGet(MLEARNING_CONTEXT).(*Context)

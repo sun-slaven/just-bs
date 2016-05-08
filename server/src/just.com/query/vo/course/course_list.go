@@ -6,7 +6,7 @@ import (
 	"just.com/err"
 )
 
-func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
+func LoadCourseVoList(condition *table.CourseTable, userId string, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
 	condition.FrozenStatus = "N"
 	courseVoList = make([]*CourseVo, 0)
 	courseTableList := make([]*table.CourseTable, 0)
@@ -17,7 +17,7 @@ func LoadCourseVoList(condition *table.CourseTable, session *xorm.Session, log *
 		return
 	}
 	for _, courseTable := range courseTableList {
-		courseVo, courseVoErr := LoadCourseVoFromTable(courseTable, session, log)
+		courseVo, courseVoErr := LoadCourseVoFromTable(courseTable, userId, session, log)
 		if courseVoErr != nil {
 			log.Println(courseVoErr)
 			error = courseVoErr

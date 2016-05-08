@@ -35,7 +35,7 @@ type CourseVo struct {
 }
 
 // 什么都没有用这个就行了
-func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
+func LoadCourseVo(courseTable *table.CourseTable, userId string, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
 	getFlag, getErr := session.Get(courseTable)
 	if getFlag == false {
 		if getErr != nil {
@@ -43,11 +43,11 @@ func LoadCourseVo(courseTable *table.CourseTable, session *xorm.Session, log *lo
 		}
 		return
 	}
-	return LoadCourseVoFromTable(courseTable, session, log)
+	return LoadCourseVoFromTable(courseTable, userId, session, log)
 }
 
 // 已经有 courseTable用这个
-func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
+func LoadCourseVoFromTable(courseTable *table.CourseTable, userId string, session *xorm.Session, log *log.Logger) (cv *CourseVo, error *err.HttpError) {
 	cv = new(CourseVo)
 	cv.UUID = courseTable.UUID
 	cv.Name = courseTable.Name
@@ -102,6 +102,12 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 		return nil, err.NO_ATTACHMENT_FOUND
 	}
 	cv.AttachmentList = attachVoList
+	markFlag := LoadMarkStatus(courseTable.UUID, userId, session, log)
+	if markFlag {
+		cv.MarkStatus = "Y"
+	} else {
+		cv.MarkStatus = "N"
+	}
 	//	if courseTable.PointPerson > 0 {
 	//		cv.Point = courseTable.Points / courseTable.PointPerson
 	//	}else {

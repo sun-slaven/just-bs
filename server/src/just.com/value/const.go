@@ -1,0 +1,7 @@
+package value
+
+const (
+	ROLE_STUDENT = "STUDENT"
+	ROLE_TEACHER = "TEACHER"
+	ROLE_ADMIN = "ADMIN"
+)

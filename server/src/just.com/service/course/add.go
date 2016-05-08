@@ -100,7 +100,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 		return nil, attachErr
 	}
 
-	courseVo, courseVoErr := query.LoadCourseVoFromTable(courseTable, self.Session, self.Log)
+	courseVo, courseVoErr := query.LoadCourseVoFromTable(courseTable, userId, self.Session, self.Log)
 	if courseVoErr != nil {
 		self.Log.Println(courseVoErr)
 		return nil, courseVoErr

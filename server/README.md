@@ -80,3 +80,8 @@ http://localhost:8086/res/dist/
 3. chapter delete 接口
 4. 新增课程接口 POST COURSE,其中 course的view有更新,多了 create_time,update_time和 attachment_list
 5. 用户登出 `DELETE TOKENS`
+
+## 5.8
+1. course view增加 `mark_status`字段
+2. 更新课程接口
+3. 教师获取自己创建的课程
