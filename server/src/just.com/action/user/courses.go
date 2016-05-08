@@ -7,7 +7,7 @@ import (
 	"just.com/common"
 	"just.com/err"
 	"just.com/model/db/table"
-	"just.com/value"
+	"strings"
 )
 
 /**
@@ -20,23 +20,9 @@ func CourseListHandle(c *gin.Context) {
 		context.Response.Error = err.NOT_USER_ID_FOUND
 		return
 	}
-	// TODO ROLE
-	userTable := new(table.UserTable)
-	getFlag, _ := context.Session.Id(userId).Get(userTable)
-	if !getFlag {
-		context.Response.Error = err.NO_USER_FOUND
-		return
-	}
-	if userTable.RoleName == value.ROLE_STUDENT {
-		courseVoList, courseVoListErr := course.LoadMarkedCourseVo(userId, context.Session, context.Log)
-		if courseVoListErr != nil {
-			log.Println(courseVoListErr)
-			context.Response.Error = courseVoListErr
-			return
-		}
-		context.Response.Data = courseVoList
-
-	} else if userTable.RoleName == value.ROLE_TEACHER {
+	isCreated := c.Query("is_created")
+	// 显示创建的课程
+	if strings.TrimSpace(isCreated) == "Y" {
 		courseVoList, courseVoListErr := course.LoadCourseVoList(&table.CourseTable{TeacherId:userId}, userId, context.Session, context.Log)
 		if courseVoListErr != nil {
 			log.Println(courseVoListErr)
@@ -44,6 +30,13 @@ func CourseListHandle(c *gin.Context) {
 			return
 		}
 		context.Response.Data = courseVoList
+	}else {
+		courseVoList, courseVoListErr := course.LoadMarkedCourseVo(userId, context.Session, context.Log)
+		if courseVoListErr != nil {
+			log.Println(courseVoListErr)
+			context.Response.Error = courseVoListErr
+			return
+		}
+		context.Response.Data = courseVoList
 	}
-
 }

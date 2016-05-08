@@ -720,7 +720,7 @@ paths:
 
   /users/{user_id}/courses:
     get:
-      description: 获取用户关注课程
+      description: 获取用户关注课程/显示用户创建的课程,用is_created标注
       operationId: user course mark
       summary: 获取用户关注课程
       produces:
@@ -735,6 +735,11 @@ paths:
           required: true
           type: string
           default: 'aa5eba0a-703c-4801-955b-1f44997738fe'
+        - name: is_created
+          in: query
+          required: false
+          type: string
+          default: 'N'
       responses:
         '200':
           description: course response
