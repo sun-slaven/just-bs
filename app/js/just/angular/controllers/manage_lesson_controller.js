@@ -12,7 +12,6 @@ angular.module('just.controllers.manage_lesson', [])
         //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
         // show all created lessons
         $scope.useful_lessons = [{
-            name: 'haha',
             major: {
                 id: "fc71592a-0ba7-11e6-b512-3e1d05defe78",
                 name: "空军"
@@ -28,7 +27,7 @@ angular.module('just.controllers.manage_lesson', [])
             icon: {
                 url: "http://7xnz7k.com1.z0.glb.clouddn.com/"
             },
-            id: "e541bf8c-178a-4568-b0d7-a910b77c10ff",
+            id: "337c0a43-bdd8-480b-875b-a27668be23fd",
             introduction: "学习基本数据库操作知识",
             mark_sum: 2,
             name: "计算机基础",
@@ -53,13 +52,11 @@ angular.module('just.controllers.manage_lesson', [])
                         LessonService.update_lesson($scope.edit_lesson, function(resp) {
                             $scope.upload.get_token_promise_array = [];
                             $rootScope.reload()
-                            console.log(resp)
                         })
                     })
                 } else {
                     LessonService.create_lesson($scope.edit_lesson, function(resp) {
                         $rootScope.reload()
-                        console.log(resp)
                     })
                 }
             }
@@ -160,7 +157,7 @@ angular.module('just.controllers.manage_lesson', [])
                             $scope.new_lesson.temp_outline = {
                                 order: null,
                                 name: '',
-                                content: '',
+                                introduction: '',
                             }
                         } else {
                             var keepGoing = true;
@@ -254,16 +251,16 @@ angular.module('just.controllers.manage_lesson', [])
                         console.log(token_obj)
                         upload_fun($scope.upload.get_token_promise_array[index].file, token_obj, function(resp) {
                             switch ($scope.upload.get_token_promise_array[index].suffix_info_obj.type) {
-                                case 'image':
+                                case 'icon':
                                     $scope.new_lesson.icon_url = resp.key
                                     break;
                                 case 'video':
                                     $scope.new_lesson.video_url = resp.key //icon url
                                     break;
-                                case 'file':
+                                case 'attachment':
                                     var attachment = {
                                         name: $scope.upload.get_token_promise_array[index].file_name,
-                                        file_url: resp.key
+                                        url: resp.key
                                     }
                                     $scope.new_lesson.attachment_list.push(attachment)
                                     break;
@@ -303,7 +300,6 @@ angular.module('just.controllers.manage_lesson', [])
                 })
             } else {
                 LessonsService.create_lesson($scope.new_lesson, function(resp) {
-                    console.log("callback")
                     console.log(resp)
                 })
             }

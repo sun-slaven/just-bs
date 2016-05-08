@@ -27,7 +27,7 @@
         </div>
     </div>
     <div id="resource" ng-if="show_resource">
-        <just-video video-url="video_url"></just-video>
+        <just-video video-url="current_lesson.video_url"></just-video>
     </div>
     <div class="lesson-info-main">
         <div class="content-wrap col-xs-12">
@@ -62,11 +62,11 @@
                     <div ng-show="active_type == 'show_outline'">
                         <div class="outline-list">
                             <ul>
-                                <li class="chapter clearfix" ng-repeat="chapter in chapters">
+                                <li class="chapter clearfix" ng-repeat="chapter in lesson_outline_list |orderBy: order: false">
                                     <i class="chapter-icon"></i>
                                     <div class="chapter-body">
-                                        <h5 class="chapter-name">{{chapter.name}}</h5>
-                                        <p class="chapter-desc">{{chapter.desc}}</p>
+                                        <h5 class="chapter-name">第{{chapter.order}}章: {{chapter.name}}</h5>
+                                        <p class="chapter-desc">{{chapter.content}}</p>
                                     </div>
                                 </li>
                             </ul>
@@ -104,8 +104,9 @@
                 <div class="resource-info col-xs-12" ng-if="!need_learn">
                     <h3>相关资源列表:</h3>
                     <div class="resource-list">
-                        <div><a ng-href="{{pdf_url}}">angularjs权威教程</a></div>
-                        <div><a ng-href="{{zip_url}}">压缩包</a></div>
+                        <div ng-repeat="attachment in current_lesson.attachment_list">
+                            <a ng-href="{{attachment.url}}">{{attachment.name}}</a>
+                        </div>
                     </div>
                 </div>
             </div>

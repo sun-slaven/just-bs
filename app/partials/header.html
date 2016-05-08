@@ -25,13 +25,14 @@
     </div>
     <div id="login-area" ng-hide="is_admin()">
         <ul class="list-inline">
-            <li class="search_info">
+            <!-- search 和 message 留V2 版本实现-->
+            <li class="search_info" ng-show="false">
                 <input class="search-input" placeholder="请输入搜索内容..." type="text" autocomplete="off" ng-if="header_search.input_show" ng-model="header_search.search_info">
             </li>
-            <li class="search_btn">
+            <li class="search_btn" ng-show="false">
                 <i class="fa fa-search" ng-click="header_search.open()"></i>
             </li>
-            <li class="my-message">
+            <li class="my-message" ng-show="false">
                 <a>
                     <i class="fa fa-commenting-o"></i>
                 </a>

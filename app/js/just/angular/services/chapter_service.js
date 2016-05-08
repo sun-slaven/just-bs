@@ -8,8 +8,9 @@ factory('ChaptersService', ['$rootScope', '$resource',
             add_chapter: { method: 'post', isArray: false },
         })
 
-        var chapterAPI = $resource('/api/v1/courses/:course_id/chapters/:chapter_id', { course_id: '@course_id' ,chapter_id: '@chapter_id'}, {
-            update_chapter: { method: 'patch', isArray: true },
+        var chapterAPI = $resource('/api/v1/courses/:course_id/chapters/:chapter_id', { course_id: '@course_id', chapter_id: '@chapter_id' }, {
+            update_chapter: { method: 'patch', isArray: false },
+            delete_chapter: { method: 'delete', isArray: false }
         })
 
         function get_chapters(lesson_id, success) {
@@ -21,19 +22,28 @@ factory('ChaptersService', ['$rootScope', '$resource',
 
 
 
-        function add_chapter(lesson_id, chapter,success) {
+        function add_chapter(lesson_id, chapter, success) {
             chaptersAPI.add_chapter({}, angular.extend({
                 course_id: lesson_id,
-            },chapter), function(resp) {
+            }, chapter), function(resp) {
                 if (success) { success(resp) }
             })
         }
 
-        function update_chapter(lesson_id, chapter,success) {
+        function update_chapter(lesson_id, chapter, success) {
             chapterAPI.update_chapter({}, angular.extend({
                 course_id: lesson_id,
                 chapter_id: chapter.id
-            },chapter), function(resp) {
+            }, chapter), function(resp) {
+                if (success) { success(resp) }
+            })
+        }
+
+        function delete_chapter(lesson_id, chapter_id, success) {
+            chapterAPI.delete_chapter({}, {
+                course_id: lesson_id,
+                chapter_id: chapter_id
+            }, function(resp) {
                 if (success) { success(resp) }
             })
         }
@@ -41,7 +51,8 @@ factory('ChaptersService', ['$rootScope', '$resource',
         return {
             get_chapters: get_chapters,
             add_chapter: add_chapter,
-            update_chapter: update_chapter
+            update_chapter: update_chapter,
+            delete_chapter:delete_chapter
         }
     }
 ])
