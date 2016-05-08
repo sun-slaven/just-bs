@@ -13,7 +13,7 @@ angular.module('just', GlobalModules.get([
     function($httpProvider, $routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider,cfpLoadingBarProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
-            'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**',
+            'self',
             'http://7xnz7k.com1.z0.glb.clouddn.com/**'
         ]);
         //使用过滤器将所有请求都加上token和时间戳

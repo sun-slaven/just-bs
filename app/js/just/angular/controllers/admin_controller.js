@@ -27,20 +27,12 @@ angular.module('just.controllers.admin', [])
             }
 
             //manager user
-            $scope.all_users = [{
-                "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
-                "name": "小泡子仔",
-                "email": "992444037@qq.com",
-                "role_name": "STUDENT",
-                created_time: new Date()
-            }, {
-                "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
-                "name": "slaven",
-                "email": "893196569@qq.com",
-                "role_name": "STUDENT",
-                created_time: new Date()
-            }]
-
+            var getAllUsers = function() {
+                UserService.getAllUsers(function(resp) {
+                    $scope.all_users = resp
+                })
+            }
+            getAllUsers();
 
             $scope.initPassword = function(user) {
                 UserService.initPassword(user, function(resp) {
@@ -49,6 +41,7 @@ angular.module('just.controllers.admin', [])
             }
             $scope.delete_user = function(user) {
                 UserService.deleteUser(user, function(resp) {
+                    getAllUsers();
                     $rootScope.alert_modal('', '该用户已被删除')
                 })
             }
@@ -56,13 +49,16 @@ angular.module('just.controllers.admin', [])
 
             //manager courses
             $scope.all_displayed_lessons = [] //st-table needs to show existed values
-            LessonsService.lessons_list(function(resp) {
-                //st-safe-src needs to show ajax values
-                $scope.all_asy_lessons = [].concat(resp)
-            })
+            var getAllLessons = function() {
+                LessonsService.lessons_list(function(resp) {
+                    $scope.all_asy_lessons = [].concat(resp) //st-safe-src needs to show ajax values
+                })
+            }
+            getAllLessons();
 
             $scope.delete_lesson = function(lesson) {
                 LessonService.delete_lesson(lesson.id, function(resp) {
+                    getAllLessons();
                     $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
                 })
             }

@@ -7,7 +7,7 @@ angular.module('just.controllers.me', [])
                 $scope.active_type = type;
             }
 
-            UserService.myLessons($rootScope.current_user, function(resp) {
+            UserService.myMarkedLessons($rootScope.current_user, function(resp) {
                 $scope.chosen_lessons = resp
             })
 

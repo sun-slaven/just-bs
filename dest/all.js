@@ -70,20 +70,12 @@ angular.module('just.controllers.admin', [])
             }
 
             //manager user
-            $scope.all_users = [{
-                "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
-                "name": "小泡子仔",
-                "email": "992444037@qq.com",
-                "role_name": "STUDENT",
-                created_time: new Date()
-            }, {
-                "id": "aa5eba0a-703c-4801-955b-1f44997738fe",
-                "name": "slaven",
-                "email": "893196569@qq.com",
-                "role_name": "STUDENT",
-                created_time: new Date()
-            }]
-
+            var getAllUsers = function() {
+                UserService.getAllUsers(function(resp) {
+                    $scope.all_users = resp
+                })
+            }
+            getAllUsers();
 
             $scope.initPassword = function(user) {
                 UserService.initPassword(user, function(resp) {
@@ -92,6 +84,7 @@ angular.module('just.controllers.admin', [])
             }
             $scope.delete_user = function(user) {
                 UserService.deleteUser(user, function(resp) {
+                    getAllUsers();
                     $rootScope.alert_modal('', '该用户已被删除')
                 })
             }
@@ -99,13 +92,16 @@ angular.module('just.controllers.admin', [])
 
             //manager courses
             $scope.all_displayed_lessons = [] //st-table needs to show existed values
-            LessonsService.lessons_list(function(resp) {
-                //st-safe-src needs to show ajax values
-                $scope.all_asy_lessons = [].concat(resp)
-            })
+            var getAllLessons = function() {
+                LessonsService.lessons_list(function(resp) {
+                    $scope.all_asy_lessons = [].concat(resp) //st-safe-src needs to show ajax values
+                })
+            }
+            getAllLessons();
 
             $scope.delete_lesson = function(lesson) {
                 LessonService.delete_lesson(lesson.id, function(resp) {
+                    getAllLessons();
                     $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
                 })
             }
@@ -170,7 +166,6 @@ GlobalModules.add_controller('lesson')
 angular.module('just.controllers.lesson', [])
     .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService', 'ChaptersService',
         function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService, ChaptersService) {
-
             $scope.active_type = 'show_outline'
             $scope.change_active = function(type) {
                 $scope.active_type = type;
@@ -178,6 +173,7 @@ angular.module('just.controllers.lesson', [])
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
                     $rootScope.current_lesson = resp
+                    learn_status_callback();//show btn status
                 })
                 CommentsService.get_comments($routeParams.lesson_id, function(resp) {
                     $scope.comments = resp;
@@ -199,40 +195,39 @@ angular.module('just.controllers.lesson', [])
                     })
                 })
             }
-
-            if (!$routeParams.user_id) {
-                $scope.need_learn = true;
-            } else {
-                $scope.need_learn = false;
-            }
-            if ($scope.need_learn) {
-                $scope.btn_content = "开始学习";
-            } else {
-                $scope.btn_content = "继续学习";
-                $scope.progress_info_percent = 10;
-                $scope.progress_info_hour = 1;
-                $scope.progress_info_minute = 10;
-            }
-
-            $scope.start_or_continue = function() {
-                if ($scope.need_learn) {
-                    mark_and_learn();
+            var learn_status_callback = function() {
+                if ($rootScope.current_lesson.mark_status == 'N') {
+                    $scope.need_learn = true;
                 } else {
-                    continue_learn()
+                    $scope.need_learn = false;
                 }
-            }
-            var mark_and_learn = function() {
-                $scope.need_learn = false;
-                $scope.btn_content = "继续学习";
-                $scope.progress_info_percent = 10;
-                $scope.progress_info_hour = 1;
-                $scope.progress_info_minute = 10;
-                MarkService.add_mark($rootScope.current_lesson.id, function(resp) {
-                })
-            }
-            var continue_learn = function() {
-                $scope.show_resource = true;
+                if ($scope.need_learn) {
+                    $scope.btn_content = "开始学习";
+                } else {
+                    $scope.btn_content = "继续学习";
+                    $scope.progress_info_percent = 10;
+                    $scope.progress_info_hour = 1;
+                    $scope.progress_info_minute = 10;
+                }
 
+                $scope.start_or_continue = function() {
+                    if ($scope.need_learn) {
+                        mark_and_learn();
+                    } else {
+                        continue_learn()
+                    }
+                }
+                var mark_and_learn = function() {
+                    $scope.need_learn = false;
+                    $scope.btn_content = "继续学习";
+                    $scope.progress_info_percent = 10;
+                    $scope.progress_info_hour = 1;
+                    $scope.progress_info_minute = 10;
+                    MarkService.add_mark($rootScope.current_lesson.id, function(resp) {})
+                }
+                var continue_learn = function() {
+                    $scope.show_resource = true;
+                }
             }
         }
     ])
@@ -349,7 +344,7 @@ angular.module('just.controllers.lessons', [])
 
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonService', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonService, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonService', 'LessonsService', 'UserService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonService, LessonsService, UserService, CommonUtil, FileService, QiniuUpload, UuidService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -357,34 +352,14 @@ angular.module('just.controllers.manage_lesson', [])
         $scope.itemsByPage = 5;
 
 
-        //TODO
-        //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
-        // show all created lessons
-        $scope.useful_lessons = [{
-            major: {
-                id: "fc71592a-0ba7-11e6-b512-3e1d05defe78",
-                name: "空军"
-            },
-            college: {
-                id: "5b18f62d-b360-4f1a-9899-5d69a71325a1",
-                name: "国防学院"
-            },
-            comment_sum: 1,
-            create_time: "2016-05-02 23:55:23",
-            description: "",
-            experiment: "string",
-            icon: {
-                url: "http://7xnz7k.com1.z0.glb.clouddn.com/"
-            },
-            id: "337c0a43-bdd8-480b-875b-a27668be23fd",
-            introduction: "学习基本数据库操作知识",
-            mark_sum: 2,
-            name: "计算机基础",
-            syllabus: "",
-            update_time: "2016-05-06 23:13:34",
-            video_url: "",
-            wish: "希望你们好好学"
-        }]
+        $scope.useful_lessons = []
+            // show all created lessons
+        var getMyCreatedLessons = function() {
+            UserService.myCreatedLessons($rootScope.current_user, function(resp) {
+                $scope.useful_lessons_list = resp
+            })
+        }
+        getMyCreatedLessons()
 
 
         //update lessons
@@ -399,13 +374,13 @@ angular.module('just.controllers.manage_lesson', [])
                 if ($scope.upload.get_token_promise_array.length) {
                     $scope.upload.do_upload(function() {
                         LessonService.update_lesson($scope.edit_lesson, function(resp) {
+                            getMyCreatedLessons()
                             $scope.upload.get_token_promise_array = [];
-                            $rootScope.reload()
                         })
                     })
                 } else {
-                    LessonService.create_lesson($scope.edit_lesson, function(resp) {
-                        $rootScope.reload()
+                    LessonService.update_lesson($scope.edit_lesson, function(resp) {
+                        getMyCreatedLessons()
                     })
                 }
             }
@@ -427,10 +402,12 @@ angular.module('just.controllers.manage_lesson', [])
             }
         }
 
+
         //delete lessons
         $scope.delete = function(lesson) {
             $scope.modal_ok = function() {
                 LessonService.delete_lesson(lesson.id, function(resp) {
+                    getMyCreatedLessons()
                     $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
                 })
             }
@@ -666,7 +643,7 @@ angular.module('just.controllers.me', [])
                 $scope.active_type = type;
             }
 
-            UserService.myLessons($rootScope.current_user, function(resp) {
+            UserService.myMarkedLessons($rootScope.current_user, function(resp) {
                 $scope.chosen_lessons = resp
             })
 
@@ -1322,13 +1299,15 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
                 if (success) { success(resp) }
             })
         }
-        function update_lesson(course,sunccess){
+        function update_lesson(course,callback){
+            var icon_url = course.icon.url.replace('http://7xnz7k.com1.z0.glb.clouddn.com/','')
             lessonAPI.update_lesson({},{
                 course_id: course.id,
+                teacher_id: $rootScope.current_user.id,
                 name: course.name,
                 college_id: course.college.id,
                 major_id: course.major.id,
-                icon_url : course.icon.url,
+                icon_url : icon_url,
                 description: course.description,
                 introduction: course.introduction,
                 wish: course.wish
@@ -1495,21 +1474,22 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             sign_out: { method: 'delete' }
         })
         var registerAPI = $resource('/api/v1/users', {}, {
-            register: { method: 'post' }
+            register: { method: 'post' },
+            getAllUsers: { method: 'get', isArray: true }
         })
 
         var myLessonsAPI = $resource('/api/v1/users/:user_id/courses', { user_id: '@user_id' }, {
-            myLessons: { method: 'get', isArray: true }
+            myLessons: { method: 'get', isArray: true ,params: {is_created: '@is_created'}} //this api is reused for mark lessons and created lessons , diff by params : is_created : Y/N
         })
 
         var UserInfoApi = $resource('/api/v1/users/:user_id/', { user_id: '@user_id' }, {
-                updateUser: { method: 'patch' },
-                getUser: { method: 'get' },//暂时无用
-                deleteUser: {method: 'delete'}
-            })
-        var InitPasswordApi = $resource('/api/v1/users/:user_id/passwords', { user_id: '@user_id' }, {
-            initPassword: {method:'put'}
+            updateUser: { method: 'patch' },
+            getUser: { method: 'get' }, //暂时无用
+            deleteUser: { method: 'delete' }
         })
+        var InitPasswordApi = $resource('/api/v1/users/:user_id/passwords', { user_id: '@user_id' }, {
+                initPassword: { method: 'put' }
+            })
             //992444037@qq.com  1   STUDENT
             //158274194@qq.com   123456  TEACHER
             //619169034@qq.com 123456   ADMIN
@@ -1555,11 +1535,25 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
         }
         //token should set in cookies
         function set_token(token) {
-            $cookies.putObject('token',token)
+            $cookies.putObject('token', token)
         }
 
-        function myLessons(user, callback) {
-            myLessonsAPI.myLessons({}, { user_id: user.id }, function(resp) {
+        function myMarkedLessons(user, callback) {
+            myLessonsAPI.myLessons({}, {
+                user_id: user.id,
+                is_created: 'N'
+            }, function(resp) {
+                if (callback) {
+                    callback(resp)
+                };
+            })
+        }
+
+        function myCreatedLessons(user, callback) {
+            myLessonsAPI.myLessons({}, {
+                user_id: user.id,
+                is_created: 'Y'
+            }, function(resp) {
                 if (callback) {
                     callback(resp)
                 };
@@ -1575,19 +1569,25 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
                 })
         }
 
-        function deleteUser(user,callback){
-            UserInfoApi/deleteUser({},{
+        function deleteUser(user, callback) {
+            UserInfoApi / deleteUser({}, {
                 user_id: user.id
-            },function(resp){
+            }, function(resp) {
                 if (callback) { callback(resp) };
             })
         }
 
-        function initPassword(user,callback){
-            InitPasswordApi.initPassword({},{
+        function initPassword(user, callback) {
+            InitPasswordApi.initPassword({}, {
                 user_id: user.id
-            },function(resp){
+            }, function(resp) {
                 if (callback) { callback(resp) };
+            })
+        }
+
+        function getAllUsers(callback) {
+            registerAPI.getAllUsers({}, {}, function(resp) {
+                if (callback) { callback(resp) }
             })
         }
 
@@ -1595,10 +1595,12 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             sign_in: sign_in,
             sign_out: sign_out,
             register: register,
-            myLessons: myLessons,
+            myMarkedLessons: myMarkedLessons,
+            myCreatedLessons: myCreatedLessons,
             updateUser: updateUser,
             deleteUser: deleteUser,
-            initPassword: initPassword
+            initPassword: initPassword,
+            getAllUsers: getAllUsers
         }
     }
 ])
@@ -1649,7 +1651,7 @@ angular.module('just', GlobalModules.get([
     function($httpProvider, $routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider,cfpLoadingBarProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
-            'self', 'http://7xt49i.com2.z0.glb.clouddn.com/**',
+            'self',
             'http://7xnz7k.com1.z0.glb.clouddn.com/**'
         ]);
         //使用过滤器将所有请求都加上token和时间戳

@@ -1,6 +1,6 @@
 GlobalModules.add_controller('manage_lesson')
 angular.module('just.controllers.manage_lesson', [])
-    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonService', 'LessonsService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonService, LessonsService, CommonUtil, FileService, QiniuUpload, UuidService) {
+    .controller('ManageLessonController', ['$rootScope', '$scope', '$log', '$filter', '$q', '$interval', 'LessonService', 'LessonsService', 'UserService', 'CommonUtil', 'FileService', 'QiniuUpload', 'UuidService', function($rootScope, $scope, $log, $filter, $q, $interval, LessonService, LessonsService, UserService, CommonUtil, FileService, QiniuUpload, UuidService) {
         $scope.active_type = 'creat_lesson'
         $scope.change_active = function(type) {
             $scope.active_type = type;
@@ -8,34 +8,14 @@ angular.module('just.controllers.manage_lesson', [])
         $scope.itemsByPage = 5;
 
 
-        //TODO
-        //$scope.useful_lessons = CommonUtil.getMyCreatedLessons()
-        // show all created lessons
-        $scope.useful_lessons = [{
-            major: {
-                id: "fc71592a-0ba7-11e6-b512-3e1d05defe78",
-                name: "空军"
-            },
-            college: {
-                id: "5b18f62d-b360-4f1a-9899-5d69a71325a1",
-                name: "国防学院"
-            },
-            comment_sum: 1,
-            create_time: "2016-05-02 23:55:23",
-            description: "",
-            experiment: "string",
-            icon: {
-                url: "http://7xnz7k.com1.z0.glb.clouddn.com/"
-            },
-            id: "337c0a43-bdd8-480b-875b-a27668be23fd",
-            introduction: "学习基本数据库操作知识",
-            mark_sum: 2,
-            name: "计算机基础",
-            syllabus: "",
-            update_time: "2016-05-06 23:13:34",
-            video_url: "",
-            wish: "希望你们好好学"
-        }]
+        $scope.useful_lessons = []
+            // show all created lessons
+        var getMyCreatedLessons = function() {
+            UserService.myCreatedLessons($rootScope.current_user, function(resp) {
+                $scope.useful_lessons_list = resp
+            })
+        }
+        getMyCreatedLessons()
 
 
         //update lessons
@@ -50,13 +30,13 @@ angular.module('just.controllers.manage_lesson', [])
                 if ($scope.upload.get_token_promise_array.length) {
                     $scope.upload.do_upload(function() {
                         LessonService.update_lesson($scope.edit_lesson, function(resp) {
+                            getMyCreatedLessons()
                             $scope.upload.get_token_promise_array = [];
-                            $rootScope.reload()
                         })
                     })
                 } else {
-                    LessonService.create_lesson($scope.edit_lesson, function(resp) {
-                        $rootScope.reload()
+                    LessonService.update_lesson($scope.edit_lesson, function(resp) {
+                        getMyCreatedLessons()
                     })
                 }
             }
@@ -78,10 +58,12 @@ angular.module('just.controllers.manage_lesson', [])
             }
         }
 
+
         //delete lessons
         $scope.delete = function(lesson) {
             $scope.modal_ok = function() {
                 LessonService.delete_lesson(lesson.id, function(resp) {
+                    getMyCreatedLessons()
                     $rootScope.alert_modal("", "课程:" + lesson.name + " 删除成功")
                 })
             }
