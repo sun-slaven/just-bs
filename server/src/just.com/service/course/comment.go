@@ -5,6 +5,7 @@ import (
 	"time"
 	"just.com/query/vo/course"
 	"just.com/err"
+	"just.com/value"
 )
 /*return commentVo and error*/
 func (self *CourseService)AddComment(content, courseId, userId string) (commentVo *course.CourseCommentVo, error *err.HttpError) {
@@ -15,7 +16,7 @@ func (self *CourseService)AddComment(content, courseId, userId string) (commentV
 	commentTable.CourseId = courseId
 	commentTable.CreateUser = userId
 	commentTable.CreateTime = time.Now()
-	commentTable.FrozenStatus = "N"
+	commentTable.FrozenStatus = value.STATUS_ENABLED
 	insertNum, insertErr := self.Session.InsertOne(commentTable)
 	if insertNum == 0 {
 		if insertErr != nil {
@@ -34,7 +35,7 @@ func (self *CourseService) DeleteComment(courseId string, commentId string) (err
 	condiComment.UUID = commentId
 	condiComment.CourseId = courseId
 	newComment := new(table.CourseCommentTable)
-	newComment.FrozenStatus = "Y"
+	newComment.FrozenStatus = value.STATUS_DISABLED
 	newComment.FrozenTime = time.Now()
 	updateNum, updateErr := self.Session.Update(newComment, condiComment)
 	if updateNum == 0 {

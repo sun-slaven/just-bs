@@ -5,7 +5,7 @@ import (
 	"just.com/err"
 	"just.com/model/db/table"
 	"just.com/common"
-	"just.com/query/vo/file"
+	"just.com/value"
 )
 
 type CourseAttachmentVo struct {
@@ -41,9 +41,9 @@ func NewAttachmentVo(table *table.CourseAttachmentTable) *CourseAttachmentVo {
 	attachmentVo.Name = table.Name
 	url := table.Url
 	if url == "" {
-		url = file.DEFAULT_FILE
+		url = value.DEFAULT_FILE
 	}
-	attachmentVo.Url = file.BASE_URL + url
+	attachmentVo.Url = value.BASE_URL + url
 	attachmentVo.CreateTime = common.TimeFormat(table.CreateTime)
 	return attachmentVo
 }

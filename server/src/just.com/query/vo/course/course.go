@@ -8,6 +8,7 @@ import (
 	"just.com/query/vo/user"
 	"just.com/err"
 	"just.com/common"
+	"just.com/value"
 )
 
 type CourseVo struct {
@@ -90,9 +91,9 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, userId string, sessio
 
 	videoUrl := courseTable.VideoUrl
 	if videoUrl == "" {
-		videoUrl = file.DEFAULT_FILE
+		videoUrl = value.DEFAULT_FILE
 	}
-	cv.VideoUrl = file.BASE_URL + videoUrl
+	cv.VideoUrl = value.BASE_URL + videoUrl
 
 	cv.CreateTime = common.TimeFormat(courseTable.CreateTime)
 	cv.UpdateTime = common.TimeFormat(courseTable.UpdateTime)
@@ -104,9 +105,9 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, userId string, sessio
 	cv.AttachmentList = attachVoList
 	markFlag := LoadMarkStatus(courseTable.UUID, userId, session, log)
 	if markFlag {
-		cv.MarkStatus = "Y"
+		cv.MarkStatus = value.MARKED
 	} else {
-		cv.MarkStatus = "N"
+		cv.MarkStatus = value.UNMARKED
 	}
 	//	if courseTable.PointPerson > 0 {
 	//		cv.Point = courseTable.Points / courseTable.PointPerson

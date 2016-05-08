@@ -3,6 +3,7 @@ import (
 	"github.com/go-xorm/xorm"
 	"log"
 	"just.com/model/db/table"
+	"just.com/value"
 )
 
 func LoadCollegeVoList(session *xorm.Session, log *log.Logger) (collegeVoList []CollegeVo) {
@@ -10,7 +11,7 @@ func LoadCollegeVoList(session *xorm.Session, log *log.Logger) (collegeVoList []
 	collegeList := make([]table.CollegeTable, 0)
 	// table
 	collegeVoList = make([]CollegeVo, 0)
-	findErr := session.Find(&collegeList, &table.CollegeTable{FrozenStatus:"N"})
+	findErr := session.Find(&collegeList, &table.CollegeTable{FrozenStatus:value.STATUS_ENABLED})
 	if findErr != nil {
 		log.Println(findErr)
 		return
@@ -19,7 +20,7 @@ func LoadCollegeVoList(session *xorm.Session, log *log.Logger) (collegeVoList []
 	for _, college := range collegeList {
 		majorList := make([]table.MajorTable, 0)
 		majorVoList := make([]MajorVo, 0)
-		findErr := session.Find(&majorList, &table.MajorTable{CollegeId:college.UUID, FrozenStatus:"N"})
+		findErr := session.Find(&majorList, &table.MajorTable{CollegeId:college.UUID, FrozenStatus:value.STATUS_ENABLED})
 		if findErr != nil {
 			log.Println(findErr)
 			return

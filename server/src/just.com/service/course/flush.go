@@ -4,6 +4,7 @@ import (
 	"time"
 	"just.com/model/db"
 	"log"
+	"just.com/value"
 )
 
 /*flush course mark sum
@@ -38,7 +39,7 @@ func FlushCommentSum(courseId string, ds *db.DataSource, log *log.Logger) error 
 	comment := new(table.CourseCommentTable)
 	countSql := `SELECT COUNT("UUID") FROM "COURSE_COMMENT" WHERE "COURSE_ID" = ?
 		AND "FROZEN_STATUS" = ?`
-	count, countErr := session.Sql(countSql, courseId, "N").Count(comment)
+	count, countErr := session.Sql(countSql, courseId, value.STATUS_ENABLED).Count(comment)
 	if countErr != nil {
 		log.Println(count)
 	}

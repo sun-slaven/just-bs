@@ -4,6 +4,7 @@ import (
 	"log"
 	"just.com/model/db/table"
 	"just.com/err"
+	"just.com/value"
 )
 
 // 获取关注的课程列表
@@ -18,7 +19,7 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 	}
 
 	for _, markTable := range markTableList {
-		courseTable := &table.CourseTable{UUID:markTable.CourseId, FrozenStatus:"N"}
+		courseTable := &table.CourseTable{UUID:markTable.CourseId, FrozenStatus:value.STATUS_ENABLED}
 		courseVo, courseVoErr := LoadCourseVo(courseTable, userId, session, log)
 		if courseVoErr != nil {
 			log.Println(courseVo)

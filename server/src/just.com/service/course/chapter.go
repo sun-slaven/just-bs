@@ -7,6 +7,7 @@ import (
 	"just.com/dto"
 	"just.com/common"
 	"time"
+	"just.com/value"
 )
 
 func (self *CourseService) AddChapter(courseId, userId string, request *dto.CourseChapterRequest) (chapterVo *course.CourseChapterVo, error *err.HttpError) {
@@ -28,7 +29,7 @@ func (self *CourseService) AddChapter(courseId, userId string, request *dto.Cour
 		CreateTime:time.Now(),
 		UpdateTime:time.Now(),
 		UpdateUser:userId,
-		FrozenStatus:"N",
+		FrozenStatus:value.STATUS_ENABLED,
 	}
 	insertNum, insertErr := self.Session.Insert(table)
 	if insertNum == 0 {
@@ -98,7 +99,7 @@ func (self *CourseService) DeleteChapter(courseId, chapterId, userId string) (er
 		return err.NO_REQUIRED_PARAM_FOUND
 	}
 	chapterTable := new(table.CourseChapterTable)
-	chapterTable.FrozenStatus = "Y"
+	chapterTable.FrozenStatus = value.STATUS_DISABLED
 	chapterTable.FrozenTime = time.Now()
 	chapterTable.UpdateUser = userId
 	chapterTable.UpdateTime = time.Now()

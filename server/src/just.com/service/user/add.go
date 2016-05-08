@@ -11,6 +11,7 @@ import (
 	token_service "just.com/service/token"
 	user_vo "just.com/query/vo/user"
 	"just.com/err"
+	"just.com/value"
 )
 
 
@@ -90,7 +91,7 @@ func (self *UserService) Register(email, name, password, roleName string) (userL
 	user.Email = email
 	user.CreateTime = time.Now()
 	user.UpdateTime = time.Now()
-	user.FrozenStatus = "N"
+	user.FrozenStatus = value.STATUS_ENABLED
 	user.ActiveStatus = "N"
 	insertNum, insertErr := self.Session.InsertOne(user)
 	if insertNum == 0 {

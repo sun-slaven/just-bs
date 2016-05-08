@@ -14,7 +14,6 @@ import (
 )
 
 func BuildRouter(mainRouter *gin.RouterGroup) {
-	// TODO teacher list
 	collegeRouter := mainRouter.Group("/colleges")
 	{
 		collegeRouter.GET("/", college.CollegeList)

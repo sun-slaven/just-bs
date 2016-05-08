@@ -4,10 +4,11 @@ import (
 	"log"
 	"just.com/model/db/table"
 	"just.com/err"
+	"just.com/value"
 )
 
 func LoadCourseVoList(condition *table.CourseTable, userId string, session *xorm.Session, log *log.Logger) (courseVoList []*CourseVo, error *err.HttpError) {
-	condition.FrozenStatus = "N"
+	condition.FrozenStatus = value.STATUS_ENABLED
 	courseVoList = make([]*CourseVo, 0)
 	courseTableList := make([]*table.CourseTable, 0)
 	findErr := session.Find(&courseTableList, condition)

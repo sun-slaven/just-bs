@@ -5,6 +5,7 @@ import (
 	"just.com/common"
 	"github.com/go-xorm/xorm"
 	"log"
+	"just.com/value"
 )
 
 type CourseCommentVo struct {
@@ -29,7 +30,7 @@ func LoadCommentVoList(courseId string, session *xorm.Session, log *log.Logger) 
 	commentTableList := make([]table.CourseCommentTable, 0)
 	sql := `SELECT * FROM "COURSE_COMMENT" WHERE "COURSE_ID" = ?
 		AND "FROZEN_STATUS" = ?`
-	findErr := session.Sql(sql,courseId,"N").Find(&commentTableList)
+	findErr := session.Sql(sql, courseId, value.STATUS_ENABLED).Find(&commentTableList)
 	if findErr != nil {
 		log.Println(findErr)
 		return nil

@@ -6,6 +6,7 @@ import (
 	"just.com/service/user"
 	"just.com/service/email"
 	token_service "just.com/service/token"
+	"just.com/value"
 )
 
 type RegisterRequest struct {
@@ -24,7 +25,7 @@ func RegisterHandle(c *gin.Context) {
 		return
 	}
 	userService := user.NewUserService(context.Session, context.Log)
-	userLoginVo, userLoginVoErr := userService.Register(request.Email, request.UserName, request.Password, "STUDENT")
+	userLoginVo, userLoginVoErr := userService.Register(request.Email, request.UserName, request.Password, value.ROLE_STUDENT)
 	if userLoginVoErr != nil {
 		context.Log.Println(userLoginVoErr)
 		context.Response.Error = userLoginVoErr

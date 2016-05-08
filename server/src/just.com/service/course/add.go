@@ -8,6 +8,7 @@ import (
 	"just.com/dto"
 	"just.com/err"
 	query "just.com/query/vo/course"
+	"just.com/value"
 )
 
 /*return courseId*/
@@ -66,7 +67,7 @@ func (self *CourseService) Add(request *dto.CourseAddRequest, userId string) (co
 	courseTable.UpdateUser = userId
 	courseTable.UpdateTime = time.Now()
 	courseTable.MarkSum = 0
-	courseTable.FrozenStatus = "N"
+	courseTable.FrozenStatus = value.STATUS_ENABLED
 	courseTable.Points = 0
 	courseTable.PointPerson = 0
 

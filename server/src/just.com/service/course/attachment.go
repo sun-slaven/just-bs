@@ -7,6 +7,7 @@ import (
 	"just.com/dto"
 	"just.com/common"
 	"time"
+	"just.com/value"
 )
 
 func (self *CourseService) AddAttachment(courseId, userId string, request *dto.CourseAttachmentRequest) (attachmentVo *course.CourseAttachmentVo, error *err.HttpError) {
@@ -28,7 +29,7 @@ func (self *CourseService) AddAttachment(courseId, userId string, request *dto.C
 		CreateTime:time.Now(),
 		UpdateUser:userId,
 		UpdateTime:time.Now(),
-		FrozenStatus:"N",
+		FrozenStatus:value.STATUS_ENABLED,
 	}
 	insertNum, insertErr := self.Session.Insert(table)
 	if insertNum == 0 {
@@ -44,7 +45,7 @@ func (self *CourseService) AddAttachment(courseId, userId string, request *dto.C
 func (self *CourseService)AddAttachmentList(courseId, userId string, requestList []*dto.CourseAttachmentRequest) ([]*course.CourseAttachmentVo, *err.HttpError) {
 	//  删除之前的附件
 	_, updateErr := self.Session.Update(
-		&table.CourseAttachmentTable{FrozenStatus:"Y", FrozenTime:time.Now(), UpdateTime:time.Now(), UpdateUser:userId},
+		&table.CourseAttachmentTable{FrozenStatus:value.STATUS_DISABLED, FrozenTime:time.Now(), UpdateTime:time.Now(), UpdateUser:userId},
 		&table.CourseAttachmentTable{CourseId:courseId})
 	if updateErr != nil {
 		self.Log.Println(updateErr)
