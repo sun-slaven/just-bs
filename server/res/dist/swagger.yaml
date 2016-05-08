@@ -139,7 +139,7 @@ paths:
           description: 修改信息
           required: true
           schema:
-            $ref: '#/definitions/courseAddRequest'
+            $ref: '#/definitions/courseUpdateRequest'
       responses:
         '200':
           description: course id
@@ -841,7 +841,7 @@ definitions:
         default: '作业1'
       url:
         type: string
-        default: '121312312321'
+        default: '98620d12-1a5f-47ae-877a-296944f30b75.mp4'
 
   courseChapterResponse:
     type: object
@@ -904,7 +904,7 @@ definitions:
           default: '老师寄语'
         video_url:
           type: string
-          default: 'url'
+          default: '98620d12-1a5f-47ae-877a-296944f30b75.mp4'
         chapter_list:
           type: array
           items:
@@ -913,6 +913,46 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/courseAttachRequest'
+
+
+  courseUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          default: '数据库'
+        college_id:
+          type: string
+          default: 'b6a0808f-b87a-44ca-b850-9545a3f3f089'
+        major_id:
+          type: string
+          default: '0260bb7c-2e93-4a7d-895d-59fac58fdbc6'
+        teacher_id:
+          type: string
+          default: '4170d8aa-73bc-4d2b-ba41-a2bea5a6a2db'
+        icon_url:
+          type: string
+          default: '1193932c-c05d-42cf-8d3c-a3aa1b0e6e96.jpg'
+        description:
+          type: string
+          default: '简单的CRUD'
+        introduction:
+          type: string
+          default: '简单介绍一下这门课程'
+        experiment:
+          type: string
+          default: '实验'
+        wish:
+          type: string
+          default: '老师寄语'
+        video_url:
+          type: string
+          default: '98620d12-1a5f-47ae-877a-296944f30b75.mp4'
+        attachment_list:
+          type: array
+          items:
+            $ref: '#/definitions/courseAttachRequest'
+
 
   course:
     type: object

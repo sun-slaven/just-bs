@@ -20,6 +20,7 @@ type CourseVo struct {
 	Experiment     string        `json:"experiment"`
 	Icon           *file.ImageVo    `json:"icon"`
 	MarkSum        int64    `json:"mark_sum"`
+	MarkStatus     string `json:"mark_status"`
 	CommentSum     int64 `json:"comment_sum"`
 	Major          *college.MajorVo    `json:"major"`
 	College        *college.CollegeVo    `json:"college"`
@@ -87,7 +88,12 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, session *xorm.Session
 	// teacher
 	cv.Teacher = user.LoadUserVo(courseTable.TeacherId, session, log)
 
-	cv.VideoUrl = file.BASE_URL + courseTable.VideoUrl
+	videoUrl := courseTable.VideoUrl
+	if videoUrl == "" {
+		videoUrl = file.DEFAULT_FILE
+	}
+	cv.VideoUrl = file.BASE_URL + videoUrl
+
 	cv.CreateTime = common.TimeFormat(courseTable.CreateTime)
 	cv.UpdateTime = common.TimeFormat(courseTable.UpdateTime)
 

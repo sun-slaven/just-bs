@@ -3,6 +3,7 @@ import "strings"
 
 const BASE_URL = "http://7xnz7k.com1.z0.glb.clouddn.com/"
 const DEFAULT_IMAGE = "default.png"
+const DEFAULT_FILE = "98620d12-1a5f-47ae-877a-296944f30b75.mp4"
 
 type ImageVo struct {
 	Url    string `json:"url"`

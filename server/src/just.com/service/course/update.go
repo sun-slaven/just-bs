@@ -5,18 +5,14 @@ import (
 	"just.com/service/image"
 	"just.com/dto"
 	"just.com/err"
+	"just.com/query/vo/course"
 )
 
 /*return courseId*/
-func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) (courseTable *table.CourseTable, error *err.HttpError) {
-	courseTable = new(table.CourseTable)
-	getFlag, getErr := self.Session.Id(request.Id).Get(courseTable)
-	if !getFlag {
-		if getErr != nil {
-			self.Log.Println(getErr)
-		}
-		error = err.NO_COURSE_FOUND
-		return
+func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) (courseVo *course.CourseVo, error *err.HttpError) {
+	courseTable, courseErr := self.GetCourse(request.Id)
+	if courseErr != nil {
+		return nil, courseErr
 	}
 	if request.IconUrl != "" {
 		imageService := image.NewImageService(self.Session, self.Log)
@@ -42,7 +38,7 @@ func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) 
 			error = err.NO_COLLEGE_OR_MAJOR_FOUND
 			return
 		}
-		courseTable.MajorId = request.CollegeId
+		courseTable.CollegeId = request.CollegeId
 	}
 	if request.MajorId != "" {
 		getFlag, getErr := self.Session.Get(&table.MajorTable{UUID:request.MajorId})
@@ -70,17 +66,24 @@ func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) 
 	if request.Name != "" {
 		courseTable.Name = request.Name
 	}
+	if request.Description != "" {
+		courseTable.Description = request.Description
+	}
 	if request.Introduction != "" {
 		courseTable.Introduction = request.Introduction
 	}
 	if request.Experiment != "" {
 		courseTable.Experiment = request.Experiment
 	}
+	if request.Syllabus != "" {
+		courseTable.Syllabus = request.Syllabus
+	}
 	if request.Wish != "" {
 		courseTable.Wish = request.Wish
 	}
-	courseTable.CreateUser = userId
-	courseTable.CreateTime = time.Now()
+	if request.VideoUrl != "" {
+		courseTable.VideoUrl = request.VideoUrl
+	}
 	courseTable.UpdateUser = userId
 	courseTable.UpdateTime = time.Now()
 
@@ -92,6 +95,11 @@ func (self *CourseService) Update(request *dto.CourseAddRequest, userId string) 
 		error = err.COURSE_UPDATE_ERR
 		return
 	}
-	error = nil
-	return
+	_, attachErr := self.AddAttachmentList(courseTable.UUID, userId, request.AttachmentList)
+	if attachErr != nil {
+		self.Log.Println(attachErr)
+		error = attachErr
+		return
+	}
+	return course.LoadCourseVoFromTable(courseTable, self.Session, self.Log)
 }

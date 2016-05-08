@@ -97,6 +97,8 @@ type CourseAttachmentTable struct {
 	CourseId     string        `xorm:"'COURSE_ID'"`
 	CreateTime   time.Time        `xorm:"'CREATE_TIME'"`
 	CreateUser   string        `xorm:"'CREATE_USER'"`
+	UpdateTime   time.Time `xorm:"'UPDATE_TIME'"`
+	UpdateUser   string `xorm:"'UPDATE_USER'"`
 	FrozenTime   time.Time        `xorm:"'FROZEN_TIME'"`
 	FrozenStatus string        `xorm:"FROZEN_STATUS"`
 }

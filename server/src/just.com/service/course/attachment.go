@@ -26,6 +26,8 @@ func (self *CourseService) AddAttachment(courseId, userId string, request *dto.C
 		CourseId:courseTable.UUID,
 		CreateUser:userId,
 		CreateTime:time.Now(),
+		UpdateUser:userId,
+		UpdateTime:time.Now(),
 		FrozenStatus:"N",
 	}
 	insertNum, insertErr := self.Session.Insert(table)
@@ -40,6 +42,14 @@ func (self *CourseService) AddAttachment(courseId, userId string, request *dto.C
 }
 
 func (self *CourseService)AddAttachmentList(courseId, userId string, requestList []*dto.CourseAttachmentRequest) ([]*course.CourseAttachmentVo, *err.HttpError) {
+	//  删除之前的附件
+	_, updateErr := self.Session.Update(
+		&table.CourseAttachmentTable{FrozenStatus:"Y", FrozenTime:time.Now(), UpdateTime:time.Now(), UpdateUser:userId},
+		&table.CourseAttachmentTable{CourseId:courseId})
+	if updateErr != nil {
+		self.Log.Println(updateErr)
+		return nil, err.NO_COURSE_FOUND
+	}
 	attachListVo := make([]*course.CourseAttachmentVo, 0)
 	for _, request := range requestList {
 		attachVo, addErr := self.AddAttachment(courseId, userId, request)
