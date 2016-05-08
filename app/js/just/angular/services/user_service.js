@@ -4,7 +4,7 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
     function($rootScope, $resource, $cookies) {
         var userAPI = $resource('/api/v1/tokens', {}, {
             sign_in: { method: 'post' },
-            signout: { method: 'delete' }
+            sign_out: { method: 'delete' }
         })
         var registerAPI = $resource('/api/v1/users', {}, {
             register: { method: 'post' }

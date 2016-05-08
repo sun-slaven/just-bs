@@ -1,6 +1,6 @@
 <div id="chosen_lessons" ng-show="active_type == 'chosen_lessons'">
     <div class="lessons-list">
-        <div ng-repeat="lesson in chosen_lessons" class="just-card">
+        <div ng-repeat="lesson in chosen_lessons | orderBy:create_time:false" class="just-card">
             <just-card lesson='lesson' getMyLessons='getMyLessons()'></just-card>
         </div>
     </div>

@@ -1,7 +1,7 @@
 GlobalModules.add_controller('lesson')
 angular.module('just.controllers.lesson', [])
-    .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService',
-        function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService) {
+    .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService', 'ChaptersService',
+        function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService, ChaptersService) {
 
             $scope.active_type = 'show_outline'
             $scope.change_active = function(type) {
@@ -9,12 +9,13 @@ angular.module('just.controllers.lesson', [])
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
-                    console.log(resp)
                     $rootScope.current_lesson = resp
                 })
                 CommentsService.get_comments($routeParams.lesson_id, function(resp) {
-                    console.log(resp)
                     $scope.comments = resp;
+                })
+                ChaptersService.get_chapters($routeParams.lesson_id, function(resp) {
+                    $scope.lesson_outline_list = resp
                 })
             };
 
@@ -24,16 +25,13 @@ angular.module('just.controllers.lesson', [])
                     course_id: $rootScope.current_lesson.id,
                     content: $scope.my_comment
                 }, function(resp) {
-                    console.log(resp)
                     $rootScope.alert_modal("提示", "评论成功")
                     CommentsService.get_comments($rootScope.current_lesson.id, function(resp) {
                         $scope.comments = resp;
                     })
                 })
             }
-            $scope.video_url = 'http://7xnz7k.com1.z0.glb.clouddn.com/cxrs.MP4'
-            $scope.pdf_url = 'http://7xt49i.com2.z0.glb.clouddn.com/AngularJS%E6%9D%83%E5%A8%81%E6%95%99%E7%A8%8B%28www.Linuxidc.com%E6%95%B4%E7%90%86%29.pdf'
-            $scope.zip_url = 'http://7xt49i.com2.z0.glb.clouddn.com/pack.zip'
+
             if (!$routeParams.user_id) {
                 $scope.need_learn = true;
             } else {
@@ -62,7 +60,6 @@ angular.module('just.controllers.lesson', [])
                 $scope.progress_info_hour = 1;
                 $scope.progress_info_minute = 10;
                 MarkService.add_mark($rootScope.current_lesson.id, function(resp) {
-                    console.log(resp)
                 })
             }
             var continue_learn = function() {
