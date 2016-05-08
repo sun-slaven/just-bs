@@ -7,21 +7,22 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             sign_out: { method: 'delete' }
         })
         var registerAPI = $resource('/api/v1/users', {}, {
-            register: { method: 'post' }
+            register: { method: 'post' },
+            getAllUsers: { method: 'get', isArray: true }
         })
 
         var myLessonsAPI = $resource('/api/v1/users/:user_id/courses', { user_id: '@user_id' }, {
-            myLessons: { method: 'get', isArray: true }
+            myLessons: { method: 'get', isArray: true ,params: {is_created: '@is_created'}} //this api is reused for mark lessons and created lessons , diff by params : is_created : Y/N
         })
 
         var UserInfoApi = $resource('/api/v1/users/:user_id/', { user_id: '@user_id' }, {
-                updateUser: { method: 'patch' },
-                getUser: { method: 'get' },//暂时无用
-                deleteUser: {method: 'delete'}
-            })
-        var InitPasswordApi = $resource('/api/v1/users/:user_id/passwords', { user_id: '@user_id' }, {
-            initPassword: {method:'put'}
+            updateUser: { method: 'patch' },
+            getUser: { method: 'get' }, //暂时无用
+            deleteUser: { method: 'delete' }
         })
+        var InitPasswordApi = $resource('/api/v1/users/:user_id/passwords', { user_id: '@user_id' }, {
+                initPassword: { method: 'put' }
+            })
             //992444037@qq.com  1   STUDENT
             //158274194@qq.com   123456  TEACHER
             //619169034@qq.com 123456   ADMIN
@@ -67,11 +68,25 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
         }
         //token should set in cookies
         function set_token(token) {
-            $cookies.putObject('token',token)
+            $cookies.putObject('token', token)
         }
 
-        function myLessons(user, callback) {
-            myLessonsAPI.myLessons({}, { user_id: user.id }, function(resp) {
+        function myMarkedLessons(user, callback) {
+            myLessonsAPI.myLessons({}, {
+                user_id: user.id,
+                is_created: 'N'
+            }, function(resp) {
+                if (callback) {
+                    callback(resp)
+                };
+            })
+        }
+
+        function myCreatedLessons(user, callback) {
+            myLessonsAPI.myLessons({}, {
+                user_id: user.id,
+                is_created: 'Y'
+            }, function(resp) {
                 if (callback) {
                     callback(resp)
                 };
@@ -87,19 +102,25 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
                 })
         }
 
-        function deleteUser(user,callback){
-            UserInfoApi/deleteUser({},{
+        function deleteUser(user, callback) {
+            UserInfoApi / deleteUser({}, {
                 user_id: user.id
-            },function(resp){
+            }, function(resp) {
                 if (callback) { callback(resp) };
             })
         }
 
-        function initPassword(user,callback){
-            InitPasswordApi.initPassword({},{
+        function initPassword(user, callback) {
+            InitPasswordApi.initPassword({}, {
                 user_id: user.id
-            },function(resp){
+            }, function(resp) {
                 if (callback) { callback(resp) };
+            })
+        }
+
+        function getAllUsers(callback) {
+            registerAPI.getAllUsers({}, {}, function(resp) {
+                if (callback) { callback(resp) }
             })
         }
 
@@ -107,10 +128,12 @@ factory('UserService', ['$rootScope', '$resource', '$cookies',
             sign_in: sign_in,
             sign_out: sign_out,
             register: register,
-            myLessons: myLessons,
+            myMarkedLessons: myMarkedLessons,
+            myCreatedLessons: myCreatedLessons,
             updateUser: updateUser,
             deleteUser: deleteUser,
-            initPassword: initPassword
+            initPassword: initPassword,
+            getAllUsers: getAllUsers
         }
     }
 ])
