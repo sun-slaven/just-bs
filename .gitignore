@@ -3,6 +3,8 @@ server/src/.idea/
 server/src/just.iml
 server/pkg/
 server/.idea/
+server/log/
+server/bin/
 
 #front
 npm-debug.log

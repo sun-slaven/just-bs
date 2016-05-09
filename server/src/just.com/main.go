@@ -33,7 +33,14 @@ func main() {
 		log.Println(configUnmarshal)
 	}
 	// 2.db
-	dataSource := db.NewDatSource(config.DBConfig)
+	sqlLog, sqlLogErr := os.OpenFile(path + "/log/sql_log", os.O_RDWR | os.O_APPEND | os.O_CREATE, 0666)
+	if sqlLogErr != nil {
+		logger.Println(sqlLogErr)
+		return
+	}
+	defer sqlLog.Close()
+	dataSource := db.NewDatSource(config.DBConfig, sqlLog)
+	defer dataSource.Close()
 	// 3.redis
 	//	rds := db.NewRedisDataSource(config.RedisConfig)
 	// 3.qiniu fs
@@ -48,11 +55,11 @@ func main() {
 	// middleware
 	mainGroup.Use(middleware.ResponseMiddleware())
 	mainGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
-	//	justGroup.Use(middleware.LogMiddleware)
 	mainGroup.Use(middleware.FileSystemMiddlaware(qiniuFileSystem))
 	mainGroup.Use(middleware.EmailMiddleware(config.SendCloudConfig))
 	mainGroup.Use(middleware.ApiMiddleware())
 	mainGroup.Use(middleware.TokenMiddleWare(config.WhiteListConfig))
+	mainGroup.Use(middleware.LogMiddleware())
 	//	mainGroup.Use(middleware.RoleMiddleware())
 	// router
 	action_router.BuildRouter(mainGroup)
