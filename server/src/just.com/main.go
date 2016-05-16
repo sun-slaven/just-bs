@@ -88,6 +88,7 @@ func main() {
 		ReadTimeout:60 * 60 * time.Second,
 		WriteTimeout:60 * 60 * time.Second,
 	}
+	etc.PrintBanner(path, logger)
 	log.Println("liesten at" + deploymentItem.Port)
 	server.ListenAndServe()
 }

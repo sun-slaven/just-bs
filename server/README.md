@@ -42,6 +42,10 @@ nginx的端口可以随便改(我默认8086)
 4. 403 | Forbidden:授权成功,但是用户没有权限
 5. 500 | 服务器内部错误
 
+
+## banner 在线生成工具
+http://patorjk.com/software/taag/#p=display&h=0&f=3D-ASCII&t=Hello%20World
+
 ## API page:
 http://localhost:8086/res/dist/
 
