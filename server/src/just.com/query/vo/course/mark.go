@@ -25,7 +25,10 @@ func LoadMarkedCourseVo(userId string, session *xorm.Session, log *log.Logger) (
 			log.Println(courseVo)
 			return
 		}
-		courseVoList = append(courseVoList, courseVo)
+		// 之前没有删除关注数据,所有这边可能会有问题
+		if courseVo != nil {
+			courseVoList = append(courseVoList, courseVo)
+		}
 	}
 	error = nil
 	return
