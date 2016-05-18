@@ -11,6 +11,7 @@ import (
 	"just.com/action/user"
 	"just.com/action/token"
 	"just.com/action/course/chapter"
+	"just.com/action/course/record"
 )
 
 func BuildRouter(mainRouter *gin.RouterGroup) {
@@ -40,6 +41,8 @@ func BuildRouter(mainRouter *gin.RouterGroup) {
 		courseRouter.DELETE("/:course_id/marks", mark.MarkCancel)
 		// point
 		courseRouter.POST("/:course_id/points", point.PointAdd)
+		// records
+		courseRouter.POST("/:course_id/records", record.AddStudyRecord)
 	}
 	userRouter := mainRouter.Group("/users")
 	{

@@ -419,7 +419,35 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
-        
+
+  /courses/{course_id}/records:
+    post:
+      description: 记录课程学习百分百
+      operationId: record course
+      summary: 学习记录
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      tags:
+        - courses
+      parameters:
+        - name: course_id
+          in: path
+          required: true
+          default: '337c0a43-bdd8-480b-875b-a27668be23fd'
+          schema:
+            type: string
+        - name: records
+          in: body
+          required: true
+          defalut: 0.5
+          schema:
+            $ref: '#/definitions/record'
+      responses:
+        '200':
+          description: 课程学习记录
+
   /courses/{course_id}/points:
     post:
       description: 给课程评分
@@ -1105,6 +1133,15 @@ definitions:
         type: string
         default: '物联网工程'
 
+
+  record:
+    type: object
+    required:
+      - process
+    properties:
+      process:
+        type: double
+        default: 0.5
 
   errorModel:
     type: object

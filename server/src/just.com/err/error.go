@@ -65,4 +65,7 @@ var (
 // file
 	FILE_ADD_ERR = NewDefaultHttpError(errors.New("文件添加失败"))
 	TOKEN_DELETE_ERR = NewDefaultHttpError(errors.New("登出失败"))
+
+// record
+	COURSE_SECONDS_ERR = NewDefaultHttpError(errors.New("课程学习记录秒数错误"))
 )

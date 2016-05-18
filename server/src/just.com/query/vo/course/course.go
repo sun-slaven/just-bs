@@ -30,6 +30,7 @@ type CourseVo struct {
 	//	PointStatus  string `json:"point_status"`
 	Teacher        *user.UserVo `json:"teacher"`
 	VideoUrl       string `json:"video_url"`
+	VideoProcess   float64 `json:"video_process"`
 	CreateTime     string `json:"create_time"`
 	UpdateTime     string `json:"update_time"`
 	AttachmentList []*CourseAttachmentVo `json:"attachment_list"`
@@ -109,6 +110,8 @@ func LoadCourseVoFromTable(courseTable *table.CourseTable, userId string, sessio
 	} else {
 		cv.MarkStatus = value.UNMARKED
 	}
+
+	cv.VideoProcess = LoadStudyRecord(courseTable.UUID, userId, session, log)
 	//	if courseTable.PointPerson > 0 {
 	//		cv.Point = courseTable.Points / courseTable.PointPerson
 	//	}else {

@@ -40,5 +40,5 @@ func (self *CourseService) MarkCancel(courseId string, userId string) (error *er
 		}
 		return err.COURSE_MARK_CANCEL_ERR
 	}
-	return nil
+	return self.DeleteStudyRecord(courseId, userId)
 }

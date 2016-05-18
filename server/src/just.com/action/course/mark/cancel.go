@@ -23,5 +23,5 @@ func MarkCancel(c *gin.Context) {
 		context.Response.Error = markCancelErr
 		return
 	}
-	go service.FlushPoint(courseId, context.Ds, context.Log)
+	go service.FlushMarkSum(courseId, context.Ds, context.Log)
 }
