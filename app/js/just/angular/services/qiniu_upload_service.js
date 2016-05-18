@@ -39,7 +39,10 @@ factory('QiniuUpload', ['$rootScope', '$resource', '$http', '$qupload', 'FileSer
                     };
                 }
             }
-            file.upload.abort();
+            if (file.upload) {
+                file.upload.abort();
+            };
+            
         };
 
 

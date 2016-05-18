@@ -28,6 +28,7 @@ angular.module('just.controllers.lesson', [])
                     $rootScope.alert_modal("提示", "评论成功")
                     CommentsService.get_comments($rootScope.current_lesson.id, function(resp) {
                         $scope.comments = resp;
+                        $rootScope.current_lesson.comment_sum = resp.length
                     })
                 })
             }

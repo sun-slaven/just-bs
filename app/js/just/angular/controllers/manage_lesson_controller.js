@@ -272,7 +272,18 @@ angular.module('just.controllers.manage_lesson', [])
             }
         }
 
+        $scope.can_create_lesson = function(){
+            if ($scope.new_lesson.name == '') {
+                return false;
+            };
+            if ($scope.new_lesson.college_id == null || $scope.new_lesson.major_id == null) {
+                return false;
+            };
+            return true;
+        }
+
         $scope.create_lesson = function() {
+            if (!$scope.can_create_lesson()) {return};
             if ($scope.upload.get_token_promise_array.length) {
                 $scope.upload.do_upload(function() {
                     LessonsService.create_lesson($scope.new_lesson, function(resp) {

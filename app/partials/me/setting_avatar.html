@@ -1,7 +1,7 @@
 <div id="setting_avatar" ng-show="active_type == 'setting_avatar'">
     <img ng-src="{{current_user.icon.url}}" height="220" width="220" />
     <div class="operation">
-        <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</buttton>
+        <buttton ng-file-select="upload.onFileSelect($files)" accept="image/*" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</buttton>
         <div class="file-info" ng-if="upload.selectFile">
             <h5>已选文件: {{upload.selectFile.name}}</h5>
             <div class="progress progress-striped" ng-class="{active: upload.selectFile.progress.p < 100}">

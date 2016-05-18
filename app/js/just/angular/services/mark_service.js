@@ -12,7 +12,6 @@ factory('MarkService', ['$rootScope', '$resource', '$http',
         })
 
         function add_mark(course_id, success) {
-            console.log(course_id)
             marksAPI.add_mark({}, {
                 course_id: course_id
             }, function(resp) {

@@ -16,18 +16,18 @@
             <label class="col-sm-2 control-label">课程头像:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)" accept="image/*" data-placement="top" data-title="点击上传头像" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>上传头像</buttton>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">名称:</label>
+            <label class="col-sm-2 control-label">名称*:</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="请输入课程名称" ng-model="new_lesson.name">
             </div>
         </div>
         <div class="form-group major">
-            <label class="col-sm-2 control-label">专业:</label>
+            <label class="col-sm-2 control-label">专业*:</label>
             <div class="col-sm-10">
                 <select ng-model="chosen_college" ng-options="college.name for college in colleges" class="form-control" ng-change="change_college(chosen_college)">
                     <option value="">-- 所有 --</option>
@@ -59,7 +59,7 @@
             <label class="col-sm-2 control-label">上传视频:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传附件,可多文件选取"  data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)"  accept="video/*" data-placement="top" data-title="点击上传附件,可多文件选取"  data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
                 </div>
             </div>
         </div>
@@ -98,13 +98,13 @@
             <label class="col-sm-2 control-label">上传附件:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)" data-placement="top" data-title="点击上传附件,可多文件选取" data-multiple="true" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加附件</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)" accept="application/*,text/*,.xlsx,.xls,.doc, .docx.,.ppt, .pptx" data-placement="top" data-title="点击上传附件,可多文件选取" data-multiple="true" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加附件</buttton>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-info  submit_btn" ng-click="create_lesson()">创建</button>
+                <button type="submit" class="btn btn-info  submit_btn" ng-disabled="!can_create_lesson()" ng-click="create_lesson()">创建</button>
             </div>
         </div>
     </div>
