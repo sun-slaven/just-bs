@@ -25,8 +25,7 @@ func (self *CourseService) AddStudyRecord(courseId, userId string, process float
 	}
 	// 有这条记录则先更新
 	if getFlag {
-		recordTable.Process = process
-		updateNum, updateErr := self.Session.Update(recordTable)
+		updateNum, updateErr := self.Session.Id(recordTable.UUID).Update(&table.CourseStudyRecordTable{Process:process, UpdateTime:time.Now()})
 		if updateNum == 0 {
 			if updateErr != nil {
 				self.Log.Println(updateErr)
