@@ -27,7 +27,7 @@
         </div>
     </div>
     <div id="resource" ng-if="show_resource">
-        <just-video video-url="current_lesson.video_url"></just-video>
+        <just-video video-url="current_lesson.video_url" video-process="current_lesson.video_process"></just-video>
     </div>
     <div class="lesson-info-main">
         <div class="content-wrap col-xs-12">
@@ -35,14 +35,12 @@
                 <div ng-hide="need_learn  || show_resource">
                     <span class="progress-info">
                         <span class="progress-info-percent">
-                            <strong>{{progress_info_percent}}</strong>
+                            <strong>{{current_lesson.video_process * 100 | number: 1}}</strong>
                             %
                         </span>
-                    <span>已学习:</span>
-                    <span class="progress-info-time">{{progress_info_hour}}小时{{progress_info_minute}}分钟</span>
                     </span>
                     <div class="progress progress-striped">
-                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: progress_info_percent + '%'}">
+                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{width: current_lesson.video_process * 100 + '%'}">
                         </div>
                     </div>
                 </div>
@@ -79,7 +77,7 @@
                         </div>
                         <div class="evaluation" ng-repeat="comment in comments | orderBy: create_time:true">
                             <div class="user_avatar col-xs-1">
-                                <img ng-src="http://img.mukewang.com/565fd7a80001b92f01000100-100-100.jpg">
+                                <img ng-src="{{comment.create_user.icon.url}}">
                             </div>
                             <div class="comment_box col-xs-11">
                                 <div class="user_name">{{comment.create_user.name}}</div>
