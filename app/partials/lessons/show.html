@@ -51,8 +51,12 @@
                 <div class="lesson-main-content">
                     <div class="nav-bars">
                         <ul class="nav nav-tabs">
-                            <li ng-class="{active: active_type == 'show_outline'}" ng-click="change_active('show_outline')">
-                                <a><i class="fa fa-bars" aria-hidden="true"></i>课程提纲</a></li>
+                            <li ng-class="{active: active_type == 'show_outline'}" ng-click="change_active('show_outline')" ng-if="lesson_outline_list.length > 0">
+                                <a><i class="fa fa-bars" aria-hidden="true" ></i>课程提纲</a></li>
+                            <li ng-class="{active: active_type == 'show_syllabus'}" ng-click="change_active('show_syllabus')" ng-if="current_lesson.syllabus != '' ">
+                                <a><i class="fa fa-bars" aria-hidden="true"></i>教学大纲</a></li>
+                            <li ng-class="{active: active_type == 'show_experiment'}" ng-click="change_active('show_experiment')" ng-if="current_lesson.experiment != '' ">
+                                <a><i class="fa fa-bars" aria-hidden="true"></i>实验指导书</a></li>
                             <li ng-class="{active: active_type == 'show_comment'}" ng-click="change_active('show_comment')">
                                 <a href=""><i class="fa fa-comments-o" aria-hidden="true"></i>评论({{current_lesson.comment_sum}})</a></li>
                         </ul>
@@ -70,9 +74,19 @@
                             </ul>
                         </div>
                     </div>
+                    <div ng-show="active_type == 'show_syllabus'">
+                        <div class="syllabus">
+                            {{current_lesson.syllabus}}
+                        </div>
+                    </div>
+                    <div ng-show="active_type == 'show_experiment'">
+                        <div class="experiment">
+                            {{current_lesson.experiment}}
+                        </div>
+                    </div>
                     <div ng-show="active_type == 'show_comment'">
                         <div class="my_content">
-                            <textarea  cols="25" placeholder="这里可以畅所欲言哦" ng-model="my_comment"></textarea>
+                            <textarea cols="25" placeholder="这里可以畅所欲言哦" ng-model="my_comment"></textarea>
                             <input type="button" class="btn btn-info" value="发表" ng-disabled="!my_comment" ng-click="submit_comment()"></input>
                         </div>
                         <div class="evaluation" ng-repeat="comment in comments | orderBy: create_time:true">
@@ -91,7 +105,7 @@
             </div>
             <div class="content-aside col-xs-4">
                 <div class="lesson-order col-xs-12" ng-click="start_or_continue()" ng-show="!show_resource">{{btn_content}}</div>
-                <div class="wish col-xs-12" ng-show="!show_resource">
+                <div class="wish col-xs-12" ng-show="!show_resource && current_lesson.wish">
                     <div>
                         <h3>教师寄语</h3>
                         <div class="wish-content">
@@ -99,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="resource-info col-xs-12" ng-if="!need_learn">
+                <div class="resource-info col-xs-12" ng-if="!need_learn && current_lesson.attachment_list.length">
                     <h3>相关资源列表:</h3>
                     <div class="resource-list">
                         <div ng-repeat="attachment in current_lesson.attachment_list">

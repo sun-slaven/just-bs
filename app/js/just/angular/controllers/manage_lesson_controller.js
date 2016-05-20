@@ -112,6 +112,8 @@ angular.module('just.controllers.manage_lesson', [])
             major_id: null,
             introduction: '',
             description: '',
+            syllabus: '',
+            experiment: '',
             video_url: '',
             //outline_list: [],
             temp_outline_list: [],
@@ -130,7 +132,7 @@ angular.module('just.controllers.manage_lesson', [])
                 $scope.new_lesson.temp_outline = {
                         order: null,
                         name: '',
-                        introduction: '',
+                        content: '',
                     },
                     $scope.modal_ok = function() {
                         if ($scope.modal_type == 'open_outline_plus_modal') {
@@ -139,7 +141,7 @@ angular.module('just.controllers.manage_lesson', [])
                             $scope.new_lesson.temp_outline = {
                                 order: null,
                                 name: '',
-                                introduction: '',
+                                content: '',
                             }
                         } else {
                             var keepGoing = true;

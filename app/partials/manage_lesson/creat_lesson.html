@@ -38,15 +38,27 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">课程短描述:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" placeholder="请输入课程描述" ng-model="new_lesson.description"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">课程简介:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" placeholder="请输入课程简介" ng-model="new_lesson.introduction"></textarea>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">课程短描述:</label>
+            <label class="col-sm-2 control-label">教学大纲:</label>
             <div class="col-sm-10">
-                <textarea class="form-control" placeholder="请输入课程描述" ng-model="new_lesson.description"></textarea>
+                <textarea class="form-control" placeholder="请输入教学大纲" ng-model="new_lesson.syllabus"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">实验指导书:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" placeholder="请输入实验指导书" ng-model="new_lesson.experiment"></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -59,7 +71,7 @@
             <label class="col-sm-2 control-label">上传视频:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)"  accept="video/*" data-placement="top" data-title="点击上传附件,可多文件选取"  data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)" accept="video/*" data-placement="top" data-title="点击上传附件,可多文件选取" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
                 </div>
             </div>
         </div>
@@ -76,7 +88,7 @@
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                             <a bs-collapse-toggle>
-                              第{{ temp_outline_item.chapter }}章:  {{temp_outline_item.name}} 
+                              第{{ temp_outline_item.order }}章:  {{temp_outline_item.name}} 
                             </a>
                             <span>
                                 <i class="fa fa-trash" aria-hidden="true" ng-click="new_lesson.remove_temp_outline(temp_outline_item)" data-placement="right" data-title="删除此提纲" data-trigger="hover" data-type="info" bs-tooltip></i>
@@ -86,7 +98,7 @@
                             </div>
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
-                                    {{ temp_outline_item.introduction }}
+                                    {{ temp_outline_item.content }}
                                 </div>
                             </div>
                         </div>
