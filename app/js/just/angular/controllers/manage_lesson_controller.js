@@ -122,6 +122,7 @@ angular.module('just.controllers.manage_lesson', [])
                 order: null,
                 name: '',
                 content: '',
+                video_url: ''
             },
             attachment_list: [],
             open_outline_plus_modal: function() {
@@ -133,6 +134,7 @@ angular.module('just.controllers.manage_lesson', [])
                         order: null,
                         name: '',
                         content: '',
+                        video_url: ''
                     },
                     $scope.modal_ok = function() {
                         if ($scope.modal_type == 'open_outline_plus_modal') {
@@ -142,6 +144,7 @@ angular.module('just.controllers.manage_lesson', [])
                                 order: null,
                                 name: '',
                                 content: '',
+                                video_url: ''
                             }
                         } else {
                             var keepGoing = true;

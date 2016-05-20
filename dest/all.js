@@ -172,8 +172,8 @@ angular.module('just.controllers.lesson', [])
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
-                    $rootScope.current_lesson = resp
-                    learn_status_callback(); //show btn status
+                    learn_status_callback();//show btn status
+                    $scope.video_url = resp.video_url;
                 })
                 CommentsService.get_comments($routeParams.lesson_id, function(resp) {
                     $scope.comments = resp;
@@ -231,28 +231,32 @@ angular.module('just.controllers.lesson', [])
                 var mark_and_learn = function() {
                     $scope.need_learn = false;
                     $scope.btn_content = "继续学习";
-                    $scope.progress_info_percent = 10;
-                    $scope.progress_info_hour = 1;
-                    $scope.progress_info_minute = 10;
                     MarkService.add_mark($rootScope.current_lesson.id, function(resp) {})
                 }
                 var continue_learn = function() {
                     $scope.show_resource = true;
                 }
+
+                $scope.show_chapter_video = function(chapter){
+                    $scope.video_url = chapter.video_url;
+                    $scope.show_resource = true;
+                }
+
+
             }
         }
     ])
 
 GlobalModules.add_controller('lesson_outline')
 angular.module('just.controllers.lesson_outline', [])
-    .controller('LessonOutlineController', ['$rootScope', '$scope', 'ChaptersService',
-        function($rootScope, $scope, ChaptersService) {
+    .controller('LessonOutlineController', ['$rootScope', '$scope', 'ChaptersService', 'QiniuUpload', 'FileService', 'UuidService',
+        function($rootScope, $scope, ChaptersService, QiniuUpload, FileService, UuidService) {
             if (!$scope.outline_edit_lesson) {
                 return
             }
             //just required by table
             $scope.lesson_outline = []
-            //每次请求都返回一个对象.所以需要重新去拉取所有章节.此处可优化
+                //每次请求都返回一个对象.所以需要重新去拉取所有章节.此处可优化
             var get_chapters = function() {
                 ChaptersService.get_chapters($scope.outline_edit_lesson.id, function(resp) {
                     $scope.lesson_outline_list = resp
@@ -263,6 +267,8 @@ angular.module('just.controllers.lesson_outline', [])
                 order: '',
                 name: '',
                 content: '',
+                video_name: '',
+                video_url: ''
             };
             $scope.chapter_plus = function() {
                 $scope.edit_chapter = angular.copy($scope.new_chapter);
@@ -273,11 +279,13 @@ angular.module('just.controllers.lesson_outline', [])
                         get_chapters();
                         $scope.edit_chapter = {}
                         $scope.new_chapter = {}
+                        $scope.upload.clearAll();
                     })
                 }
                 $scope.modal_cancel = function() {
                     $scope.edit_chapter = {}
                     $scope.new_chapter = {}
+                    $scope.upload.clearAll();
                 }
                 $rootScope.strap_modal({
                     scope: $scope
@@ -290,11 +298,13 @@ angular.module('just.controllers.lesson_outline', [])
                 $scope.modal_content_url = '/manage_lesson/_update_lesson_chapter_modal';
                 $scope.modal_ok = function() {
                     ChaptersService.update_chapter($scope.outline_edit_lesson.id, $scope.edit_chapter, function(resp) {
+                        $scope.upload.clearAll();
                         get_chapters();
                     })
                 }
                 $scope.modal_cancel = function() {
                     $scope.edit_chapter = {}
+                    $scope.upload.clearAll();
                 }
                 $rootScope.strap_modal({
                     scope: $scope
@@ -307,6 +317,57 @@ angular.module('just.controllers.lesson_outline', [])
                     $rootScope.alert_modal('', '已成功删除章节')
                 })
             };
+
+            //upload chapter video
+            $scope.upload = {
+                selectFileArray: null,
+                selectFile: null,
+                get_token_promise: {},
+                onFileSelect: function($files) {
+                    this.selectFileArray = $files;
+                    this.selectFile = $files[0];
+                    var suffix_info_obj = QiniuUpload.get_suffix_info_obj(this.selectFile);
+                    this.get_token_promise = QiniuUpload.get_token(suffix_info_obj).then(function(resp) {
+                        return {
+                            key: UuidService.newuuid(suffix_info_obj.suffix),
+                            token: resp.token
+                        };
+                    })
+                },
+                do_upload: function() {
+                    $scope.upload.selectFile.progress = {
+                        p: 0
+                    };
+                    var upload_fun = function(token_obj) {
+                            QiniuUpload.upload($scope.upload.selectFile, token_obj).then(function(resp) {
+                                $scope.edit_chapter.video_url = resp.key;
+                                $scope.edit_chapter.video_name = $scope.upload.selectFile.name;
+                                $rootScope.alert_modal("success", "视频上传成功");
+                            }, function(error) {
+                                console.log(error)
+                            }, function(evt) {
+                                if ($scope.upload.selectFile) {
+                                    $scope.upload.selectFile.progress.p = Math.floor(100 * evt.loaded / evt.totalSize);
+                                };
+                            })
+                        }
+                        //promise 使用上一个promise的返回结果
+                    this.get_token_promise.then(function(token_obj) {
+                        upload_fun(token_obj)
+                    })
+                },
+                abort: function() {
+                    QiniuUpload.abort(this.selectFile, this.selectFileArray)
+                    $scope.upload.selectFile = null;
+                },
+                clearAll: function(){
+                    $scope.upload.selectFileArray = $scope.upload.selectFile = null;
+                    $scope.upload.get_token_promise = {};
+                }
+            }
+
+
+
         }
     ])
 
@@ -475,6 +536,7 @@ angular.module('just.controllers.manage_lesson', [])
                 order: null,
                 name: '',
                 content: '',
+                video_url: ''
             },
             attachment_list: [],
             open_outline_plus_modal: function() {
@@ -486,6 +548,7 @@ angular.module('just.controllers.manage_lesson', [])
                         order: null,
                         name: '',
                         content: '',
+                        video_url: ''
                     },
                     $scope.modal_ok = function() {
                         if ($scope.modal_type == 'open_outline_plus_modal') {
@@ -495,6 +558,7 @@ angular.module('just.controllers.manage_lesson', [])
                                 order: null,
                                 name: '',
                                 content: '',
+                                video_url: ''
                             }
                         } else {
                             var keepGoing = true;
@@ -659,8 +723,8 @@ angular.module('just.controllers.manage_lesson', [])
 
 GlobalModules.add_controller('me')
 angular.module('just.controllers.me', [])
-    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'CommonUtil', 'FileService', 'UuidService',
-        function($rootScope, $scope, UserService, QiniuUpload, CommonUtil, FileService, UuidService) {
+    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'FileService', 'UuidService',
+        function($rootScope, $scope, UserService, QiniuUpload, FileService, UuidService) {
             $scope.active_type = 'chosen_lessons'
             $scope.change_active = function(type) {
                 $scope.active_type = type;
@@ -671,8 +735,7 @@ angular.module('just.controllers.me', [])
             })
 
             var updateUser = function(updateUserObj) {
-                UserService.updateUser($rootScope.current_user, updateUserObj, function(resp) {
-                })
+                UserService.updateUser($rootScope.current_user, updateUserObj, function(resp) {})
             }
 
 
