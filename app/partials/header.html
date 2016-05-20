@@ -14,6 +14,9 @@
             <li ng-show="is_admin()"><a>管理员界面</a></li>
         </ul>
     </div>
+    <div class="username">
+        欢迎你: {{current_user.name}}
+    </div>
     <div id="log-out">
         <ul ng-click="sign_out()">
             <li>
