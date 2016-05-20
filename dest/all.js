@@ -1692,26 +1692,43 @@ var version_timestamp = "?v" + Date.parse(new Date());
  * application.js
  */
 angular.module('just', GlobalModules.get([
-    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'smart-table', 'angularQFileUpload', 'mgcrea.ngStrap', 'angularLocalStorage','angular-loading-bar',
+    'ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'smart-table', 'angularQFileUpload', 'mgcrea.ngStrap', 'angularLocalStorage', 'angular-loading-bar',
     'just.route_config',
     'just.constants',
     'just.filters'
-])).config(['$httpProvider', '$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider','cfpLoadingBarProvider',
-    function($httpProvider, $routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider,cfpLoadingBarProvider) {
+])).config(['$httpProvider', '$routeProvider', '$locationProvider', '$sceDelegateProvider', 'RouteConfigProvider', '$modalProvider', 'cfpLoadingBarProvider',
+    function($httpProvider, $routeProvider, $locationProvider, $sceDelegateProvider, RouteConfigProvider, $modalProvider, cfpLoadingBarProvider) {
         //同源策略:在本站访问外站资源时,需要添加到信任名单中,不然就会加载错误.video
         $sceDelegateProvider.resourceUrlWhitelist([
             'self',
             'http://7xnz7k.com1.z0.glb.clouddn.com/**'
         ]);
         //使用过滤器将所有请求都加上token和时间戳
-        $httpProvider.interceptors.push(function($cookies) {
+        //function中可以注入$rootscope
+        $httpProvider.interceptors.push(function($q, $cookies, $rootScope) {
             return {
-                'request': function(config) {
-                    if(config.url.indexOf('/api/v1/') > -1){
+                request: function(config) {
+                    if (config.url.indexOf('/api/v1/') > -1) {
                         config.headers['Authorization'] = JSON.stringify($cookies.getObject('token'));
                     }
                     config.requestTimestamp = new Date().getTime();
                     return config;
+                },
+                requestError: function(err) {
+                    return $q.reject(err);
+                },
+                response: function(res) {
+                    return res;
+                },
+                responseError: function(err) {
+                    if (400 === err.status) {
+                        $rootScope.alert_modal("error", err.data.message)
+                    } else if (401 === err.status) {
+                        window.location = '/login';
+                    } else if (501 === err.status) {
+                        $rootScope.alert_modal("error", err.data.message)
+                    }
+                    return $q.reject(err);
                 }
             };
         });
@@ -1729,7 +1746,7 @@ angular.module('just', GlobalModules.get([
 
         //angular-loading-bar
         cfpLoadingBarProvider.includeSpinner = true
-        
+
 
         // $locationProvider.html5Mode(true); // remove # in the url
         // $locationProvider.hashPrefix = '!';
