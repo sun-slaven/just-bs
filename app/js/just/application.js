@@ -37,7 +37,7 @@ angular.module('just', GlobalModules.get([
                     if (400 === err.status) {
                         $rootScope.alert_modal("error", err.data.message)
                     } else if (401 === err.status) {
-                        window.location = '/login';
+                        window.location = '/';
                     } else if (501 === err.status) {
                         $rootScope.alert_modal("error", err.data.message)
                     }
