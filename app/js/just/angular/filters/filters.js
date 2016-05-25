@@ -29,6 +29,11 @@ angular.module('just.filters', [])
         }
 
     })
+    .filter('replaceBr',function(){
+        return function(str){
+            return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
+        }
+    })
     .filter('string_trusted', function($sce) {
         return function(string) {
             return $sce.trustAsHtml(string);

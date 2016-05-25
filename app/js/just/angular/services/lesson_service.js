@@ -34,18 +34,13 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
                 icon_url: icon_url,
                 description: course.description,
                 introduction: course.introduction,
-                syllabus: replaceAllBr(course.syllabus),
-                experiment: replaceAllBr(course.experiment),
+                syllabus: course.syllabus,
+                experiment: course.experiment,
                 wish: course.wish
             }, function(resp) {
                 if (callback) { callback(resp) };
             })
         }
-
-        var replaceAllBr = function(str) {
-            return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
-        }
-
 
         return {
             get_lesson: get_lesson,

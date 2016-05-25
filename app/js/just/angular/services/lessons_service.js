@@ -22,9 +22,9 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
                 icon_url: new_lesson.icon_url,
                 video_url: new_lesson.video_url,
                 description: new_lesson.description,
-                introduction: replaceAllBr(new_lesson.introduction),
-                syllabus: replaceAllBr(new_lesson.syllabus),
-                experiment: replaceAllBr(new_lesson.experiment),
+                introduction: new_lesson.introduction,
+                syllabus: new_lesson.syllabus,
+                experiment: new_lesson.experiment,
                 wish: new_lesson.wish,
                 college_id: new_lesson.college_id,
                 major_id: new_lesson.major_id,
@@ -37,9 +37,6 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
             })
         }
 
-        var replaceAllBr = function(str){
-            return str.replace(new RegExp('\n','gm'),'<br/>').replace(new RegExp(' ','gm'),'&nbsp');
-        }
 
         return {
             lessons_list: lessons_list,
