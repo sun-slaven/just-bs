@@ -89,3 +89,9 @@ http://localhost:8086/res/dist/
 1. course view增加 `mark_status`字段
 2. 更新课程接口
 3. 教师获取自己创建的课程
+
+## 5.25
+1. 课程章节接口修改,增加video
+2. 增加脚本启动`start.bash`
+dev环境 `./start.bash`
+production环境 `./start.bash production`
