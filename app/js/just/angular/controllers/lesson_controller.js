@@ -2,14 +2,14 @@ GlobalModules.add_controller('lesson')
 angular.module('just.controllers.lesson', [])
     .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService', 'ChaptersService',
         function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService, ChaptersService) {
-            $scope.active_type = 'show_outline'
+            $scope.active_type = 'show_comment';
             $scope.change_active = function(type) {
                 $scope.active_type = type;
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
                     $rootScope.current_lesson = resp
-                    learn_status_callback();//show btn status
+                    learn_status_callback(); //show btn status
                 })
                 CommentsService.get_comments($routeParams.lesson_id, function(resp) {
                     $scope.comments = resp;
@@ -32,6 +32,16 @@ angular.module('just.controllers.lesson', [])
                     })
                 })
             }
+
+            $scope.delete_comment = function(comment) {
+                CommentsService.delete_comments($rootScope.current_lesson.id, comment.id, function(resp) {
+                    CommentsService.get_comments($routeParams.lesson_id, function(resp) {
+                        $scope.comments = resp;
+                    })
+                    $rootScope.alert_modal("提示", "评论删除成功")
+                })
+            }
+
             var learn_status_callback = function() {
                 if ($rootScope.current_lesson.mark_status == 'N') {
                     $scope.need_learn = true;

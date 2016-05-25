@@ -31,11 +31,13 @@ angular.module('just.filters', [])
     })
     .filter('replaceBr',function(){
         return function(str){
+            if (str == '' || str == undefined) return;
             return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
         }
     })
     .filter('string_trusted', function($sce) {
         return function(string) {
+            if (string == '' || string == undefined) return;
             return $sce.trustAsHtml(string);
         }
     });
