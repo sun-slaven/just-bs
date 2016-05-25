@@ -974,11 +974,16 @@ angular.module('just.filters', [])
         }
 
     })
-    .filter('string_trusted', ['$sce',function($sce) {
+    .filter('replaceBr',function(){
+        return function(str){
+            return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
+        }
+    })
+    .filter('string_trusted', function($sce) {
         return function(string) {
             return $sce.trustAsHtml(string);
         }
-    }]);
+    });
 
 angular.module('just.route_config', []).
 provider('RouteConfig', function() {
@@ -1366,18 +1371,13 @@ factory('LessonService', ['$rootScope', '$resource', '$http',
                 icon_url: icon_url,
                 description: course.description,
                 introduction: course.introduction,
-                syllabus: replaceAllBr(course.syllabus),
-                experiment: replaceAllBr(course.experiment),
+                syllabus: course.syllabus,
+                experiment: course.experiment,
                 wish: course.wish
             }, function(resp) {
                 if (callback) { callback(resp) };
             })
         }
-
-        var replaceAllBr = function(str) {
-            return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
-        }
-
 
         return {
             get_lesson: get_lesson,
@@ -1411,9 +1411,9 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
                 icon_url: new_lesson.icon_url,
                 video_url: new_lesson.video_url,
                 description: new_lesson.description,
-                introduction: replaceAllBr(new_lesson.introduction),
-                syllabus: replaceAllBr(new_lesson.syllabus),
-                experiment: replaceAllBr(new_lesson.experiment),
+                introduction: new_lesson.introduction,
+                syllabus: new_lesson.syllabus,
+                experiment: new_lesson.experiment,
                 wish: new_lesson.wish,
                 college_id: new_lesson.college_id,
                 major_id: new_lesson.major_id,
@@ -1426,9 +1426,6 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
             })
         }
 
-        var replaceAllBr = function(str){
-            return str.replace(new RegExp('\n','gm'),'<br/>').replace(new RegExp(' ','gm'),'&nbsp');
-        }
 
         return {
             lessons_list: lessons_list,
