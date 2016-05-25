@@ -27,6 +27,12 @@ func FlushMarkSum(courseId string, ds *db.DataSource, log *log.Logger) error {
 		}
 		return COURSE_FLUSH_MARK_NUM_ERR
 	}
+	commitErr := session.Commit()
+	if commitErr != nil {
+		log.Println(commitErr)
+		session.Rollback()
+		return COURSE_FLUSH_MARK_NUM_ERR
+	}
 	return nil
 }
 
@@ -50,6 +56,12 @@ func FlushCommentSum(courseId string, ds *db.DataSource, log *log.Logger) error 
 		if updateErr != nil {
 			log.Println(updateNum)
 		}
+		return COURSE_FLUSH_COMMENT_NUM_ERR
+	}
+	commitErr := session.Commit()
+	if commitErr != nil {
+		log.Println(commitErr)
+		session.Rollback()
 		return COURSE_FLUSH_COMMENT_NUM_ERR
 	}
 	return nil
