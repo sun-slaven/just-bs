@@ -18,7 +18,7 @@ angular.module('just.filters', [])
             return value + (tail || ' …');
         };
     })
-    .filter('password', [function() {
+    .filter('password', function() {
         return function(str) {
             if (!str) return '';
             var result = ''
@@ -27,4 +27,10 @@ angular.module('just.filters', [])
             }
             return result
         }
-    }]);
+
+    })
+    .filter('string_trusted', function($sce) {
+        return function(string) {
+            return $sce.trustAsHtml(string);
+        }
+    });

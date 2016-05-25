@@ -577,7 +577,6 @@ angular.module('just.controllers.manage_lesson', [])
                     };
                     //promise 使用上一个promise的返回结果
                     $scope.upload.get_token_promise_array[index].get_token_promise.then(function(token_obj) {
-                        console.log(token_obj)
                         upload_fun($scope.upload.get_token_promise_array[index].file, token_obj, function(resp) {
                             switch ($scope.upload.get_token_promise_array[index].suffix_info_obj.type) {
                                 case 'icon':
@@ -635,11 +634,13 @@ angular.module('just.controllers.manage_lesson', [])
                 $scope.upload.do_upload(function() {
                     LessonsService.create_lesson($scope.new_lesson, function(resp) {
                         $scope.upload.get_token_promise_array = [];
+                        $rootScope.alert_modal("","课程创建成功!");
                         console.log(resp)
                     })
                 })
             } else {
                 LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                    $rootScope.alert_modal("","课程创建成功!");
                     console.log(resp)
                 })
             }
@@ -962,7 +963,7 @@ angular.module('just.filters', [])
             return value + (tail || ' …');
         };
     })
-    .filter('password', [function() {
+    .filter('password', function() {
         return function(str) {
             if (!str) return '';
             var result = ''
@@ -971,7 +972,13 @@ angular.module('just.filters', [])
             }
             return result
         }
-    }]);
+
+    })
+    .filter('string_trusted', function($sce) {
+        return function(string) {
+            return $sce.trustAsHtml(string);
+        }
+    });
 
 angular.module('just.route_config', []).
 provider('RouteConfig', function() {
@@ -1283,8 +1290,6 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
             return 'attachment'
         }
 
-
-
         return {
             getLessonsByCollege: getLessonsByCollege,
             getLessonsByMajor: getLessonsByMajor,
@@ -1329,42 +1334,49 @@ GlobalModules.add_service('lesson')
 angular.module('just.services.lesson', []).
 factory('LessonService', ['$rootScope', '$resource', '$http',
     function($rootScope, $resource, $http) {
-        var lessonAPI = $resource('/api/v1/courses/:course_id', {course_id : '@course_id'}, {
-            delete_lesson: {method: 'delete' , isArray: false},
-            get_lesson: {method: 'get' , isArray: false},
-            update_lesson: {method: 'patch',isArray: false}
+        var lessonAPI = $resource('/api/v1/courses/:course_id', { course_id: '@course_id' }, {
+            delete_lesson: { method: 'delete', isArray: false },
+            get_lesson: { method: 'get', isArray: false },
+            update_lesson: { method: 'patch', isArray: false }
         })
 
 
-        function get_lesson(course_id,success) {
-            lessonAPI.get_lesson({}, {course_id: course_id}, function(resp) {
+        function get_lesson(course_id, success) {
+            lessonAPI.get_lesson({}, { course_id: course_id }, function(resp) {
                 if (success) { success(resp) }
             })
         }
-        function delete_lesson(course_id,success) {
+
+        function delete_lesson(course_id, success) {
             lessonAPI.delete_lesson({}, {
                 course_id: course_id
             }, function(resp) {
                 if (success) { success(resp) }
             })
         }
-        function update_lesson(course,callback){
-            var icon_url = course.icon.url.replace('http://7xnz7k.com1.z0.glb.clouddn.com/','')
-            lessonAPI.update_lesson({},{
+
+        function update_lesson(course, callback) {
+            var icon_url = course.icon.url.replace('http://7xnz7k.com1.z0.glb.clouddn.com/', '')
+            lessonAPI.update_lesson({}, {
                 course_id: course.id,
                 teacher_id: $rootScope.current_user.id,
                 name: course.name,
                 college_id: course.college.id,
                 major_id: course.major.id,
-                icon_url : icon_url,
+                icon_url: icon_url,
                 description: course.description,
                 introduction: course.introduction,
+                syllabus: replaceAllBr(course.syllabus),
+                experiment: replaceAllBr(course.experiment),
                 wish: course.wish
-            },function(resp){
-                if (callback) {callback(resp)};
+            }, function(resp) {
+                if (callback) { callback(resp) };
             })
         }
 
+        var replaceAllBr = function(str) {
+            return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
+        }
 
 
         return {
@@ -1399,9 +1411,9 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
                 icon_url: new_lesson.icon_url,
                 video_url: new_lesson.video_url,
                 description: new_lesson.description,
-                introduction: new_lesson.introduction,
-                syllabus: new_lesson.syllabus,
-                experiment: new_lesson.experiment,
+                introduction: replaceAllBr(new_lesson.introduction),
+                syllabus: replaceAllBr(new_lesson.syllabus),
+                experiment: replaceAllBr(new_lesson.experiment),
                 wish: new_lesson.wish,
                 college_id: new_lesson.college_id,
                 major_id: new_lesson.major_id,
@@ -1414,7 +1426,9 @@ factory('LessonsService', ['$rootScope', '$resource', '$http',
             })
         }
 
-
+        var replaceAllBr = function(str){
+            return str.replace(new RegExp('\n','gm'),'<br/>').replace(new RegExp(' ','gm'),'&nbsp');
+        }
 
         return {
             lessons_list: lessons_list,

@@ -46,7 +46,7 @@
                 </div>
                 <div class="lesson-brief">
                     <h3 class="ctit">课程介绍</h3>
-                    <p class="brief-content">{{current_lesson.introduction}}</p>
+                    <p class="brief-content" ng-bind-html="current_lesson.introduction | string_trusted"></p>
                 </div>
                 <div class="lesson-main-content">
                     <div class="nav-bars">
@@ -75,13 +75,11 @@
                         </div>
                     </div>
                     <div ng-show="active_type == 'show_syllabus'">
-                        <div class="syllabus">
-                            {{current_lesson.syllabus}}
+                        <div class="syllabus" ng-bind-html="current_lesson.syllabus | string_trusted">
                         </div>
                     </div>
                     <div ng-show="active_type == 'show_experiment'">
-                        <div class="experiment">
-                            {{current_lesson.experiment}}
+                        <div class="experiment" ng-bind-html="current_lesson.experiment | string_trusted">
                         </div>
                     </div>
                     <div ng-show="active_type == 'show_comment'">
