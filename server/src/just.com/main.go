@@ -88,10 +88,10 @@ func main() {
 		WriteTimeout:60 * 60 * time.Second,
 	}
 	etc.PrintBanner(path, logger)
+	log.Println("liesten at" + deploymentItem.Port)
 	listenErr := server.ListenAndServe()
 	if listenErr != nil {
 		log.Println(listenErr)
 		return
 	}
-	log.Println("liesten at" + deploymentItem.Port)
 }
