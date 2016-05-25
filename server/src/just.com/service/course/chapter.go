@@ -23,8 +23,11 @@ func (self *CourseService) AddChapter(courseId, userId string, request *dto.Cour
 	table := &table.CourseChapterTable{
 		UUID:uuid.New(),
 		Name:request.Name,
+		Order:request.Order,
 		Content:request.Content,
 		CourseId:courseTable.UUID,
+		VideoName:request.VideoName,
+		VideoUrl:request.VideoUrl,
 		CreateUser:userId,
 		CreateTime:time.Now(),
 		UpdateTime:time.Now(),
@@ -80,6 +83,13 @@ func (self *CourseService) UpdateChapter(chapterId, userId string, request *dto.
 	}
 	if request.Order != 0 {
 		chapter.Order = request.Order
+	}
+
+	if request.VideoName != "" {
+		chapter.VideoName = request.VideoName
+	}
+	if request.VideoUrl != "" {
+		chapter.VideoUrl = request.VideoUrl
 	}
 	chapter.UpdateTime = time.Now()
 	chapter.UpdateUser = userId

@@ -49,13 +49,12 @@ func main() {
 	router := gin.Default()
 	router.Static("/web", path + "/..")
 	router.Static("/res", path + "/res")
-	router.StaticFile("/favicon.ico", path + "/res/favicon.ico")
 	mainGroup := router.Group("/api/v1")
 
 	// middleware
 	mainGroup.Use(middleware.ResponseMiddleware())
 	mainGroup.Use(middleware.ContextMiddleWare(dataSource, logger))
-	mainGroup.Use(middleware.FileSystemMiddlaware(qiniuFileSystem))
+	mainGroup.Use(middleware.FileSystemMiddleware(qiniuFileSystem))
 	mainGroup.Use(middleware.EmailMiddleware(config.SendCloudConfig))
 	mainGroup.Use(middleware.ApiMiddleware())
 	mainGroup.Use(middleware.TokenMiddleWare(config.WhiteListConfig))
@@ -89,6 +88,10 @@ func main() {
 		WriteTimeout:60 * 60 * time.Second,
 	}
 	etc.PrintBanner(path, logger)
+	listenErr := server.ListenAndServe()
+	if listenErr != nil {
+		log.Println(listenErr)
+		return
+	}
 	log.Println("liesten at" + deploymentItem.Port)
-	server.ListenAndServe()
 }

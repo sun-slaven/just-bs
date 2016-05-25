@@ -5,6 +5,7 @@ import (
 	"just.com/err"
 	"just.com/model/db/table"
 	"just.com/common"
+	"just.com/value"
 )
 
 type CourseChapterVo struct {
@@ -12,6 +13,8 @@ type CourseChapterVo struct {
 	Name       string `json:"name"`
 	Content    string `json:"content"`
 	Order      int64 `json:"order"`
+	VideoName  string `json:"video_name"`
+	VideoUrl   string `json:"video_url"`
 	CreateTime string `json:"create_time"`
 }
 
@@ -27,7 +30,7 @@ func LoadChapterVoList(courseId string, session *xorm.Session, log  *log.Logger)
 		return nil, err.NO_COURSE_FOUND
 	}
 	chapterTableList := make([]*table.CourseChapterTable, 0)
-	findErr := session.Asc("ORDER").Find(&chapterTableList, &table.CourseChapterTable{CourseId:courseId, FrozenStatus:"N"})
+	findErr := session.Asc("ORDER").Find(&chapterTableList, &table.CourseChapterTable{CourseId:courseId, FrozenStatus:value.STATUS_ENABLED})
 	if findErr != nil {
 		log.Println(findErr)
 		return nil, err.NO_CHAPTER_FOUND
@@ -41,6 +44,8 @@ func NewChapterVo(table *table.CourseChapterTable) *CourseChapterVo {
 	chapterVo.Order = table.Order
 	chapterVo.Name = table.Name
 	chapterVo.Content = table.Content
+	chapterVo.VideoName = table.VideoName
+	chapterVo.VideoUrl = value.BASE_URL + table.VideoUrl
 	chapterVo.CreateTime = common.TimeFormat(table.CreateTime)
 	return chapterVo
 }

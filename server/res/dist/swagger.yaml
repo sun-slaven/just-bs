@@ -865,6 +865,12 @@ definitions:
       order:
         type: integer
         format: int64
+      video_name:
+        type: string
+        default: '数据库视频'
+      video_url:
+        type: string
+        default: '98620d12-1a5f-47ae-877a-296944f30b75.mp4'
 
   courseAttachRequest:
     type: object
@@ -889,6 +895,12 @@ definitions:
       content:
         type: string
         default: '你应该这样这样...'
+      video_name:
+        type: string
+        default: '第一章内容'
+      video_url:
+        type: string
+        default: '98620d12-1a5f-47ae-877a-296944f30b75.mp4'
       order:
         type: integer
         format: int64

@@ -24,7 +24,9 @@ type CourseAttachmentRequest struct {
 }
 
 type CourseChapterRequest struct {
-	Name    string `json:"name"`
-	Content string `json:"content"`
-	Order   int64 `json:"order"`
+	Name      string `json:"name"`
+	Content   string `json:"content"`
+	VideoName string `json:"video_name"`
+	VideoUrl  string `json:"video_url"`
+	Order     int64 `json:"order"`
 }

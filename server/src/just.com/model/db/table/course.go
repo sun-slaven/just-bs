@@ -39,6 +39,8 @@ type CourseChapterTable struct {
 	Name         string `xorm:"'NAME'"`
 	Content      string `xorm:"'CONTENT'"`
 	Order        int64       `xorm:"'ORDER'"`
+	VideoName    string `xorm:"'VIDEO_NAME'"`
+	VideoUrl     string `xorm:"'VIDEO_URL'"`
 	CreateUser   string `xorm:"'CREATE_USER'"`
 	CreateTime   time.Time `xorm:"'CREATE_TIME'"`
 	UpdateTime   time.Time `xorm:"'UPDATE_TIME'"`
