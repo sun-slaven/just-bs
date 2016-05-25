@@ -166,14 +166,14 @@ GlobalModules.add_controller('lesson')
 angular.module('just.controllers.lesson', [])
     .controller('LessonController', ['$rootScope', '$scope', '$routeParams', 'LessonService', 'CommentsService', 'MarkService', 'ChaptersService',
         function($rootScope, $scope, $routeParams, LessonService, CommentsService, MarkService, ChaptersService) {
-            $scope.active_type = 'show_outline'
+            $scope.active_type = 'show_comment';
             $scope.change_active = function(type) {
                 $scope.active_type = type;
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
                     $rootScope.current_lesson = resp
-                    learn_status_callback();//show btn status
+                    learn_status_callback(); //show btn status
                 })
                 CommentsService.get_comments($routeParams.lesson_id, function(resp) {
                     $scope.comments = resp;
@@ -196,6 +196,16 @@ angular.module('just.controllers.lesson', [])
                     })
                 })
             }
+
+            $scope.delete_comment = function(comment) {
+                CommentsService.delete_comments($rootScope.current_lesson.id, comment.id, function(resp) {
+                    CommentsService.get_comments($routeParams.lesson_id, function(resp) {
+                        $scope.comments = resp;
+                    })
+                    $rootScope.alert_modal("提示", "评论删除成功")
+                })
+            }
+
             var learn_status_callback = function() {
                 if ($rootScope.current_lesson.mark_status == 'N') {
                     $scope.need_learn = true;
@@ -303,12 +313,10 @@ angular.module('just.controllers.lesson_outline', [])
 GlobalModules.add_controller('lessons')
 angular.module('just.controllers.lessons', [])
     .controller('LessonsController', ['$rootScope', '$scope', '$timeout', 'LessonsService', 'CollegeMajorService', 'CommonUtil', function($rootScope, $scope, $timeout, LessonsService, CollegeMajorService, CommonUtil) {
-        if ($rootScope.all_lessons == undefined) {
-            LessonsService.lessons_list(function(resp) {
-                $rootScope.all_lessons = resp;
-                $scope.lessons = $rootScope.all_lessons
-            })
-        };
+        LessonsService.lessons_list(function(resp) {
+            $rootScope.all_lessons = resp;
+            $scope.lessons = $rootScope.all_lessons
+        })
         $scope.lessons = $rootScope.all_lessons
 
         $scope.colleges = $rootScope.all_colleges;
@@ -976,11 +984,13 @@ angular.module('just.filters', [])
     })
     .filter('replaceBr',function(){
         return function(str){
+            if (str == '' || str == undefined) return;
             return str.replace(new RegExp('\n', 'gm'), '<br/>').replace(new RegExp(' ', 'gm'), '&nbsp');
         }
     })
     .filter('string_trusted', function($sce) {
         return function(string) {
+            if (string == '' || string == undefined) return;
             return $sce.trustAsHtml(string);
         }
     });
@@ -1199,34 +1209,36 @@ angular.module('just.services.comments', []).
 factory('CommentsService', ['$rootScope', '$resource', '$http',
     function($rootScope, $resource, $http) {
 
-        var commentsAPI = $resource('/api/v1/courses/:course_id/comments', {course_id: '@course_id'}, {
-            delete_comments: {method: 'delete' , isArray: false},
-            get_comments: {method: 'get' , isArray: true},
-            add_comments: {method: 'post' , isArray: false},
+        var commentsAPI = $resource('/api/v1/courses/:course_id/comments', { course_id: '@course_id' }, {
+
+            get_comments: { method: 'get', isArray: true },
+            add_comments: { method: 'post', isArray: false },
         })
 
+        var commentAPI = $resource('/api/v1/courses/:course_id/comments/:comment_id', { course_id: '@course_id', comment_id: '@comment_id' }, {
+            delete_comments: { method: 'delete', isArray: false }
+        })
 
-        function delete_comments(lesson_id,success) {
-
-            commentsAPI.delete_comments({course_id:  lesson_id}, {}, function(resp) {
+        function delete_comments(lesson_id, comment_id, success) {
+            commentAPI.delete_comments({ course_id: lesson_id, comment_id: comment_id }, {}, function(resp) {
                 if (success) { success(resp) }
             })
         }
 
-        function get_comments(lesson_id,success) {
-            commentsAPI.get_comments({}, {course_id:  lesson_id}, function(resp) {
+        function get_comments(lesson_id, success) {
+            commentsAPI.get_comments({}, { course_id: lesson_id }, function(resp) {
                 if (success) { success(resp) }
             })
         }
 
-        function add_comments(obj,success) {
+        function add_comments(obj, success) {
             commentsAPI.add_comments({}, {
                 course_id: obj.course_id,
                 content: obj.content
             }, function(resp) {
                 if (success) { success(resp) }
             })
-        }        
+        }
 
 
         return {

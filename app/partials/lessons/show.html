@@ -58,7 +58,7 @@
                             <li ng-class="{active: active_type == 'show_experiment'}" ng-click="change_active('show_experiment')" ng-if="current_lesson.experiment != '' ">
                                 <a><i class="fa fa-bars" aria-hidden="true"></i>实验指导书</a></li>
                             <li ng-class="{active: active_type == 'show_comment'}" ng-click="change_active('show_comment')">
-                                <a href=""><i class="fa fa-comments-o" aria-hidden="true"></i>评论({{current_lesson.comment_sum}})</a></li>
+                                <a href=""><i class="fa fa-comments-o" aria-hidden="true"></i>评论({{comments.length}})</a></li>
                         </ul>
                     </div>
                     <div ng-show="active_type == 'show_outline'">
@@ -95,6 +95,7 @@
                                 <div class="user_name">{{comment.create_user.name}}</div>
                                 <div class="comment_time">{{comment.create_time}}</div>
                                 <div class="floor">{{$index + 1}}楼</div>
+                                <div class="delete_comment fa fa-trash" data-placement="top" data-title="删除该评论" data-trigger="hover" bs-tooltip ng-if="comment.create_user.id == current_user.id" ng-click="delete_comment(comment)"></div>
                                 <p>{{comment.content}}</p>
                             </div>
                         </div>

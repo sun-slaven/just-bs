@@ -1,12 +1,10 @@
 GlobalModules.add_controller('lessons')
 angular.module('just.controllers.lessons', [])
     .controller('LessonsController', ['$rootScope', '$scope', '$timeout', 'LessonsService', 'CollegeMajorService', 'CommonUtil', function($rootScope, $scope, $timeout, LessonsService, CollegeMajorService, CommonUtil) {
-        if ($rootScope.all_lessons == undefined) {
-            LessonsService.lessons_list(function(resp) {
-                $rootScope.all_lessons = resp;
-                $scope.lessons = $rootScope.all_lessons
-            })
-        };
+        LessonsService.lessons_list(function(resp) {
+            $rootScope.all_lessons = resp;
+            $scope.lessons = $rootScope.all_lessons
+        })
         $scope.lessons = $rootScope.all_lessons
 
         $scope.colleges = $rootScope.all_colleges;
