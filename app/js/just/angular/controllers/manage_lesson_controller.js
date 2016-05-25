@@ -232,7 +232,6 @@ angular.module('just.controllers.manage_lesson', [])
                     };
                     //promise 使用上一个promise的返回结果
                     $scope.upload.get_token_promise_array[index].get_token_promise.then(function(token_obj) {
-                        console.log(token_obj)
                         upload_fun($scope.upload.get_token_promise_array[index].file, token_obj, function(resp) {
                             switch ($scope.upload.get_token_promise_array[index].suffix_info_obj.type) {
                                 case 'icon':
@@ -290,11 +289,13 @@ angular.module('just.controllers.manage_lesson', [])
                 $scope.upload.do_upload(function() {
                     LessonsService.create_lesson($scope.new_lesson, function(resp) {
                         $scope.upload.get_token_promise_array = [];
+                        $rootScope.alert_modal("","课程创建成功!");
                         console.log(resp)
                     })
                 })
             } else {
                 LessonsService.create_lesson($scope.new_lesson, function(resp) {
+                    $rootScope.alert_modal("","课程创建成功!");
                     console.log(resp)
                 })
             }

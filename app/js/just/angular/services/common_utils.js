@@ -56,8 +56,6 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
             return 'attachment'
         }
 
-
-
         return {
             getLessonsByCollege: getLessonsByCollege,
             getLessonsByMajor: getLessonsByMajor,
