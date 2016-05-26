@@ -4,11 +4,9 @@
         当前未选择课程,请先到课程管理中点击某个课程的章节管理
     </div>
     <div ng-show="outline_edit_lesson">
-    <div class="lesson_tip">当前选择的课程为: {{outline_edit_lesson.name}}</div>
-        
+        <div class="lesson_tip">当前选择的课程为: {{outline_edit_lesson.name}}</div>
         <div class="chapter_plus">
-        <button  class="btn btn-info" ng-click="chapter_plus()"><i class="fa fa-plus" aria-hidden="true"></i>添加章节</button>
-            
+            <button class="btn btn-info" ng-click="chapter_plus()"><i class="fa fa-plus" aria-hidden="true"></i>添加章节</button>
         </div>
         <table st-table="lesson_outline" st-safe-src="lesson_outline_list" class="table table-hover" ng-show="outline_edit_lesson">
             <thead>

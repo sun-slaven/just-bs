@@ -40,7 +40,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">课程短描述:</label>
             <div class="col-sm-10">
-                <textarea class="form-control" placeholder="请输入课程描述" ng-model="new_lesson.description"></textarea>
+                <textarea class="form-control" placeholder="请输入课程短描述" ng-model="new_lesson.description"></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -71,12 +71,12 @@
             <label class="col-sm-2 control-label">上传视频:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)" accept="video/*" data-placement="top" data-title="点击上传附件,可多文件选取" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)" accept="video/*" data-placement="top" data-title="点击上传视频" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">课程提纲:</label>
+            <label class="col-sm-2 control-label">课程章节:</label>
             <div class="col-sm-10">
                 <div class="col-sm-1 out_line_plus">
                     <i class="fa fa-plus" aria-hidden="true" ng-click="new_lesson.open_outline_plus_modal()"></i>
@@ -91,8 +91,8 @@
                               第{{ temp_outline_item.order }}章:  {{temp_outline_item.name}} 
                             </a>
                             <span>
-                                <i class="fa fa-trash" aria-hidden="true" ng-click="new_lesson.remove_temp_outline(temp_outline_item)" data-placement="right" data-title="删除此提纲" data-trigger="hover" data-type="info" bs-tooltip></i>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="new_lesson.open_outline_edit_modal(temp_outline_item)" data-placement="left" data-title="编辑此提纲" data-trigger="hover" data-type="info"bs-tooltip></i>
+                                <i class="fa fa-trash" aria-hidden="true" ng-click="new_lesson.remove_temp_outline(temp_outline_item)" data-placement="right" data-title="删除此章节" data-trigger="hover" data-type="info" bs-tooltip></i>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" ng-click="new_lesson.open_outline_edit_modal(temp_outline_item)" data-placement="left" data-title="编辑此章节" data-trigger="hover" data-type="info"bs-tooltip></i>
                           </span>
                         </h4>
                             </div>
@@ -110,7 +110,7 @@
             <label class="col-sm-2 control-label">上传附件:</label>
             <div class="col-sm-10">
                 <div class="icon">
-                    <buttton ng-file-select="upload.onFileSelect($files)" accept="application/*,text/*,.xlsx,.xls,.doc, .docx.,.ppt, .pptx" data-placement="top" data-title="点击上传附件,可多文件选取" data-multiple="true" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加附件</buttton>
+                    <buttton ng-file-select="upload.onFileSelect($files)" accept="application/*,text/*,.xlsx,.xls,.doc, .docx.,.ppt, .pptx" data-placement="top" data-title="点击上传附件,可多文件选取非图片资源" data-multiple="true" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加附件</buttton>
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@
         </div>
     </div>
     <div id="resource" ng-if="show_resource">
-        <just-video video-url="current_lesson.video_url" video-process="current_lesson.video_process"></just-video>
+        <just-video video-url="video_url" video-process="current_lesson.video_process"></just-video>
     </div>
     <div class="lesson-info-main">
         <div class="content-wrap col-xs-12">
@@ -52,7 +52,7 @@
                     <div class="nav-bars">
                         <ul class="nav nav-tabs">
                             <li ng-class="{active: active_type == 'show_outline'}" ng-click="change_active('show_outline')" ng-if="lesson_outline_list.length > 0">
-                                <a><i class="fa fa-bars" aria-hidden="true" ></i>课程提纲</a></li>
+                                <a><i class="fa fa-bars" aria-hidden="true" ></i>课程章节</a></li>
                             <li ng-class="{active: active_type == 'show_syllabus'}" ng-click="change_active('show_syllabus')" ng-if="current_lesson.syllabus != '' ">
                                 <a><i class="fa fa-bars" aria-hidden="true"></i>教学大纲</a></li>
                             <li ng-class="{active: active_type == 'show_experiment'}" ng-click="change_active('show_experiment')" ng-if="current_lesson.experiment != '' ">
@@ -64,7 +64,7 @@
                     <div ng-show="active_type == 'show_outline'">
                         <div class="outline-list">
                             <ul>
-                                <li class="chapter clearfix" ng-repeat="chapter in lesson_outline_list |orderBy: order: false">
+                                <li class="chapter clearfix" ng-repeat="chapter in lesson_outline_list |orderBy: order: false" ng-click="show_chapter_video(chapter)" ng-disabled="!chapter.video_url">
                                     <i class="chapter-icon"></i>
                                     <div class="chapter-body">
                                         <h5 class="chapter-name">第{{chapter.order}}章: {{chapter.name}}</h5>

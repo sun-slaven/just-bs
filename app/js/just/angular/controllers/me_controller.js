@@ -1,7 +1,7 @@
 GlobalModules.add_controller('me')
 angular.module('just.controllers.me', [])
-    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'CommonUtil', 'FileService', 'UuidService',
-        function($rootScope, $scope, UserService, QiniuUpload, CommonUtil, FileService, UuidService) {
+    .controller('MeController', ['$rootScope', '$scope', 'UserService', 'QiniuUpload', 'FileService', 'UuidService',
+        function($rootScope, $scope, UserService, QiniuUpload, FileService, UuidService) {
             $scope.active_type = 'chosen_lessons'
             $scope.change_active = function(type) {
                 $scope.active_type = type;
@@ -12,8 +12,7 @@ angular.module('just.controllers.me', [])
             })
 
             var updateUser = function(updateUserObj) {
-                UserService.updateUser($rootScope.current_user, updateUserObj, function(resp) {
-                })
+                UserService.updateUser($rootScope.current_user, updateUserObj, function(resp) {})
             }
 
 
