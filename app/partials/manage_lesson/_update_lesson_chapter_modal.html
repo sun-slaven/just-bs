@@ -25,7 +25,7 @@
         <label class="col-sm-2 control-label">上传本章节视频:</label>
         <div class="col-sm-4">
             <div class="icon">
-                <buttton ng-file-select="upload.onFileSelect($files)" accept="video/*" data-placement="top" data-title="点击上传本章节视频" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
+                <buttton ng-file-select="upload.onFileSelect($files)" accept="video/*,.swf" data-placement="top" data-title="点击上传本章节视频" data-trigger="hover" data-type="info" bs-tooltip onclick="this.value = null" class="btn btn-default choose_btn"><i class="fa fa-plus" aria-hidden="true"></i>添加视频</buttton>
             </div>
         </div>
         <div class="col-sm-6" ng-if="edit_chapter.video_url">

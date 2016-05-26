@@ -19,6 +19,14 @@ angular.module('just.directives.just_video', [])
             // transclude: true,
             // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
             link: function($scope, element, iAttrs, controller) {
+                $scope.$watch('video_url', function(newValue) {
+                    if ($scope.video_url.indexOf('.swf') > -1) {
+                        $scope.isSwf = true;
+                    } else {
+                        $scope.isSwf = false;
+                    }
+                })
+                if ($scope.video_url != $rootScope.current_lesson.video_url) return;
                 $('video').on('loadedmetadata', function() {
                     if ($scope.video_process) {
                         var process_seconds = this.duration * $scope.video_process
@@ -44,7 +52,6 @@ angular.module('just.directives.just_video', [])
                     //window.onunload = remember_progress;  
 
                 var remember_progress = function() {
-                    console.log('exec')
                     if ("sendBeacon" in navigator) {
                         //Beacon API
                         navigator.sendBeacon("/api/v1/courses/" + $rootScope.current_lesson.id + "/records", { process: $scope.video_process });
@@ -58,4 +65,13 @@ angular.module('just.directives.just_video', [])
                 }
             }
         };
-    }]);
+    }])
+    .directive('justSwf', function() {
+        return {
+            restrict: 'E',
+            link: function(scope, element, attrs) {
+                var url = scope.$eval(attrs.src);
+                element.replaceWith('<object type="application/x-shockwave-flash" data="' + url + '"></object>');
+            }
+        };
+    });

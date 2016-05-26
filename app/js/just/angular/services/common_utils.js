@@ -46,7 +46,7 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
 
         var adjustFileType = function(fileSuffix){
             icon_array = ['.bmp','.png','.gif','.jpg','.jpeg','.ico']
-            video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4']
+            video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4','.swf']
             if (icon_array.indexOf(fileSuffix) > -1) {
                 return 'icon'
             }

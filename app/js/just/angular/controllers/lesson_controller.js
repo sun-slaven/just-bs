@@ -8,6 +8,7 @@ angular.module('just.controllers.lesson', [])
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
+                    $rootScope.current_lesson = resp;
                     learn_status_callback();//show btn status
                     $scope.video_url = resp.video_url;
                 })
@@ -74,6 +75,7 @@ angular.module('just.controllers.lesson', [])
                 }
 
                 $scope.show_chapter_video = function(chapter){
+                    if (chapter.video_url == '') return;
                     $scope.video_url = chapter.video_url;
                     $scope.show_resource = true;
                 }

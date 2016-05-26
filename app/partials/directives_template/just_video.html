@@ -1,5 +1,9 @@
 <div>
-    <video  ng-src="{{video_url}}" controls autoplay="autoplay" preload="auto" oncontextmenu="return false;">
-    您的浏览器不支持 HTML5 video 标签。
+    <video  ng-if="!isSwf" ng-src="{{video_url}}" controls autoplay="autoplay" preload="auto" oncontextmenu="return false;">
+        您的浏览器不支持 HTML5 video 标签。
     </video>
+    <div ng-if="isSwf">
+    	<just-swf   src="video_url" ></just-swf>
+    </div>
+    
 </div>

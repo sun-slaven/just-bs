@@ -172,6 +172,7 @@ angular.module('just.controllers.lesson', [])
             }
             if ($routeParams.lesson_id) {
                 LessonService.get_lesson($routeParams.lesson_id, function(resp) {
+                    $rootScope.current_lesson = resp;
                     learn_status_callback();//show btn status
                     $scope.video_url = resp.video_url;
                 })
@@ -238,6 +239,7 @@ angular.module('just.controllers.lesson', [])
                 }
 
                 $scope.show_chapter_video = function(chapter){
+                    if (chapter.video_url == '') return;
                     $scope.video_url = chapter.video_url;
                     $scope.show_resource = true;
                 }
@@ -931,6 +933,14 @@ angular.module('just.directives.just_video', [])
             // transclude: true,
             // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
             link: function($scope, element, iAttrs, controller) {
+                $scope.$watch('video_url', function(newValue) {
+                    if ($scope.video_url.indexOf('.swf') > -1) {
+                        $scope.isSwf = true;
+                    } else {
+                        $scope.isSwf = false;
+                    }
+                })
+                if ($scope.video_url != $rootScope.current_lesson.video_url) return;
                 $('video').on('loadedmetadata', function() {
                     if ($scope.video_process) {
                         var process_seconds = this.duration * $scope.video_process
@@ -956,7 +966,6 @@ angular.module('just.directives.just_video', [])
                     //window.onunload = remember_progress;  
 
                 var remember_progress = function() {
-                    console.log('exec')
                     if ("sendBeacon" in navigator) {
                         //Beacon API
                         navigator.sendBeacon("/api/v1/courses/" + $rootScope.current_lesson.id + "/records", { process: $scope.video_process });
@@ -970,7 +979,16 @@ angular.module('just.directives.just_video', [])
                 }
             }
         };
-    }]);
+    }])
+    .directive('justSwf', function() {
+        return {
+            restrict: 'E',
+            link: function(scope, element, attrs) {
+                var url = scope.$eval(attrs.src);
+                element.replaceWith('<object type="application/x-shockwave-flash" data="' + url + '"></object>');
+            }
+        };
+    });
 
 GlobalModules.add_directive('just_card')
 angular.module('just.directives.just_card', [])
@@ -1360,7 +1378,7 @@ factory('CommonUtil', ['$rootScope', 'LessonsService',
 
         var adjustFileType = function(fileSuffix){
             icon_array = ['.bmp','.png','.gif','.jpg','.jpeg','.ico']
-            video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4']
+            video_array = ['.vob','.avi','.rmvb','.asf','.wmv','.mp4','.swf']
             if (icon_array.indexOf(fileSuffix) > -1) {
                 return 'icon'
             }
