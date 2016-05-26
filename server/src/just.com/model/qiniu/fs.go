@@ -47,7 +47,8 @@ func (self *QiniuFileSystem) MakeToken(fileType string) *FileToken {
 		policy.CallbackBody = "key=$(key)&type=attachment"
 	case UPLOAD_TYPE_VIDEO:
 		policy.CallbackBody = "key=$(key)&type=video"
-		policy.PersistentOps = "avthumb/mp4/s/640x360/vb/1.25m"
+//		policy.PersistentOps = "avthumb/mp4/s/640x360/vb/1.25m"
+		policy.PersistentOps = "avthumb/mp4"
 	}
 	return &FileToken{Token:c.MakeUptoken(policy)}
 }
