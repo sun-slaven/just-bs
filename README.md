@@ -1,10 +1,10 @@
 #### DE:
 1. 知识点需求：
-  1.1 Angularjs 1.x
-  1.2 Less
-  1.3 npm、bower、grunt
-  1.4 chrome浏览器常用调试手段
-  1.5 git
+  * Angularjs 1.x
+  * Less
+  * npm、bower、grunt
+  * chrome浏览器常用调试手段
+  * git
 
 2. 开发平台：
   编辑器采用sublime2并安装angularjs插件；
@@ -13,10 +13,10 @@
   
 3. 针对于前端开发环境的安装:
   Tips:   http://www.cnblogs.com/Alex--Yang/p/4217577.html
-  安装node.js
-  利用npm安装grunt和bower
-  根据项目源码中的bower.json和package.json文件执行“bower install”和“npm install” 命令安装第三方包
-  执行“grunt”命令 执行前端自动化压缩/打包
+  * 安装node.js
+  * 利用npm安装grunt和bower
+  * 根据项目源码中的bower.json和package.json文件执行“bower install”和“npm install” 命令安装第三方包
+  * 执行“grunt”命令 执行前端自动化压缩/打包
   
 4. 调试:
   由于本部分为前台代码，若先进行前台调试，可安装基于nodejs的http-server作为静态服务器，后期可搭建后台基于go语言的内置服务器，然后实现系统整体运行。
